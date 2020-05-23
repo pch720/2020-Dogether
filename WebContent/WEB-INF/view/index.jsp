@@ -22,13 +22,6 @@
 
     <!-- Custom CSS -->
     <link href="css/stylish-portfolio.min.css" rel="stylesheet">
-    <style>
-        .modal {
-            top: 20%;
-            margin-top: -10%;
-        }
-        body::-webkit-scrollbar{display: none;}
-    </style>
 </head>
 
 <body id="page-top">
@@ -59,7 +52,7 @@
 
 <!-- 헤더 -->
 <header class="masthead d-flex"
-        style="padding-top: 6rem;">
+        style="padding-top: 6rem;height: 100vh;">
     <div class="container text-center my-auto">
         <h1 class="mb-1">Dogether</h1>
         <h3 class="mb-5">
@@ -72,23 +65,39 @@
 </header>
 
 
-<!-- Modal -->
+<!-- 로그인창 -->
 <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-            ...
-        </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
+            <form class="needs-validation" novalidate>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">로그인 하기</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="email">이메일 주소</label>
+                        <input type="email" class="form-control" id="email" placeholder="you@example.com" required>
+                        <div class="invalid-feedback">
+                            형식에 맞게 이메일주소를 입력해주세요.
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="address">비밀번호</label>
+                        <input type="password" class="form-control" id="address" placeholder="영문, 숫자조합 8-12자입니다." required>
+                        <div class="invalid-feedback">
+                            비밀번호를 입력해주세요.
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">회원가입</button>
+                    <button style="width: 90px;" class="btn btn-primary" type="submit">로그인</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -253,5 +262,7 @@
 <script src="js/stylish-portfolio.min.js"></script>
 <script src="js/index.js"></script>
 </body>
-
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="../assets/dist/js/bootstrap.bundle.js"></script>
+<script src="js/form-validation.js"></script></body>
 </html>
