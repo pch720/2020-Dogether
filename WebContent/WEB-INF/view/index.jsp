@@ -4,6 +4,14 @@
 <html lang="en">
 
 <head>
+    <style>
+        .Lcount{
+            text-align: end;
+            font-size: small;
+            margin-bottom: -3%;
+            margin-right: 2%;
+        }
+    </style>
     <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
     <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
 
@@ -20,7 +28,6 @@
 
     <!-- Custom Fonts -->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
     <link href="vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet">
 
     <!-- Custom CSS -->
@@ -67,19 +74,8 @@
 
 </header>
 
-<label class="mdc-text-field mdc-text-field--outlined">
-    <input type="text" class="mdc-text-field__input" aria-labelledby="my-label-id">
-    <span class="mdc-notched-outline">
-    <span class="mdc-notched-outline__leading"></span>
-    <span class="mdc-notched-outline__notch">
-      <span class="mdc-floating-label" id="my-label-id">Your Name</span>
-    </span>
-    <span class="mdc-notched-outline__trailing"></span>
-  </span>
-</label>
-
 <!-- 로그인창 -->
-<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <form class="needs-validation" novalidate>
@@ -91,24 +87,86 @@
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="email">이메일 주소</label>
-                        <input type="email" class="form-control" id="email" placeholder="you@example.com" required>
+                        <div>이메일 주소</div>
+                        <input type="email" class="form-control" id="email" placeholder="you@example.com" required pattern="[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$">
                         <div class="invalid-feedback">
                             형식에 맞게 이메일주소를 입력해주세요.
                         </div>
                     </div>
 
                     <div class="mb-3">
-                        <label for="address">비밀번호</label>
-                        <input type="password" class="form-control" id="address" placeholder="영문, 숫자조합 8-12자입니다." required>
+                        <div>비밀번호</div>
+                        <input type="password" class="form-control" id="pw" placeholder="영문, 숫자, 특수문자 조합 8-15자 입니다." required>
                         <div class="invalid-feedback">
                             비밀번호를 입력해주세요.
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">회원가입</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" data-toggle="modal" data-target="#regModal">회원가입</button>
                     <button style="width: 90px;" class="btn btn-primary" type="submit">로그인</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- 회원가입창 -->
+<div class="modal fade" id="regModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form id="Reg" class="needs-validation" novalidate>
+                <div class="modal-header">
+                    <h5 class="modal-title">회원가입 하기</h5>
+                    <button type="button" class="close regclose" data-dismiss="modal"data-toggle="modal" data-target="#loginModal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <div>닉네임</div>
+                        <input type="text" class="form-control" id="Regname" placeholder="10자 이내로 입력해주세요." required maxlength="10">
+                        <div id="Nl" class="Lcount">
+                            (0/10)
+                        </div>
+                        <div class="invalid-feedback">
+                            닉네임을 입력해주세요.
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <div>이메일 주소</div>
+                        <input type="text" class="form-control" id="Regemail" placeholder="you@example.com" required pattern="[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$">
+                        <div class="invalid-feedback">
+                            형식에 맞게 이메일주소를 입력해주세요.
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <div>비밀번호</div>
+                        <input type="password" class="form-control" id="Regpw" placeholder="영문, 숫자조합 8-15자로 입력해주세요." required pattern=".*(?=^.{8,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$" maxlength="15">
+                        <div id="Pl"class="Lcount">
+                            (0/15)
+                        </div>
+                        <div class="invalid-feedback">
+                            형식에 맞게 비밀번호를 입력해주세요.
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <div>비밀번호 확인</div>
+                        <input type="password" class="form-control" id="Regpwc" placeholder="비밀번호 확인을 입력해주세요." required maxlength="15" >
+                        <div id="Pcl" class="Lcount">
+                            (0/15)
+                        </div>
+                        <div class="invalid-feedback">
+                            비밀번호와 동일하게 입력해주세요.
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary regclose" data-dismiss="modal"data-toggle="modal" data-target="#loginModal">취소</button>
+                    <button style="width: 90px;" class="btn btn-primary" type="submit">회원가입</button>
                 </div>
             </form>
         </div>
