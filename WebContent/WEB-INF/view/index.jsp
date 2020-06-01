@@ -11,6 +11,41 @@
             margin-bottom: -3%;
             margin-right: 2%;
         }
+        .PI{
+            display: block;
+            width: 100%;
+            height: calc(1.5em + .75rem + 2px);
+            padding: .375rem .75rem;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #495057;
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 1px solid #ced4da;
+            border-radius: .25rem;
+            transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+        }
+        .NPI{
+            border-color: #dc3545;
+            padding-right: calc(1.5em + .75rem);
+            background-repeat: no-repeat;
+            background-position: center right calc(.375em + .1875rem);
+            background-size: calc(.75em + .375rem) calc(.75em + .375rem);
+        }
+        .YPI{
+            border-color: #28a745;
+            padding-right: calc(1.5em + .75rem);
+            background-repeat: no-repeat;
+            background-position: center right calc(.375em + .1875rem);
+            background-size: calc(.75em + .375rem) calc(.75em + .375rem);
+        }
+        .PTS{
+            width: 100%;
+            margin-top: .25rem;
+            font-size: 80%;
+            color: #dc3545;
+        }
     </style>
     <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
     <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
@@ -155,14 +190,18 @@
 
                     <div class="mb-3">
                         <div>비밀번호 확인</div>
-                        <input type="password" class="form-control" id="Regpwc" placeholder="비밀번호 확인을 입력해주세요." required maxlength="15" >
+                        <input type="password" class="PI" id="Regpwc" placeholder="비밀번호 확인을 입력해주세요." required maxlength="15" >
                         <div id="Pcl" class="Lcount">
                             (0/15)
                         </div>
-                        <div class="invalid-feedback">
+                        <div id="npwc" class="PTS" style="display: none">
                             비밀번호와 동일하게 입력해주세요.
                         </div>
+                        <div id="ypwc" class="PTS" style="display: none">
+                            비밀번호와 동일하게 입력했습니다.
+                        </div>
                     </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary regclose" data-dismiss="modal"data-toggle="modal" data-target="#loginModal">취소</button>
