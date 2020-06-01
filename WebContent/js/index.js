@@ -25,9 +25,14 @@ $('#Regpw').keyup (function () {
 });
 $('#Regpwc').keyup (function () {
     const Pclength = $('#Regpwc').val().length;
+    const pw=$('#Regpw').val();
+    const pwc=$('#Regpwc').val();
     console.log(Pclength>10);
     document.getElementById('Pcl').innerHTML = '('+Pclength+'/15)';
-    if ($('#Regpw').val()!=$('#Regpwc').val()){
+    console.log(pw)
+    console.log(pwc)
+    if (pw!=pwc){
+        console.log("hello")
         return false;
     }
 });
