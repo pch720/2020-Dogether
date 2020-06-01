@@ -11,40 +11,17 @@
             margin-bottom: -3%;
             margin-right: 2%;
         }
-        .PI{
-            display: block;
-            width: 100%;
-            height: calc(1.5em + .75rem + 2px);
-            padding: .375rem .75rem;
-            font-size: 1rem;
-            font-weight: 400;
-            line-height: 1.5;
-            color: #495057;
-            background-color: #fff;
-            background-clip: padding-box;
-            border: 1px solid #ced4da;
-            border-radius: .25rem;
-            transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-        }
-        .NPI{
-            border-color: #dc3545;
-            padding-right: calc(1.5em + .75rem);
-            background-repeat: no-repeat;
-            background-position: center right calc(.375em + .1875rem);
-            background-size: calc(.75em + .375rem) calc(.75em + .375rem);
-        }
-        .YPI{
-            border-color: #28a745;
-            padding-right: calc(1.5em + .75rem);
-            background-repeat: no-repeat;
-            background-position: center right calc(.375em + .1875rem);
-            background-size: calc(.75em + .375rem) calc(.75em + .375rem);
-        }
         .PTS{
             width: 100%;
             margin-top: .25rem;
             font-size: 80%;
             color: #dc3545;
+            display: none;
+        }
+        .regcheck{
+            text-align: end;
+            margin-top: -5%;
+            margin-right: 3%;
         }
     </style>
     <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
@@ -150,7 +127,7 @@
 <div class="modal fade" id="regModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <form id="Reg" class="needs-validation" novalidate>
+            <form id="Regis">
                 <div class="modal-header">
                     <h5 class="modal-title">회원가입 하기</h5>
                     <button type="button" class="close regclose" data-dismiss="modal"data-toggle="modal" data-target="#loginModal" aria-label="Close">
@@ -159,53 +136,50 @@
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <div>닉네임</div>
-                        <input type="text" class="form-control" id="Regname" placeholder="10자 이내로 입력해주세요." required maxlength="10">
+                        <div>닉네임</div><div id="c1" class="regcheck" style="display: none;"><i id="check1" class="fas fa-check"></i></div>
+                        <input type="text" class="form-control" id="Regname" placeholder="10자 이내로 입력해주세요."  maxlength="10" onkeyup="return name1()">
                         <div id="Nl" class="Lcount">
                             (0/10)
                         </div>
-                        <div class="invalid-feedback">
+                        <div id="nname" class="PTS">
                             닉네임을 입력해주세요.
                         </div>
                     </div>
 
                     <div class="mb-3">
-                        <div>이메일 주소</div>
-                        <input type="text" class="form-control" id="Regemail" placeholder="you@example.com" required pattern="[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$">
-                        <div class="invalid-feedback">
+                        <div>이메일 주소</div><div id="c2" class="regcheck" style="display: none;"><i id="check2" class="fas fa-check"></i></div>
+                        <input type="text" class="form-control" id="Regemail" placeholder="you@example.com"  onkeyup="return email1()">
+                        <div id="nemail" class="PTS">
                             형식에 맞게 이메일주소를 입력해주세요.
                         </div>
                     </div>
 
                     <div class="mb-3">
-                        <div>비밀번호</div>
-                        <input type="password" class="form-control" id="Regpw" placeholder="영문, 숫자조합 8-15자로 입력해주세요." required pattern=".*(?=^.{8,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$" maxlength="15">
-                        <div id="Pl"class="Lcount">
+                        <div>비밀번호</div><div id="c3" class="regcheck" style="display: none;"><i id="check3" class="fas fa-check"></i></div>
+                        <input type="password" class="form-control" id="Regpw" placeholder="영문, 숫자조합 8-15자로 입력해주세요." maxlength="15" onkeyup="return pw1()">
+                        <div id="Pl" class="Lcount">
                             (0/15)
                         </div>
-                        <div class="invalid-feedback">
+                        <div id="npw" class="PTS">
                             형식에 맞게 비밀번호를 입력해주세요.
                         </div>
                     </div>
 
                     <div class="mb-3">
-                        <div>비밀번호 확인</div>
-                        <input type="password" class="PI" id="Regpwc" placeholder="비밀번호 확인을 입력해주세요." required maxlength="15" >
+                        <div>비밀번호 확인</div><div id="c4" class="regcheck" style="display: none;"><i id="check4" class="fas fa-check"></i></div>
+                        <input type="password" class="form-control" id="Regpwc" placeholder="비밀번호 확인을 입력해주세요."  maxlength="15" onkeyup="return pwc1()">
                         <div id="Pcl" class="Lcount">
                             (0/15)
                         </div>
-                        <div id="npwc" class="PTS" style="display: none">
+                        <div id="npwc" class="PTS">
                             비밀번호와 동일하게 입력해주세요.
-                        </div>
-                        <div id="ypwc" class="PTS" style="display: none">
-                            비밀번호와 동일하게 입력했습니다.
                         </div>
                     </div>
 
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary regclose" data-dismiss="modal"data-toggle="modal" data-target="#loginModal">취소</button>
-                    <button style="width: 90px;" class="btn btn-primary" type="submit">회원가입</button>
+                    <input style="width: 90px;" class="btn btn-primary" type="button" onclick="return Reg();"value="회원가입">
                 </div>
             </form>
         </div>
