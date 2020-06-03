@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%
+    String USER_NAME=(String)session.getAttribute("SS_USER_NAME");
+%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -18,15 +21,16 @@
             color: #dc3545;
             display: none;
         }
+        .MB{
+            width: 49%;
+            height: 100px;
+        }
         .regcheck{
             text-align: end;
             margin-top: -5%;
             margin-right: 3%;
         }
     </style>
-    <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
-    <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
-
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -45,7 +49,7 @@
     <!-- Custom CSS -->
     <link href="css/stylish-portfolio.min.css" rel="stylesheet">
 </head>
-
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <body id="page-top">
 
 <!-- Navigation -->
@@ -80,17 +84,40 @@
         <h3 class="mb-5">
             <em>Do something together with somebody</em>
         </h3>
+        <%if (USER_NAME==null){%>
         <a class="btn btn-primary btn-xl js-scroll-trigger"
            href="#" data-toggle="modal" data-target="#loginModal">함께하기</a>
-    </div>
-
+    </div><%}else{%>
+    <a class="btn btn-primary btn-xl js-scroll-trigger"
+       href="#" data-toggle="modal" data-target="#userModal">함께하기</a>
+    </div><%}%>
 </header>
+
+<!-- 회원 창 -->
+<div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form action="/logout.do" method="POST" class="needs-validation" novalidate>
+                <div class="modal-header">
+                    <h5 class="modal-title">함께 하기</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <button type="button" class="btn btn-secondary MB">메인으로 가기</button>
+                    <button class="btn btn-primary MB" type="submit">로그아웃</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <!-- 로그인창 -->
 <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <form class="needs-validation" novalidate>
+            <form action="/login.do" method="POST" class="needs-validation" novalidate>
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">로그인 하기</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -100,7 +127,7 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <div>이메일 주소</div>
-                        <input type="email" class="form-control" id="email" placeholder="you@example.com" required pattern="[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$">
+                        <input type="email" class="form-control" id="email" name="email" placeholder="you@example.com" required pattern="[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$">
                         <div class="invalid-feedback">
                             형식에 맞게 이메일주소를 입력해주세요.
                         </div>
@@ -108,15 +135,15 @@
 
                     <div class="mb-3">
                         <div>비밀번호</div>
-                        <input type="password" class="form-control" id="pw" placeholder="영문, 숫자, 특수문자 조합 8-15자 입니다." required>
+                        <input type="password" class="form-control" id="pw" name="pw" placeholder="영문, 숫자, 특수문자 조합 8-15자 입니다." required>
                         <div class="invalid-feedback">
                             비밀번호를 입력해주세요.
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" data-toggle="modal" data-target="#regModal">회원가입</button>
                     <button style="width: 90px;" class="btn btn-primary" type="submit">로그인</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" data-toggle="modal" data-target="#regModal">회원가입</button>
                 </div>
             </form>
         </div>
@@ -346,7 +373,6 @@
 <script src="js/stylish-portfolio.min.js"></script>
 <script src="js/index.js"></script>
 </body>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="../assets/dist/js/bootstrap.bundle.js"></script>
 <script src="js/form-validation.js"></script></body>
 </html>
