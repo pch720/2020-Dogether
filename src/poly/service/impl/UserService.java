@@ -23,4 +23,14 @@ public class UserService implements IUserService {
         return userMapper.login(uDTO);
     }
 
+    @Override
+    public String eCheck(String email) throws Exception {
+        return userMapper.eCheck(email);
+    }
+
+    @Override
+    public String nCheck(String name) throws Exception {
+        return userMapper.nCheck(name);
+    }
+
 }

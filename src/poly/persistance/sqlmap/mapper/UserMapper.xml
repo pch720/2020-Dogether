@@ -27,11 +27,19 @@
          	'0'
         )
     </insert>
-	<!-- 이메일 중복확인 -->
-	<select id="eCheck" parameterType="Integer" resultType="Integer">
+	<!-- 이름 중복확인 -->
+	<select id="nCheck" parameterType="String" resultType="String">
 		SELECT COUNT(*)
 		FROM
-			USER_INFO
+			USER
+		WHERE
+			USER_NAME=#{userName}
+	</select>
+	<!-- 이메일 중복확인 -->
+	<select id="eCheck" parameterType="String" resultType="String">
+		SELECT COUNT(*)
+		FROM
+			USER
 		WHERE
 			USER_EMAIL=#{userEmail}
 	</select>

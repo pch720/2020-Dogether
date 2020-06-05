@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -21,10 +22,28 @@ public class UserController {
 	@Resource(name= "UserService")
 	private IUserService userservice;
 
+	/*시작 화면*/
 	@RequestMapping(value = "index")
 	public String index() throws Exception {
 		return "/index";
 	}
+
+	/*닉네임 중복확인*/
+	@RequestMapping(value = "/nCheck.do", method = RequestMethod.POST)
+	public @ResponseBody String nCheck(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String name = CmmUtil.nvl(request.getParameter("name"));
+		log.info(name);
+		return userservice.nCheck(name);
+	}
+
+	/*이메일 중복확인*/
+	@RequestMapping(value = "/eCheck.do", method = RequestMethod.POST)
+	public @ResponseBody String eCheck(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String email = CmmUtil.nvl(request.getParameter("email"));
+		log.info(email);
+		return userservice.eCheck(email);
+	}
+
 	/*회원가입*/
 	@RequestMapping(value = "Reg",method = RequestMethod.POST)
 	public @ResponseBody int Reg(HttpServletRequest request, HttpServletResponse response) throws Exception{
@@ -48,31 +67,54 @@ public class UserController {
 
 		return result;
 	}
+
 	/*로그인*/
 	@RequestMapping(value = "login")
-	public String login(HttpServletRequest request, HttpSession session) throws Exception {
-		String email = request.getParameter("email");
-		String pw = request.getParameter("pw");
+	public String login(HttpServletRequest request, HttpSession session, Model model) throws Exception {
+		String msg, url;
+		String email = CmmUtil.nvl(request.getParameter("email"));
+		String pw = CmmUtil.nvl(request.getParameter("pw"));
 		log.info(email+"/"+pw);
 		UserDTO uDTO = new UserDTO();
 		uDTO.setUserEmail(email);
 		uDTO.setPassWord(pw);
-		log.info(uDTO.getUserEmail());
-		uDTO = userservice.login(uDTO);
-		log.info(uDTO.getUserName());
-		if (uDTO==null){
-			log.info("로그인 실패"+uDTO.getUserName());
-		}else{
-			session.setAttribute("SS_USER_NAME",uDTO.getUserName());
+		try {
+			uDTO = userservice.login(uDTO);
+		}catch (Exception e){
+			e.printStackTrace();
+		}
 
+		log.info(uDTO);
+		if (uDTO != null){
+			session.setAttribute("SS_USER_NAME",uDTO.getUserName());
+			msg = "로그인 되었습니다.";
+			url = "index.do";
 			log.info(" session : " + session);
 			log.info("로그인 성공"+uDTO.getUserName());
+		}else{
+			log.info("응실패");
+			msg = "이메일 또는 비밀번호를 다시 확인해주세요.";
+			url = "index.do";
 		}
-		return "/index";
+		model.addAttribute("msg",msg);
+		model.addAttribute("url",url);
+		return "/redirect";
 	}
+
+	/*로그아웃*/
 	@RequestMapping(value = "/logout")
-	public String logout(HttpSession session) throws Exception {
+	public String logout(HttpSession session,Model model) throws Exception {
+		String msg, url;
+		msg = "로그아웃 되었습니다.";
+		url = "index.do";
 		session.invalidate();
-		return "/index";
+		model.addAttribute("msg",msg);
+		model.addAttribute("url",url);
+		return "/redirect";
+	}
+	/*기능시작화면*/
+	@RequestMapping(value = "main")
+	public String main() throws Exception {
+		return "/main";
 	}
 }

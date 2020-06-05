@@ -5,7 +5,12 @@
 %>
 <!DOCTYPE html>
 <html lang="en">
-
+<script>
+    window.onload=function(){
+        if ((document.referrer=="http://localhost:8080/login.do"||document.referrer=="http://localhost:8080/logout.do")&&<%=USER_NAME%>==null){
+            $('#loginModal').modal("show");
+        }};
+</script>
 <head>
     <style>
         .Lcount{
@@ -105,8 +110,8 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <button type="button" class="btn btn-secondary MB">메인으로 가기</button>
-                    <button class="btn btn-primary MB" type="submit">로그아웃</button>
+                    <button type="button" class="btn btn-secondary MB" onclick="location.href='main.do'">메인으로 가기</button>
+                    <button class="btn btn-primary MB" type="submit" >로그아웃</button>
                 </div>
             </form>
         </div>
@@ -120,7 +125,7 @@
             <form action="/login.do" method="POST" class="needs-validation" novalidate>
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">로그인 하기</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" id="LC" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -157,7 +162,7 @@
             <form id="Regis">
                 <div class="modal-header">
                     <h5 class="modal-title">회원가입 하기</h5>
-                    <button type="button" class="close regclose" data-dismiss="modal"data-toggle="modal" data-target="#loginModal" aria-label="Close">
+                    <button type="button"id="RC" class="close regclose" data-dismiss="modal"data-toggle="modal" data-target="#loginModal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -171,6 +176,9 @@
                         <div id="nname" class="PTS">
                             닉네임을 입력해주세요.
                         </div>
+                        <div id="namejb" class="PTS">
+                            이미 가입된 닉네임입니다.
+                        </div>
                     </div>
 
                     <div class="mb-3">
@@ -178,6 +186,9 @@
                         <input type="text" class="form-control" id="Regemail" placeholder="you@example.com"  onkeyup="return email1()">
                         <div id="nemail" class="PTS">
                             형식에 맞게 이메일주소를 입력해주세요.
+                        </div>
+                        <div id="eemail" class="PTS">
+                            이미 가입된 이메일주소입니다.
                         </div>
                     </div>
 
