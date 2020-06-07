@@ -1,16 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
-<%
-    String USER_NAME=(String)session.getAttribute("SS_USER_NAME");
-%>
 <!DOCTYPE html>
 <html lang="en">
-<script>
-    window.onload=function(){
-        if ((document.referrer=="http://localhost:8080/login.do"||document.referrer=="http://localhost:8080/logout.do")&&<%=USER_NAME%>==null){
-            $('#loginModal').modal("show");
-        }};
-</script>
 <head>
     <style>
         .TitlePadding{
@@ -77,7 +68,14 @@
         </ul>
     </div>
 </nav>
-
+<a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+    Link with href
+</a>
+<div class="collapse" id="collapseExample">
+    <div class="card card-body">
+        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+    </div>
+</div>
 <!-- 내 그룹 -->
 <section class="bg-primary text-white TitlePadding">
     <a class="navbar-brand" style="font-weight: 300;font-size: xx-large;">My Group</a>
