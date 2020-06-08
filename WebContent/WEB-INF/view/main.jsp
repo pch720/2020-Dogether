@@ -8,11 +8,8 @@
             padding-left: 10% !important;
             padding-right: 10% !important;
         }
-        .GB{
-            width: 150px;
-            height: 150px;
-            background: white !important;
-            border: white !important;
+        .GAH{
+            height: 43.5vh;
         }
     </style>
 
@@ -52,13 +49,13 @@
                 <a class="nav-link" href="#">내 목표</a>
             </li>
             <li class="nav-item">
-            <a class="nav-link" href="#">공지사항</a>
+                <a class="nav-link" href="#">공지사항</a>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     마이메이지
                 </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="#">회원정보 수정</a>
                     <a class="dropdown-item" href="#">그룹 및 목표 확인</a>
                     <a class="dropdown-item" href="/logout.do">로그아웃</a>
@@ -68,29 +65,36 @@
         </ul>
     </div>
 </nav>
-<a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-    Link with href
-</a>
-<div class="collapse" id="collapseExample">
-    <div class="card card-body">
-        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
-    </div>
-</div>
+
 <!-- 내 그룹 -->
-<section class="bg-primary text-white TitlePadding">
+<section class="bg-primary text-white TitlePadding GAH">
     <a class="navbar-brand" style="font-weight: 300;font-size: xx-large;">My Group</a>
     <div class="container">
-        <button type="button" onclick="location.href='#'" class="btn btn-xl GB">asdf</button>
-        <div>asdf</div>
-        </div>
+        <a class="card" style="width: 250px;height: 250px; text-decoration: none" href="#">
+            <img src="/img/bg-masthead.jpg" class="card-img-top" alt="..." style="height: 60%;">
+            <div class="card-body" style="color: black;">
+                <h5 class="card-title">공부하는 스터디 그룹</h5>
+                <p class="card-text">300명</p>
+            </div>
+        </a>
+    </div>
 
 </section>
 <!-- 내 목표 -->
-<footer class="footer text-center" style="background-color: #ecb807;">
+<section class="text-white TitlePadding GAH">
+    <a class="navbar-brand" style="font-weight: 300;font-size: xx-large;">My Group</a>
     <div class="container">
-
+        <div class="card" style="width: 250px;height: 250px;">
+            <img src="/img/bg-masthead.jpg" class="card-img-top" alt="..."style="height: 60%;">
+            <div class="card-body" style="color: black;">
+                <h5 class="card-title">공부하는 스터디 그룹</h5>
+                <p class="card-text">300명과
+                    <a href="#" class="btn btn-primary stretched-link">함께하기</a></p>
+            </div>
+        </div>
     </div>
-</footer>
+
+</section>
 
 <!-- Scroll to Top Button-->
 <a class="scroll-to-top rounded js-scroll-trigger" href="#page-top">
