@@ -2,7 +2,12 @@ let a = 0;
 let b = 0;
 let c = 0;
 let d = 0;
-
+const name = $('#Regname');
+const email = $('#Regemail');
+const pw = $('#Regpw');
+const pwc = $('#Regpwc');
+let emailRule = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+let pwRule = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,15}$/;
 function RC(){
     document.getElementById("Regname").value = '';
     document.getElementById("Regemail").value = '';
@@ -13,10 +18,14 @@ function RC(){
     document.getElementById('Nl').innerHTML = '(0/10)';
     document.getElementById('Pl').innerHTML = '(0/15)';
     document.getElementById('Pcl').innerHTML = '(0/15)';
-    $('#c1').attr('style', 'display:none');
-    $('#c2').attr('style', 'display:none');
-    $('#c3').attr('style', 'display:none');
-    $('#c4').attr('style', 'display:none');
+    name.removeClass("is-invalid");
+    name.removeClass("is-valid");
+    email.removeClass("is-invalid");
+    email.removeClass("is-valid");
+    pw.removeClass("is-invalid");
+    pw.removeClass("is-valid");
+    pwc.removeClass("is-invalid");
+    pwc.removeClass("is-valid");
     $('#nname').attr('style', 'display: none');
     $('#namejb').attr('style', 'display:none');
     $('#nemail').attr('style', 'display: none');
@@ -36,25 +45,19 @@ $('.regclose').click(function () {
         return false;
     }
 });
-const name = $('#Regname');
-const email = $('#Regemail');
-const pw = $('#Regpw');
-const pwc = $('#Regpwc');
-let emailRule = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
-let pwRule = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,15}$/;
-
 function PWC() {
     if (pw.val() != pwc.val()) {
         $('#npwc').attr('style', 'display: block');
-        $('#c4').attr('style', 'display:none');
+        pwc.addClass("is-invalid");
+        pwc.removeClass("is-valid");
         a = 0;
     } else {
         $('#npwc').attr('style', 'display: none');
-        $('#c4').attr('style', 'color:#28a745');
+        pwc.addClass("is-valid");
+        pwc.removeClass("is-invalid");
         a = 1;
     }
 };
-
 function name1() {
     const Nlength = name.val().length;
     document.getElementById('Nl').innerHTML = '(' + Nlength + '/10)';
@@ -66,17 +69,20 @@ function name1() {
             if (data=="1") {
                 $('#nname').attr('style', 'display:none');
                 $('#namejb').attr('style', 'display:block');
-                $('#c1').attr('style', 'display:none');
+                name.addClass("is-invalid");
+                name.removeClass("is-valid");
                 b = 0;
             }else if (name.val() === "") {
                 $('#namejb').attr('style', 'display:none');
                 $('#nname').attr('style', 'display:block');
-                $('#c1').attr('style', 'display:none');
+                name.addClass("is-invalid");
+                name.removeClass("is-valid");
                 b = 0;
             } else {
                 $('#namejb').attr('style', 'display:none');
                 $('#nname').attr('style', 'display:none');
-                $('#c1').attr('style', 'color:#28a745');
+                name.addClass("is-valid");
+                name.removeClass("is-invalid");
                 b = 1;
             }
         }
@@ -92,17 +98,20 @@ function email1() {
             if (data=="1"){
                 $('#eemail').attr('style', 'display:block');
                 $('#nemail').attr('style', 'display:none');
-                $('#c2').attr('style', 'display:none');
+                email.addClass("is-invalid");
+                email.removeClass("is-valid");
                 c = 0;
             }else if (!emailRule.test(email.val())) {
                 $('#eemail').attr('style', 'display:none');
                 $('#nemail').attr('style', 'display:block');
-                $('#c2').attr('style', 'display:none');
+                email.addClass("is-invalid");
+                email.removeClass("is-valid");
                 c = 0;
             } else {
                 $('#eemail').attr('style', 'display:none');
                 $('#nemail').attr('style', 'display:none');
-                $('#c2').attr('style', 'color:#28a745');
+                email.addClass("is-valid");
+                email.removeClass("is-invalid");
                 c = 1;
             }
         }
@@ -115,11 +124,13 @@ function pw1() {
     PWC();
     if (!pwRule.test(pw.val())) {
         $('#npw').attr('style', 'display:block');
-        $('#c3').attr('style', 'display:none');
+        pw.addClass("is-invalid");
+        pw.removeClass("is-valid");
         d = 0;
     } else {
         $('#npw').attr('style', 'display:none');
-        $('#c3').attr('style', 'color:#28a745');
+        pw.addClass("is-valid");
+        pw.removeClass("is-invalid");
         d = 1;
     }
 }

@@ -168,7 +168,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <div>닉네임</div><div id="c1" class="regcheck" style="display: none;"><i id="check1" class="fas fa-check"></i></div>
+                        <div>닉네임</div>
                         <input type="text" class="form-control" id="Regname" placeholder="10자 이내로 입력해주세요."  maxlength="10" onkeyup="return name1()">
                         <div id="Nl" class="Lcount">
                             (0/10)
@@ -182,7 +182,7 @@
                     </div>
 
                     <div class="mb-3">
-                        <div>이메일 주소</div><div id="c2" class="regcheck" style="display: none;"><i id="check2" class="fas fa-check"></i></div>
+                        <div>이메일 주소</div>
                         <input type="text" class="form-control" id="Regemail" placeholder="you@example.com"  onkeyup="return email1()">
                         <div id="nemail" class="PTS">
                             형식에 맞게 이메일주소를 입력해주세요.
@@ -193,7 +193,7 @@
                     </div>
 
                     <div class="mb-3">
-                        <div>비밀번호</div><div id="c3" class="regcheck" style="display: none;"><i id="check3" class="fas fa-check"></i></div>
+                        <div>비밀번호</div>
                         <input type="password" class="form-control" id="Regpw" placeholder="영문, 숫자조합 8-15자로 입력해주세요." maxlength="15" onkeyup="return pw1()">
                         <div id="Pl" class="Lcount">
                             (0/15)
@@ -204,7 +204,7 @@
                     </div>
 
                     <div class="mb-3">
-                        <div>비밀번호 확인</div><div id="c4" class="regcheck" style="display: none;"><i id="check4" class="fas fa-check"></i></div>
+                        <div>비밀번호 확인</div>
                         <input type="password" class="form-control" id="Regpwc" placeholder="비밀번호 확인을 입력해주세요."  maxlength="15" onkeyup="return pwc1()">
                         <div id="Pcl" class="Lcount">
                             (0/15)
