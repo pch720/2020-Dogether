@@ -30,11 +30,6 @@
             width: 49%;
             height: 100px;
         }
-        .regcheck{
-            text-align: end;
-            margin-top: -5%;
-            margin-right: 3%;
-        }
     </style>
 
     <meta charset="utf-8">
@@ -132,7 +127,7 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <div>이메일 주소</div>
-                        <input type="email" class="form-control" id="email" name="email" placeholder="you@example.com" required pattern="[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$">
+                        <input type="email" class="form-control" id="email" name="email" placeholder="you@example.com" required>
                         <div class="invalid-feedback">
                             형식에 맞게 이메일주소를 입력해주세요.
                         </div>

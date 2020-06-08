@@ -1,5 +1,6 @@
 package poly.service;
 
+import poly.dto.GroupDTO;
 import poly.dto.UserDTO;
 
 public interface IUserService {
@@ -10,4 +11,6 @@ public interface IUserService {
     String eCheck(String email) throws Exception;
 
     String nCheck(String name) throws  Exception;
+
+    int MakeGG(GroupDTO gDTO) throws Exception;
 }

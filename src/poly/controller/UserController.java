@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import poly.dto.GroupDTO;
 import poly.dto.UserDTO;
 import poly.service.IUserService;
 import poly.util.CmmUtil;
@@ -112,9 +113,43 @@ public class UserController {
 		model.addAttribute("url",url);
 		return "/redirect";
 	}
+
 	/*기능시작화면*/
 	@RequestMapping(value = "main")
 	public String main() throws Exception {
 		return "/main";
+	}
+
+	/*기능시작화면*/
+	@RequestMapping(value = "MyGroup")
+	public String MyGroup() throws Exception {
+		return "/MyGroup";
+	}
+
+	/*그룹만들기*/
+	@RequestMapping(value = "MakeGroup")
+	public String MakeGroup(HttpServletRequest request, HttpSession session,Model model) throws Exception{
+		String msg,url;
+		String gname = CmmUtil.nvl(request.getParameter("gname"));
+		String greet = CmmUtil.nvl(request.getParameter("greet"));
+		String name = CmmUtil.nvl((String)session.getAttribute("SS_USER_NAME"));
+		GroupDTO gDTO = new GroupDTO();
+		gDTO.setGroupName(gname);
+		gDTO.setGreeting(greet);
+		gDTO.setFunction(0);
+		gDTO.setUserName(name);
+		log.info(gDTO.getFunction()+"/"+gDTO.getGroupName()+"/"+gDTO.getGreeting()+"/"+gDTO.getUserName());
+		int res = userservice.MakeGG(gDTO);
+log.info(res);
+		if (res==1){
+			msg = "새로운 그룹이 생성되었습니다.";
+			url = "MyGroup.do";
+		}else {
+			msg = "그룹이 생성이 실패했습니다.";
+			url = "MyGroup.do";
+		}
+		model.addAttribute("msg",msg);
+		model.addAttribute("url",url);
+		return "/redirect";
 	}
 }

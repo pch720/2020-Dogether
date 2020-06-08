@@ -32,7 +32,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>메인페이지</title>
+    <title>내 그룹</title>
 
     <!-- hover -->
     <link href="/css/hover.css" rel="stylesheet">
@@ -52,7 +52,7 @@
 
 <!-- Navigation -->
 <nav class="TitlePadding navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
-    <a class="navbar-brand" href="#" style="color: #ecb807;font-weight: 700;font-size: -webkit-xxx-large;">Dogether</a>
+    <a class="navbar-brand" href="/main.do" style="color: #ecb807;font-weight: 700;font-size: -webkit-xxx-large;">Dogether</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -60,7 +60,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent" style="justify-content: flex-end;">
         <ul class="navbar-nav mr-2">
             <li class="nav-item">
-                <a class="nav-link" href="/MyGroup.do">내 그룹</a>
+                <a class="nav-link active" href="#">내 그룹</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">내 목표</a>
@@ -84,52 +84,73 @@
 </nav>
 
 <!-- 내 그룹 -->
-<section class="bg-primary text-white TitlePadding GAH">
-    <a class="navbar-brand GA" >Popular Group</a>
-    <div style="display: flex;overflow: hidden;white-space: nowrap;">
-        <% for(int i=0; i<10;i++){%>
-    <figure class="snip1200">
-    <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/331810/sq-sample27.jpg" alt="sq-sample27" />
-    <figcaption>
-        <p>안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요</p>
-        <div class="heading">
-            <h2>Do<span> 토익 공부</span></h2>
-        </div>
-    </figcaption>
-    <a href="#" data-toggle="modal" data-target="#TogetherModal"></a>
-    </figure>
+<section class="bg-primary text-white TitlePadding GAH" style="height: 94.5vh;">
+    <a class="navbar-brand GA" >My Group</a>
+    <div style="display: flex;">
+        <figure class="snip1200">
+            <figcaption>
+                <p>새로운 그룹을 만들고 활동해 보세요.
+                    <br><br><i class="fas fa-plus-circle" style="font-size: xxx-large;"></i></p>
+                <div class="heading">
+                    <h2>그룹<span> 만들기</span></h2>
+                </div>
+            </figcaption>
+            <a href="#" data-toggle="modal" data-target="#MakeModal"></a>
+        </figure>
+        <% for(int i=0; i<4;i++){%>
+        <figure class="snip1200">
+            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/331810/sq-sample27.jpg" alt="sq-sample27" />
+            <figcaption>
+                <p>안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요</p>
+                <div class="heading">
+                    <h2>Do<span> 토익 공부</span></h2>
+                </div>
+            </figcaption>
+            <a href="#"></a>
+        </figure>
         <%}%>
     </div>
-
+    <div style="display: flex;">
+        <% for(int i=4; i<9;i++){%>
+        <figure class="snip1200">
+            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/331810/sq-sample27.jpg" alt="sq-sample27" />
+            <figcaption>
+                <p>안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요</p>
+                <div class="heading">
+                    <h2>Do<span> 토익 공부</span></h2>
+                </div>
+            </figcaption>
+            <a href="#"></a>
+        </figure>
+        <%}%>
+    </div>
 </section>
-<!-- 내 목표 -->
-<section class="text-white TitlePadding GAH" style="background: #EEFF55">
-    <a class="navbar-brand GA">Popular Goal</a>
-        <div class="card" style="width: 250px;height: 250px;">
-            <img src="/img/bg-masthead.jpg" class="card-img-top" alt="..."style="height: 60%;">
-            <div class="card-body" style="color: black;">
-                <h5 class="card-title">공부하는 스터디 그룹</h5>
-                <p class="card-text">300명과
-                    <a href="#" class="btn btn-primary stretched-link">함께하기</a></p>
-            </div>
-        </div>
 
-</section>
-
-<!-- 가입 창 -->
-<div class="modal fade" id="TogetherModal" tabindex="-1" role="dialog" aria-hidden="true">
+<!-- 그룹 만들기 창 -->
+<div class="modal fade" id="MakeModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <form action="#" method="POST" class="needs-validation" novalidate>
+            <form action="/MakeGroup.do" method="POST" class="needs-validation" novalidate>
                 <div class="modal-header">
-                    <h5 class="modal-title">토익 공부</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <h5 class="modal-title" id="exampleModalLabel">그룹 만들기</h5>
+                    <button type="button" id="LC" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <button type="button" class="btn btn-secondary MB" onclick="location.href='#'">함께하기</button>
-                    <button class="btn btn-primary MB" type="submit" >구경하기</button>
+                    <div class="mb-3">
+                        <input type="text" class="form-control" id="Gname" name="gname" placeholder="그룹명을 입력해주세요." required>
+                        <div class="invalid-feedback">
+                            그룹명을 입력해주세요.
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <textarea class="form-control" id="Greet" name="greet" placeholder="그룹에 대한 설명을 자유롭게 작성해주세요.(선택)"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="submit">만들기</button>
                 </div>
             </form>
         </div>

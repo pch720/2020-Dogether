@@ -1,6 +1,7 @@
 package poly.service.impl;
 
 import org.springframework.stereotype.Service;
+import poly.dto.GroupDTO;
 import poly.dto.UserDTO;
 import poly.persistance.mapper.IUserMapper;
 import poly.service.IUserService;
@@ -31,6 +32,11 @@ public class UserService implements IUserService {
     @Override
     public String nCheck(String name) throws Exception {
         return userMapper.nCheck(name);
+    }
+
+    @Override
+    public int MakeGG(GroupDTO gDTO) throws Exception {
+        return userMapper.MakeGG(gDTO);
     }
 
 }
