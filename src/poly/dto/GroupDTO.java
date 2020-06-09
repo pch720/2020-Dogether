@@ -4,7 +4,7 @@ public class GroupDTO {
     private String GroupSeq;
     private String GroupName;
     private String Greeting;
-    private int function;
+    private String function;
     private String userName;
 
     public String getUserName() {
@@ -39,11 +39,11 @@ public class GroupDTO {
         Greeting = greeting;
     }
 
-    public int getFunction() {
+    public String getFunction() {
         return function;
     }
 
-    public void setFunction(int function) {
+    public void setFunction(String function) {
         this.function = function;
     }
 }

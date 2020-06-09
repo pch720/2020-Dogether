@@ -7,7 +7,7 @@ figure.snip1200 {
     font-family: 'Raleway', Arial, sans-serif;
     position: relative;
     overflow: hidden;
-    margin: 10px;
+    margin: 0px;
     min-width: 270px;
     max-width: 310px;
     max-height: 310px;
@@ -112,11 +112,3 @@ figure.snip1200.hover p {
     -webkit-transition-delay: 0.35s;
     transition-delay: 0.35s;
 }
-
-
-
-
-
-
-
-

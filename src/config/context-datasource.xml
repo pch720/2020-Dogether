@@ -27,7 +27,7 @@
           lazy-init="false">
         <property name="driverClassName" value="com.mysql.jdbc.Driver" />
         <!-- localhost -->
-        <property name="url" value="jdbc:mysql://localhost:3306/park?useSSL=false&amp;allowMultiQueries=true&amp;serverTimezone=Asia/Seoul" />
+        <property name="url" value="jdbc:mysql://localhost:3306/park?useSSL=false&amp;allowMultiQueries=true&amp;serverTimezone=Asia/Seoul&amp;characterEncoding=UTF-8" />
         <!-- AWS LINUX Server -->
         <!-- <property name="url" value="jdbc:mysql://13.209.164.26:3306/superdev?useSSL=false&amp;allowMultiQueries=true&amp;serverTimezone=Asia/Seoul" /> -->
         <property name="username" value="root" />

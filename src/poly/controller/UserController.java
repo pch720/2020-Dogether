@@ -120,10 +120,10 @@ public class UserController {
 		return "/main";
 	}
 
-	/*기능시작화면*/
+	/*내 그룹*/
 	@RequestMapping(value = "MyGroup")
 	public String MyGroup() throws Exception {
-		return "/MyGroup";
+		return "GG/MyGroup";
 	}
 
 	/*그룹만들기*/
@@ -132,24 +132,43 @@ public class UserController {
 		String msg,url;
 		String gname = CmmUtil.nvl(request.getParameter("gname"));
 		String greet = CmmUtil.nvl(request.getParameter("greet"));
+		String function = CmmUtil.nvl(request.getParameter("function"));
 		String name = CmmUtil.nvl((String)session.getAttribute("SS_USER_NAME"));
 		GroupDTO gDTO = new GroupDTO();
 		gDTO.setGroupName(gname);
 		gDTO.setGreeting(greet);
-		gDTO.setFunction(0);
+		gDTO.setFunction(function);
 		gDTO.setUserName(name);
 		log.info(gDTO.getFunction()+"/"+gDTO.getGroupName()+"/"+gDTO.getGreeting()+"/"+gDTO.getUserName());
 		int res = userservice.MakeGG(gDTO);
-log.info(res);
-		if (res==1){
-			msg = "새로운 그룹이 생성되었습니다.";
-			url = "MyGroup.do";
-		}else {
-			msg = "그룹이 생성이 실패했습니다.";
-			url = "MyGroup.do";
+		log.info(res);
+		log.info(gDTO);
+		if (gDTO.getFunction().equals("0")) {
+			if (res==1){
+				msg = "새로운 그룹이 생성되었습니다.";
+				url = "MyGroup.do";
+			}else {
+				msg = "그룹 생성이 실패했습니다.";
+				url = "MyGroup.do";
+			}
+		}else{
+			if (res==1){
+				msg = "새로운 목표가 생성되었습니다.";
+				url = "MyGoal.do";
+			}else {
+				msg = "목표 생성이 실패했습니다.";
+				url = "MyGoal.do";
+			}
 		}
+
 		model.addAttribute("msg",msg);
 		model.addAttribute("url",url);
 		return "/redirect";
+	}
+
+	/*내 목표*/
+	@RequestMapping(value = "MyGoal")
+	public String MyGoal() throws Exception {
+		return "GG/MyGoal";
 	}
 }

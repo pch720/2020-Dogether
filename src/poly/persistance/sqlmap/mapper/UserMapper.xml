@@ -52,7 +52,7 @@
 	<!--그룹 및 목표 만들기-->
 	<insert id="MakeGG" parameterType="GroupDTO">
 		INSERT
-		INTO `GROUP`
+		INTO GG
 		(
 			GROUP_NAME,
 			MAKE_DT,
