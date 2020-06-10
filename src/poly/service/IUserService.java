@@ -12,5 +12,4 @@ public interface IUserService {
 
     String nCheck(String name) throws  Exception;
 
-    int MakeGG(GroupDTO gDTO) throws Exception;
 }

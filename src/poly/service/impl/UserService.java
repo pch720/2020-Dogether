@@ -34,9 +34,4 @@ public class UserService implements IUserService {
         return userMapper.nCheck(name);
     }
 
-    @Override
-    public int MakeGG(GroupDTO gDTO) throws Exception {
-        return userMapper.MakeGG(gDTO);
-    }
-
 }

@@ -1,4 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="poly.persistance.mapper.IGroupMapper">
+    <!--그룹 및 목표 만들기-->
+    <insert id="MakeGG" parameterType="GroupDTO">
+		INSERT
+		INTO GG
+		(
+			GROUP_NAME,
+			MAKE_DT,
+			MAKE_ID,
+			GREETING,
+		 	FUNCTION
+		)
+		VALUES
+		(
+			#{groupName},
+			SYSDATE(),
+			#{userName},
+		 	#{greeting},
+			#{function}
+		)
+	</insert>
+    <!--만든 사람을 관리자로 넣어주기-->
+    <insert id="MkGG" parameterType="GroupDTO">
+		INSERT
+		INTO GROUPUSER
+		(
+			USER_NAME,
+			GREG_DT,
+			GROUP_NAME,
+			GAUTH,
+			FUNCTION
+		)
+		VALUES
+		(
+			#{userName},
+			SYSDATE(),
+			#{groupName},
+			'1',
+			#{function}
+		)
+	</insert>
 </mapper>

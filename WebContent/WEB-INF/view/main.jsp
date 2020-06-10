@@ -59,20 +59,20 @@
     <link href="css/stylish-portfolio.min.css" rel="stylesheet">
 </head>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<body id="page-top">
+<body id="page-top" style="height: auto;">
 
 <!-- 네비게이션바 -->
 <%@include file="include/nav.jsp"%>
 
 <!-- 내 그룹 -->
-<section class="bg-primary text-white TitlePadding GAH">
+<section class="bg-primary text-white TitlePadding GAH" style="margin-top: 98px;">
     <a class="navbar-brand GA" >Popular Group</a>
     <div style="display: flex;"class="PG">
         <ul class="a">
         <% for(int i=0; i<10;i++){%>
             <li>
             <figure class="snip1200">
-    <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/331810/sq-sample27.jpg" alt="sq-sample27" />
+    <img src="../../img/bg-masthead.jpeg" style="width: 300px;height: 300px;" alt="sq-sample27" />
     <figcaption>
         <p>클릭 후 자세한 내용을 확인하세요.</p>
         <div class="heading">
@@ -120,9 +120,10 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <h5 style="text-align: center;font-size: 100%;font-weight: 400;">토익 공부를 하기위해 만들어진 그룹입니다.</h5>
-                    <button type="button" class="btn btn-secondary MB" onclick="location.href='#'">함께하기</button>
-                    <button class="btn btn-primary MB" type="submit" >구경하기</button>
+                    <div style="text-align: center;">
+                    <h5 style="font-size: 100%;font-weight: 400;">토익 공부를 하기위해 만들어진 그룹입니다.</h5>
+                    <button type="button" class="btn btn-secondary MB" onclick="return Greg()">10명과 함께하기</button>
+                    </div>
                 </div>
             </form>
         </div>
@@ -181,7 +182,13 @@
         }
 
     });
-
+function Greg() {
+    const res = confirm("그룹에 가입하시겠습니까?")
+    if(res) {
+        alert("가입되셨습니다.")
+    }else
+        alert("가입이 취소되었습니다.")
+}
 
 </script>
 </body>

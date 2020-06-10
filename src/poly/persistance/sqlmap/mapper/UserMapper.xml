@@ -49,24 +49,4 @@
 		FROM USER
 		WHERE USER_EMAIL = #{userEmail} AND PASSWORD = #{passWord}
 	</select>
-	<!--그룹 및 목표 만들기-->
-	<insert id="MakeGG" parameterType="GroupDTO">
-		INSERT
-		INTO GG
-		(
-			GROUP_NAME,
-			MAKE_DT,
-			MAKE_ID,
-			GREETING,
-		 	FUNCTION
-		)
-		VALUES
-		(
-			#{groupName},
-			SYSDATE(),
-			#{userName},
-		 	#{greeting},
-			#{function}
-		)
-	</insert>
 </mapper>

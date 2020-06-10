@@ -48,13 +48,13 @@
     <link href="css/stylish-portfolio.min.css" rel="stylesheet">
 </head>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<body id="page-top">
+<body class="bg-primary" style="height: auto">
 
 <!-- 네비게이션바 -->
 <%@include file="../include/nav.jsp"%>
 
-<!-- 내 그룹 -->
-<section class="bg-primary text-white TitlePadding GAH" style="height: 94.5vh;">
+<!-- 내 목표 -->
+<section class="text-white TitlePadding GAH" style="margin-top: 98px;">
     <a class="navbar-brand GA" >My Goal</a>
     <div style="display: flex;">
         <figure class="snip1200" style="margin: 5px;">
