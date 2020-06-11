@@ -6,6 +6,7 @@ import poly.persistance.mapper.IGroupMapper;
 import poly.service.IGroupService;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service("GroupService")
 public class GroupService implements IGroupService
@@ -21,5 +22,25 @@ public class GroupService implements IGroupService
     @Override
     public int MkGG(GroupDTO gDTO) throws Exception {
         return groupMapper.MkGG(gDTO);
+    }
+
+    @Override
+    public List<GroupDTO> getgg(GroupDTO gDTO) throws Exception {
+        return groupMapper.getgg(gDTO);
+    }
+
+    @Override
+    public String GnCheck(String gname) throws Exception {
+        return groupMapper.GnCheck(gname);
+    }
+
+    @Override
+    public int Delgu(GroupDTO gDTO) throws Exception {
+        return groupMapper.Delgu(gDTO);
+    }
+
+    @Override
+    public String already(GroupDTO gDTO) throws Exception {
+        return groupMapper.already(gDTO);
     }
 }

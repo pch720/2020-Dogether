@@ -1,6 +1,13 @@
+<%@ page import="poly.dto.GroupDTO" %>
+<%@ page import="java.util.List" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+<%
+    List<GroupDTO> grList = (List<GroupDTO>)request.getAttribute("grList");
+    List<GroupDTO> goList = (List<GroupDTO>)request.getAttribute("goList");
+    String SS_name = (String)session.getAttribute("SS_USER_NAME");
+%>
 <html lang="en">
 <head>
 
@@ -18,7 +25,10 @@
             font-size: xx-large !important;
             margin-bottom: 1%;
             margin-top: 0.5%;
-        }
+        }.MB{
+             width: 100% !important;
+             height: auto !important;
+         }
         div.PG ul {
             display: block;
             white-space: nowrap;
@@ -69,38 +79,46 @@
     <a class="navbar-brand GA" >Popular Group</a>
     <div style="display: flex;"class="PG">
         <ul class="a">
-        <% for(int i=0; i<10;i++){%>
+        <% for(int i=0; i<grList.size();i++){%>
             <li>
             <figure class="snip1200">
     <img src="../../img/bg-masthead.jpeg" style="width: 300px;height: 300px;" alt="sq-sample27" />
     <figcaption>
         <p>클릭 후 자세한 내용을 확인하세요.</p>
         <div class="heading">
-            <h2>Do<span> 토익 공부</span></h2>
+            <%if(grList.get(i).getGroupName().length()<6){%>
+            <h2>Do<span><%=grList.get(i).getGroupName()%></span></h2>
+            <%}else{%>
+            <h2>Do<span><%=grList.get(i).getGroupName().substring(0,5)%>...</span></h2>
+            <%}%>
         </div>
     </figcaption>
-    <a href="#" data-toggle="modal" data-target="#TogetherModal"></a>
+    <a href="#" data-toggle="modal" data-target="#grModal<%=i%>"></a>
     </figure>
             </li>
         <%}%>
         </ul>
     </div>
 </section>
-<section class="text-white TitlePadding GAH" style="background: #EEFF55">
+<section class="bg-warning text-white TitlePadding GAH">
     <a class="navbar-brand GA">Popular Goal</a>
     <div style="display: flex;"class="PG">
         <ul class="a">
-            <% for(int i=0; i<10;i++){%>
+            <% for(int i=0; i<goList.size();i++){%>
             <li>
                 <figure class="snip1200">
                     <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/331810/sq-sample27.jpg" alt="sq-sample27" />
                     <figcaption>
                         <p>클릭 후 자세한 내용을 확인하세요.</p>
                             <div class="heading">
-                            <h2>Do<span> 토익 공부</span></h2>
+                                <%if(goList.get(i).getGroupName().length()<6){%>
+                                <h2>Do<span><%=goList.get(i).getGroupName()%></span></h2>
+                                <%}else{%>
+                                <h2>Do<span><%=goList.get(i).getGroupName().substring(0,5)%>...</span></h2>
+                                <%}%>
                         </div>
                     </figcaption>
-                    <a href="#" data-toggle="modal" data-target="#TogetherModal"></a>
+                    <a href="#" data-toggle="modal" data-target="#goModal<%=i%>"></a>
                 </figure>
             </li>
             <%}%>
@@ -108,28 +126,66 @@
     </div>
 </section>
 
-<!-- 가입 창 -->
-<div class="modal fade" id="TogetherModal" tabindex="-1" role="dialog" aria-hidden="true">
+<!-- 그룹 가입 창 -->
+<% for(int i=0; i<grList.size();i++){%>
+<div class="modal fade" id="grModal<%=i%>" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <form action="#" method="POST" class="needs-validation" novalidate>
+            <form action="/join.do" method="POST" class="needs-validation" onsubmit="return Greg()" novalidate>
                 <div class="modal-header">
-                    <h5 class="modal-title">토익 공부</h5>
+                    <h5 class="modal-title"><%=grList.get(i).getGroupName()%></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <div style="text-align: center;">
-                    <h5 style="font-size: 100%;font-weight: 400;">토익 공부를 하기위해 만들어진 그룹입니다.</h5>
-                    <button type="button" class="btn btn-secondary MB" onclick="return Greg()">10명과 함께하기</button>
+                        <%if(grList.get(i).getGreeting().equals("")){%>
+                        <h5 style="font-size: 100%;font-weight: 400;">따로 입력된 그룹의 설명이 없습니다.</h5>
+                        <%}else{%>
+                        <h5 style="font-size: 100%;font-weight: 400;"><%=grList.get(i).getGreeting()%></h5>
+                        <%}%>
+                    <button type="submit" class="btn btn-secondary MB"><%=grList.get(i).getCount()%>명과 함께하기</button>
                     </div>
                 </div>
+                <input type="hidden" name="function" value="0">
+                <input type="hidden" name="name" value="<%=SS_name%>">
+                <input type="hidden" name="group" value="<%=grList.get(i).getGroupName()%>">
             </form>
         </div>
     </div>
 </div>
-
+<%}%>
+<!-- 목표 가입 창 -->
+<% for(int i=0; i<goList.size();i++){%>
+<div class="modal fade" id="goModal<%=i%>" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form action="/join.do" method="POST" class="needs-validation" onsubmit="return Greg()" novalidate>
+                <div class="modal-header">
+                    <h5 class="modal-title"><%=goList.get(i).getGroupName()%></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div style="text-align: center;">
+                        <%if(goList.get(i).getGreeting().equals("")){%>
+                        <h5 style="font-size: 100%;font-weight: 400;">따로 입력된 그룹의 설명이 없습니다.</h5>
+                        <%}else{%>
+                        <h5 style="font-size: 100%;font-weight: 400;"><%=goList.get(i).getGreeting()%></h5>
+                        <%}%>
+                        <button type="submit" class="btn btn-secondary MB"><%=goList.get(i).getCount()%>명과 함께하기</button>
+                    </div>
+                </div>
+                <input type="hidden" name="function" value="1">
+                <input type="hidden" name="name" value="<%=SS_name%>">
+                <input type="hidden" name="group" value="<%=goList.get(i).getGroupName()%>">
+            </form>
+        </div>
+    </div>
+</div>
+<%}%>
 <!-- Bootstrap core JavaScript -->
 <script src="vendor/jquery/jquery.min.js"></script>
 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -139,7 +195,6 @@
 
 <!-- Custom scripts for this template -->
 <script src="js/stylish-portfolio.min.js"></script>
-<script src="js/index.js"></script>
 <script>
     let diff = 0;
     let ticking = false;
@@ -184,10 +239,8 @@
     });
 function Greg() {
     const res = confirm("그룹에 가입하시겠습니까?")
-    if(res) {
-        alert("가입되셨습니다.")
-    }else
-        alert("가입이 취소되었습니다.")
+    if(!res)
+        return false;
 }
 
 </script>

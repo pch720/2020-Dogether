@@ -7,6 +7,7 @@ import poly.persistance.mapper.IUserMapper;
 import poly.service.IUserService;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service("UserService")
 public class UserService implements IUserService {
@@ -32,6 +33,11 @@ public class UserService implements IUserService {
     @Override
     public String nCheck(String name) throws Exception {
         return userMapper.nCheck(name);
+    }
+
+    @Override
+    public List<GroupDTO> getGG(String function) throws Exception {
+        return userMapper.getGG(function);
     }
 
 }

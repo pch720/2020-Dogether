@@ -49,4 +49,16 @@
 		FROM USER
 		WHERE USER_EMAIL = #{userEmail} AND PASSWORD = #{passWord}
 	</select>
+	<!--그룹 및 목표의 정보 가져오기-->
+	<select id="getGG" parameterType="String" resultType="GroupDTO">
+		SELECT
+			GROUP_SEQ as GroupSeq,
+			GROUP_NAME as GroupName,
+			GREETING as Greeting,
+			FUNCTION as function,
+			COUNT as count
+		FROM GG
+		WHERE FUNCTION = #{function}
+		ORDER BY COUNT DESC
+	</select>
 </mapper>

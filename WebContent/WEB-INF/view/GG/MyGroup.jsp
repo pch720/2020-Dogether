@@ -1,6 +1,12 @@
+<%@ page import="java.util.List" %>
+<%@ page import="poly.dto.GroupDTO" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+<%
+    List<GroupDTO> gList = (List<GroupDTO>)request.getAttribute("gList");
+    String SS_name = (String)session.getAttribute("SS_USER_NAME");
+%>
 <html lang="en">
 <head>
 
@@ -18,15 +24,21 @@
             margin-bottom: 1%;
             margin-top: 0.5%;
         }
+        .PTS{
+            width: 100%;
+            margin-top: .25rem;
+            font-size: 80%;
+            color: #dc3545;
+            display: none;
+        }
+        .Lcount{
+            text-align: end;
+            font-size: small;
+            margin-bottom: -3%;
+            margin-right: 2%;
+        }
     </style>
 
-    <script>
-        $(".hover").mouseleave(
-            function () {
-                $(this).removeClass("hover");
-            }
-        );
-    </script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
@@ -67,16 +79,24 @@
             </figcaption>
             <a href="#" data-toggle="modal" data-target="#MakeModal"></a>
         </figure>
-        <% for(int i=0; i<4;i++){%>
+        <% for(int i=0; i<gList.size();i++){%>
         <figure class="snip1200" style="margin: 5px;">
             <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/331810/sq-sample27.jpg" alt="sq-sample27" />
             <figcaption>
-                <p>안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요</p>
+                <%if(gList.get(i).getGreeting().equals("")){%>
+                <p>따로 입력된 <br>그룹의 설명이 없습니다.</p>
+                <%}else{%>
+                <p><%=gList.get(i).getGreeting()%></p>
+                <%}%>
                 <div class="heading">
-                    <h2>Do<span> 토익 공부</span></h2>
+                    <%if(gList.get(i).getGroupName().length()<6){%>
+                    <h2>Do<span><%=gList.get(i).getGroupName()%></span></h2>
+                    <%}else{%>
+                    <h2>Do<span><%=gList.get(i).getGroupName().substring(0,5)%>...</span></h2>
+                    <%}%>
                 </div>
             </figcaption>
-            <a href="#"></a>
+            <a href="#" data-toggle="modal" data-target="#G<%=i%>"></a>
         </figure>
         <%}%>
     </div>
@@ -95,12 +115,34 @@
         <%}%>
     </div>
 </section>
-
-<!-- 그룹 만들기 창 -->
-<div class="modal fade" id="MakeModal" tabindex="-1" role="dialog" aria-hidden="true">
+<!-- 그룹 들어가기 및 그룹 탈퇴 창 -->
+<% for(int i=0; i<gList.size();i++){%>
+<div class="modal fade" id="G<%=i%>" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <form action="/MakeGroup.do" method="POST" class="needs-validation" novalidate>
+            <form action="/Delgu.do" method="POST" class="needs-validation" onsubmit="return Del()" novalidate>
+                <div class="modal-header">
+                    <h5 class="modal-title"><%=gList.get(i).getGroupName()%></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <input type="hidden" name="Gname" value="<%=gList.get(i).getGroupName()%>">
+                <input type="hidden" name="user" value="<%=SS_name%>">
+                <div class="modal-body">
+                    <button type="button" class="btn btn-primary MB" onclick="location.href='Group.do'">그룹으로 가기</button>
+                    <button class="btn btn-danger MB" type="submit" >그룹에서 나가기</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<%}%>
+<!-- 그룹 만들기 창 -->
+<div class="modal fade" id="MakeModal" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form id="make" action="/MakeGroup.do" method="POST" class="needs-validation" novalidate>
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">그룹 만들기</h5>
                     <button type="button" id="LC" class="close" data-dismiss="modal" aria-label="Close">
@@ -109,9 +151,16 @@
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <input type="text" class="form-control" id="Gname" name="gname" placeholder="그룹명을 입력해주세요." required>
-                        <div class="invalid-feedback">
+                        <input type="text" class="form-control" id="Gname" name="gname" placeholder="그룹명을 입력해주세요." maxlength="20">
+                        <input hidden="hidden" />
+                        <div id="Gl" class="Lcount">
+                            (0/20)
+                        </div>
+                        <div id="nGname" class="PTS">
                             그룹명을 입력해주세요.
+                        </div>
+                        <div id="jbGname" class="PTS">
+                            이미 사용중인 그룹명입니다.
                         </div>
                     </div>
                         <input type="hidden" value="0" name="function">
@@ -120,13 +169,76 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" type="submit">만들기</button>
+                    <button class="btn btn-secondary" id="MG" type="button">만들기</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
-
+<script>
+    function Del() {
+        const res = confirm("탈퇴 하시겠습니까?")
+        if (!res)
+            return false;
+    }
+    const Gname = $('#Gname');
+    let a=0;
+    function m(){
+        $.ajax({
+            url : "/Gncheck.do",
+            type : 'POST',
+            data : {"Gname":Gname.val()},
+            success: function (data) {
+                if (data=="1"){
+                    $('#jbGname').attr('style','display:block');
+                    $('#nGname').attr('style','display:none');
+                    Gname.removeClass("is-valid");
+                    Gname.addClass("is-invalid");
+                    a=0;
+                }else{
+                    if (Gname.val().length<1){
+                        $('#jbGname').attr('style','display:none');
+                        $('#nGname').attr('style','display:block');
+                        Gname.removeClass("is-valid");
+                        Gname.addClass("is-invalid");
+                        a=0;
+                    }else{
+                        $('#nGname').attr('style','display:none');
+                        $('#jbGname').attr('style','display:none');
+                        Gname.removeClass("is-invalid");
+                        Gname.addClass("is-valid");
+                        a=1;
+                    }
+                }
+            }
+        });
+    }
+    $('#LC').click(function () {
+        const res=confirm("그룹 만들기 창을 닫으시면 입력하신 정보가 초기화됩니다.\n정말 닫으시겠습니까?")
+        if(res){
+            document.getElementById('Gname').value = '';
+            document.getElementById('Greet').value = '';
+            Gname.removeClass("is-valid");
+            Gname.removeClass("is-invalid");
+            $('#jbGname').attr('style','display:none');
+            $('#nGname').attr('style','display:none');
+            document.getElementById('Gl').innerHTML = '(0/20)';
+        }else
+            return false;
+    });
+    Gname.keyup(function () {
+        const Glength = Gname.val().length;
+        document.getElementById('Gl').innerHTML = '(' + Glength + '/20)';
+        m();
+    });
+    $('#MG').click(function () {
+        m();
+        if(a===0)
+            return false;
+        else
+            $('#make').submit();
+            })
+</script>
 <!-- Bootstrap core JavaScript -->
 <script src="vendor/jquery/jquery.min.js"></script>
 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -136,7 +248,6 @@
 
 <!-- Custom scripts for this template -->
 <script src="js/stylish-portfolio.min.js"></script>
-<script src="js/index.js"></script>
 </body>
 <script src="../assets/dist/js/bootstrap.bundle.js"></script>
 <script src="js/form-validation.js"></script></body>

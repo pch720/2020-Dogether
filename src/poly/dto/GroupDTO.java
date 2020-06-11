@@ -6,6 +6,24 @@ public class GroupDTO {
     private String Greeting;
     private String function;
     private String userName;
+    private String count;
+    private String auth;
+
+    public String getAuth() {
+        return auth;
+    }
+
+    public void setAuth(String auth) {
+        this.auth = auth;
+    }
+
+    public String getCount() {
+        return count;
+    }
+
+    public void setCount(String count) {
+        this.count = count;
+    }
 
     public String getUserName() {
         return userName;

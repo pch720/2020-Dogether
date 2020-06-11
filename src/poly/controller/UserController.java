@@ -11,9 +11,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import poly.dto.GroupDTO;
 import poly.dto.UserDTO;
 import poly.service.IUserService;
 import poly.util.CmmUtil;
+
+import java.util.List;
 
 @Controller
 public class UserController {
@@ -115,7 +118,17 @@ public class UserController {
 
 	/*기능시작화면*/
 	@RequestMapping(value = "main")
-	public String main() throws Exception {
+	public String main(Model model) throws Exception {
+		List<GroupDTO> grList,goList;
+		String function = "0";
+		grList=userservice.getGG(function);
+		function = "1";
+		goList=userservice.getGG(function);
+		log.info(goList.get(0).getCount());
+		log.info(grList.get(0).getCount());
+
+		model.addAttribute("grList",grList);
+		model.addAttribute("goList",goList);
 		return "/main";
 	}
 }

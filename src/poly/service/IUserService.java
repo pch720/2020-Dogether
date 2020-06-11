@@ -3,6 +3,8 @@ package poly.service;
 import poly.dto.GroupDTO;
 import poly.dto.UserDTO;
 
+import java.util.List;
+
 public interface IUserService {
     int Reg(UserDTO uDTO) throws Exception;
 
@@ -12,4 +14,5 @@ public interface IUserService {
 
     String nCheck(String name) throws  Exception;
 
+    List<GroupDTO> getGG(String function) throws Exception;
 }

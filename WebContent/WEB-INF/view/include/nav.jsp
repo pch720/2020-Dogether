@@ -24,7 +24,6 @@
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="#">회원정보 수정</a>
-                    <a class="dropdown-item" href="#">그룹 및 목표 확인</a>
                     <a class="dropdown-item" href="/logout.do">로그아웃</a>
                     <a class="dropdown-item" href="#">회원탈퇴</a>
                 </div>
