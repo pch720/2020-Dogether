@@ -1,6 +1,10 @@
+<%@ page import="poly.dto.GroupDTO" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+<%
+    GroupDTO gDTO = (GroupDTO) request.getAttribute("gDTO");
+%>
 <html lang="en">
 <head>
 
@@ -52,7 +56,7 @@
     <div class="floatMenu Menu1">
         <div class="modal-content">
                 <div class="modal-header" style="justify-content: center;">
-                    <h5 class="modal-title">토익공부(10명)</h5>
+                    <h5 class="modal-title"><%=gDTO.getGroupName()%>(<%=gDTO.getCount()%>명)</h5>
                 </div>
                 <div class="modal-footer" style="justify-content: center;">
                     <button class="btn btn-secondary" type="button">현재 진행 상황 확인</button>
@@ -102,7 +106,7 @@
             <hr>
             <div id="content" style="margin:0 auto;width:40%;margin-top:3%;margin-bottom:2%;">aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</div>
             <hr>
-            <button id="li" value="0"class="btn btn-outline-danger" style="margin-bottom: 5px;border-radius: 20px;"><i class="fas fa-heart"> 좋아요</i></button>
+            <button id="li" value="0"class="btn btn-outline-danger" style="margin-bottom: 5px;border-radius: 20px;"><i id="ke" class="far fa-heart"> 좋아요</i></button>
             <button class="btn btn-outline-info" style="margin-bottom: 5px;border-radius: 20px;">댓글 달기</button>
         </div>
     </div><%}%>
@@ -146,11 +150,13 @@
     });
     $('#li').click(function () {
         if ($('#li').val() === "0"){
-            $('#li').attr('class', 'btn btn-danger')
-            $('#li').attr('value', '1')
+            $('#ke').removeClass('far');
+            $('#ke').addClass('fas');
+            $('#li').attr('value', '1');
         }
         else {
-            $('#li').attr('class', 'btn btn-outline-danger')
+            $('#ke').removeClass('fas');
+            $('#ke').addClass('far');
             $('#li').attr('value', '0')
         }
     })

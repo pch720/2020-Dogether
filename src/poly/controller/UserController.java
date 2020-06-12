@@ -16,6 +16,7 @@ import poly.dto.UserDTO;
 import poly.service.IUserService;
 import poly.util.CmmUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -119,14 +120,18 @@ public class UserController {
 	/*기능시작화면*/
 	@RequestMapping(value = "main")
 	public String main(Model model) throws Exception {
-		List<GroupDTO> grList,goList;
+		List<GroupDTO> grList = new ArrayList<>();
+		List<GroupDTO> goList = new ArrayList<>();
 		String function = "0";
 		grList=userservice.getGG(function);
 		function = "1";
 		goList=userservice.getGG(function);
-		log.info(goList.get(0).getCount());
-		log.info(grList.get(0).getCount());
-
+		if(grList==null){
+			grList = new ArrayList<GroupDTO>();
+		}
+		if(goList==null){
+			goList = new ArrayList<GroupDTO>();
+		}
 		model.addAttribute("grList",grList);
 		model.addAttribute("goList",goList);
 		return "/main";

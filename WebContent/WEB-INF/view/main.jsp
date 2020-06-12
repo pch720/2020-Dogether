@@ -29,23 +29,6 @@
              width: 100% !important;
              height: auto !important;
          }
-        div.PG ul {
-            display: block;
-            white-space: nowrap;
-            height: 300px;
-            overflow-y: hidden;
-            overflow-x: hidden;
-            padding: 0;
-            font-size: 0;
-        }
-
-        div.PG li {
-            box-sizing: border-box;
-            height: 300px;
-            width: 300px;
-            display: inline-block;
-            margin-right: 5px;
-        }
     </style>
 
     <meta charset="utf-8">
@@ -74,12 +57,13 @@
 <!-- 네비게이션바 -->
 <%@include file="include/nav.jsp"%>
 
-<!-- 내 그룹 -->
+<!-- 인기그룹 -->
 <section class="bg-primary text-white TitlePadding GAH" style="margin-top: 98px;">
     <a class="navbar-brand GA" >Popular Group</a>
     <div style="display: flex;"class="PG">
         <ul class="a">
-        <% for(int i=0; i<grList.size();i++){%>
+        <% if (!grList.equals(null)){
+            for(int i=0; i<grList.size();i++){%>
             <li>
             <figure class="snip1200">
     <img src="../../img/bg-masthead.jpeg" style="width: 300px;height: 300px;" alt="sq-sample27" />
@@ -96,18 +80,22 @@
     <a href="#" data-toggle="modal" data-target="#grModal<%=i%>"></a>
     </figure>
             </li>
-        <%}%>
+        <%}}else{%>
+            아직 그룹이 없습니다.
+            <%}%>
         </ul>
     </div>
 </section>
+<%--인기목표--%>
 <section class="bg-warning text-white TitlePadding GAH">
     <a class="navbar-brand GA">Popular Goal</a>
     <div style="display: flex;"class="PG">
         <ul class="a">
-            <% for(int i=0; i<goList.size();i++){%>
+            <% if (!goList.equals("")){
+                for(int i=0; i<goList.size();i++){%>
             <li>
                 <figure class="snip1200">
-                    <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/331810/sq-sample27.jpg" alt="sq-sample27" />
+                    <img src="/img/black.jpg" alt="sq-sample27" />
                     <figcaption>
                         <p>클릭 후 자세한 내용을 확인하세요.</p>
                             <div class="heading">
@@ -121,6 +109,8 @@
                     <a href="#" data-toggle="modal" data-target="#goModal<%=i%>"></a>
                 </figure>
             </li>
+            <%}}else{%>
+            아직 목표가 없습니다.
             <%}%>
         </ul>
     </div>
@@ -195,56 +185,15 @@
 
 <!-- Custom scripts for this template -->
 <script src="js/stylish-portfolio.min.js"></script>
+<script src="/js/scroll.js"></script>
 <script>
-    let diff = 0;
-    let ticking = false;
-
-    const wheelEvent = 'onwheel' in document.createElement("div") ? 'wheel' : 'mousewheel';
-
-    const list = document.querySelector('.a');
-
-    function doSomething(diff) {
-        list.scrollLeft += (diff);
-    }
-
-    list.addEventListener('wheel', function(e) {
-        diff = e.deltaY;
-        if (!ticking) {
-            window.requestAnimationFrame(function() {
-                doSomething(diff);
-                ticking = false;
-            });
-        }
-        ticking = true;
-    }, { passive: true });
-
-    $(".a").on('mousewheel',function(e){
-
-        var wheelDelta = e.originalEvent.wheelDelta;
-
-        if(wheelDelta > 0){
-
-            console.log("up");
-
-            $(this).scrollLeft(-wheelDelta + $(this).scrollLeft());
-
-        }else{
-
-            console.log("down");
-
-            $(this).scrollLeft(-wheelDelta + $(this).scrollLeft());
-
-        }
-
-    });
 function Greg() {
     const res = confirm("그룹에 가입하시겠습니까?")
     if(!res)
         return false;
 }
-
 </script>
 </body>
 <script src="../assets/dist/js/bootstrap.bundle.js"></script>
-<script src="js/form-validation.js"></script></body>
+<script src="js/form-validation.js"></script>
 </html>

@@ -14,6 +14,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -30,9 +31,12 @@ public class GroupController {
         gDTO.setUserName(name);
         gDTO.setFunction("0");
 
-        List<GroupDTO> gList;
+        List<GroupDTO> gList = new ArrayList<>();
 
         gList=groupservice.getgg(gDTO);
+        if(gList==null){
+            gList = new ArrayList<GroupDTO>();
+        }
         model.addAttribute("gList",gList);
         return "GG/MyGroup";
     }
@@ -96,9 +100,12 @@ public class GroupController {
         gDTO.setUserName(name);
         gDTO.setFunction("1");
 
-        List<GroupDTO> gList;
+        List<GroupDTO> gList = new ArrayList<>();
 
         gList=groupservice.getgg(gDTO);
+        if(gList==null){
+            gList = new ArrayList<GroupDTO>();
+        }
         model.addAttribute("gList",gList);
         return "GG/MyGoal";
     }
@@ -126,7 +133,13 @@ public class GroupController {
     }
     /*그룹 시작 화면*/
     @RequestMapping(value = "Group")
-    public String Group() throws Exception {
+    public String Group(HttpServletRequest request,Model model) throws Exception {
+        String seq = request.getParameter("seq");
+        log.info(seq);
+        GroupDTO gDTO = new GroupDTO();
+        gDTO = groupservice.getGroupInfo(seq);
+        log.info(gDTO.getGroupName());
+        model.addAttribute("gDTO",gDTO);
         return "/GG/Group";
     }
 
@@ -142,6 +155,7 @@ public class GroupController {
         gDTO.setUserName(name);
         gDTO.setFunction(function);
         gDTO.setAuth("0");
+        log.info(name+"////"+group);
         /*이미 함께 하고 있는지 확인*/
         String result = groupservice.already(gDTO);
         log.info(result);

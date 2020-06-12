@@ -19,4 +19,6 @@ public interface IGroupMapper {
     int Delgu(GroupDTO gDTO) throws Exception;
 
     String already(GroupDTO gDTO) throws Exception;
+
+    GroupDTO getGroupInfo(String seq) throws Exception;
 }

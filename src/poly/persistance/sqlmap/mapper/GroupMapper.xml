@@ -84,4 +84,15 @@
 			AND
 			USER_NAME=#{userName}
 	</select>
+	<!--그룹 및 목표의 정보 가져오기-->
+	<select id="getGroupInfo" resultType="GroupDTO">
+		SELECT
+		GROUP_SEQ as GroupSeq,
+		GROUP_NAME as GroupName,
+		GREETING as Greeting,
+		FUNCTION as function,
+		count as count
+		FROM GG
+		WHERE GROUP_SEQ = #{GroupSeq}
+	</select>
 </mapper>

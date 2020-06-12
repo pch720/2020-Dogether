@@ -112,3 +112,20 @@ figure.snip1200.hover p {
     -webkit-transition-delay: 0.35s;
     transition-delay: 0.35s;
 }
+div.PG ul {
+    display: block;
+    white-space: nowrap;
+    height: 300px;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    padding: 0;
+    font-size: 0;
+}
+
+div.PG li {
+    box-sizing: border-box;
+    height: 300px;
+    width: 300px;
+    display: inline-block;
+    margin-right: 5px;
+}

@@ -16,4 +16,6 @@ public interface IGroupService {
     int Delgu(GroupDTO gDTO) throws Exception;
 
     String already(GroupDTO gDTO) throws Exception;
+
+    GroupDTO getGroupInfo(String seq) throws Exception;
 }

@@ -5,6 +5,11 @@
 <!DOCTYPE html>
 <%
     List<GroupDTO> gList = (List<GroupDTO>)request.getAttribute("gList");
+    int size = gList.size();
+    int a=size/2;
+    if (size<10)
+        a=4;
+
     String SS_name = (String)session.getAttribute("SS_USER_NAME");
 %>
 <html lang="en">
@@ -68,51 +73,70 @@
 <!-- 내 목표 -->
 <section class="text-white TitlePadding GAH" style="margin-top: 98px;">
     <a class="navbar-brand GA" >My Goal</a>
-    <div style="display: flex;">
-        <figure class="snip1200" style="margin: 5px;">
-            <figcaption>
-                <p>새로운 목표를 만들고 활동해 보세요.
-                    <br><br><i class="fas fa-plus-circle" style="font-size: xxx-large;"></i></p>
-                <div class="heading">
-                    <h2>목표<span> 만들기</span></h2>
-                </div>
-            </figcaption>
-            <a href="#" data-toggle="modal" data-target="#MakeModal"></a>
-        </figure>
-        <% for(int i=0; i<gList.size();i++){%>
-        <figure class="snip1200" style="margin: 5px;">
-            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/331810/sq-sample27.jpg" alt="sq-sample27" />
-            <figcaption>
-                <%if(gList.get(i).getGreeting().equals("")){%>
-                <p>따로 입력된 <br>그룹의 설명이 없습니다.</p>
-                <%}else{%>
-                <p><%=gList.get(i).getGreeting()%></p>
-                <%}%>
-                <div class="heading">
-                    <%if(gList.get(i).getGroupName().length()<6){%>
-                    <h2>Do<span><%=gList.get(i).getGroupName()%></span></h2>
+    <div style="display: flex;" class="PG">
+    <ul class="a">
+        <li>
+            <figure class="snip1200">
+                <img src="/img/black.jpg" alt="sq-sample27" />
+                <figcaption>
+                    <p>새로운 목표를 만들고 활동해 보세요.
+                        <br><br><i class="fas fa-plus-circle" style="font-size: xxx-large;"></i></p>
+                    <div class="heading">
+                        <h2>목표<span> 만들기</span></h2>
+                    </div>
+                </figcaption>
+                <a href="#" data-toggle="modal" data-target="#MakeModal"></a>
+            </figure>
+        </li>
+        <% for(int i=0; i<a;i++){%>
+        <li>
+            <figure class="snip1200">
+                <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/331810/sq-sample27.jpg" alt="sq-sample27" />
+                <figcaption>
+                    <%if(gList.get(i).getGreeting().equals("")){%>
+                    <p>따로 입력된 <br>그룹의 설명이 없습니다.</p>
                     <%}else{%>
-                    <h2>Do<span><%=gList.get(i).getGroupName().substring(0,5)%>...</span></h2>
+                    <p><%=gList.get(i).getGreeting()%></p>
                     <%}%>
-                </div>
-            </figcaption>
-            <a href="#" data-toggle="modal" data-target="#G<%=i%>"></a>
-        </figure>
+                    <div class="heading">
+                        <%if(gList.get(i).getGroupName().length()<6){%>
+                        <h2>Do<span><%=gList.get(i).getGroupName()%></span></h2>
+                        <%}else{%>
+                        <h2>Do<span><%=gList.get(i).getGroupName().substring(0,5)%>...</span></h2>
+                        <%}%>
+                    </div>
+                </figcaption>
+                <a href="#" data-toggle="modal" data-target="#G<%=i%>"></a>
+            </figure>
+        </li>
         <%}%>
-    </div>
-    <div style="display: flex;">
-        <% for(int i=4; i<9;i++){%>
-        <figure class="snip1200" style="margin: 5px;">
-            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/331810/sq-sample27.jpg" alt="sq-sample27" />
-            <figcaption>
-                <p>안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요</p>
-                <div class="heading">
-                    <h2>Do<span> 토익 공부</span></h2>
-                </div>
-            </figcaption>
-            <a href="#"></a>
-        </figure>
-        <%}%>
+    </ul>
+</div>
+    <div style="display: flex;" class="PG">
+        <ul class="a">
+            <% for(int i=a; i<size;i++){%>
+            <li>
+                <figure class="snip1200">
+                    <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/331810/sq-sample27.jpg" alt="sq-sample27" />
+                    <figcaption>
+                        <%if(gList.get(i).getGreeting().equals("")){%>
+                        <p>따로 입력된 <br>그룹의 설명이 없습니다.</p>
+                        <%}else{%>
+                        <p><%=gList.get(i).getGreeting()%></p>
+                        <%}%>
+                        <div class="heading">
+                            <%if(gList.get(i).getGroupName().length()<6){%>
+                            <h2>Do<span><%=gList.get(i).getGroupName()%></span></h2>
+                            <%}else{%>
+                            <h2>Do<span><%=gList.get(i).getGroupName().substring(0,5)%>...</span></h2>
+                            <%}%>
+                        </div>
+                    </figcaption>
+                    <a href="#" data-toggle="modal" data-target="#G<%=i%>"></a>
+                </figure>
+            </li>
+            <%}%>
+        </ul>
     </div>
 </section>
 <!-- 목표 들어가기 및 목표 탈퇴 창 -->
@@ -248,6 +272,7 @@
 
 <!-- Custom scripts for this template -->
 <script src="js/stylish-portfolio.min.js"></script>
+<script src="/js/scroll.js"></script>
 </body>
 <script src="../assets/dist/js/bootstrap.bundle.js"></script>
 <script src="js/form-validation.js"></script></body>

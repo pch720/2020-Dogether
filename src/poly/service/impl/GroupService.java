@@ -43,4 +43,9 @@ public class GroupService implements IGroupService
     public String already(GroupDTO gDTO) throws Exception {
         return groupMapper.already(gDTO);
     }
+
+    @Override
+    public GroupDTO getGroupInfo(String seq) throws Exception {
+        return groupMapper.getGroupInfo(seq);
+    }
 }
