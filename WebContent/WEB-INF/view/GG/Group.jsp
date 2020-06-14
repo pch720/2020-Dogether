@@ -25,6 +25,35 @@
              right: 5%;
              top: 10px;
          }
+
+        /* front pane, placed above back */
+        .front{
+            transform: rotateY(0deg);
+        }
+        /* back, initially hidden pane */
+        .back {
+            transform: rotateY(180deg);
+        }
+        /* flip the pane when hovered */
+        .flip-container.hover .flipper {
+            transform: rotateY(180deg);
+        }
+        .flip-container, .front, .back {
+            width: 250px;
+            height: 250px;
+        }
+        /* flip speed goes here */
+        .flipper {
+            transition: 0.5s;
+            /* 하위요소에 3D 좌표값 지정 */
+            transform-style: preserve-3d;
+            position: relative;
+        }
+        /* hide back of pane during swap */
+        .front, .back{
+            position: absolute;
+            backface-visibility:hidden;
+        }
     </style>
 
     <meta charset="utf-8">
@@ -63,8 +92,48 @@
                 </div>
         </div>
     </div>
-<%--떠다니는 메뉴2--%>
 <div class="floatMenu Menu2">
+    <!--떠다니는 해야될 일-->
+    <div class="flip-container" ontouchstart="this.classList.toggle('hover');">
+        <div class="flipper">
+            <!-- front content -->
+            <div class="modal-content front" style="position: absolute!important;">
+                <div class="modal-header" style="justify-content: center;">
+                    <h5 class="modal-title">할 일</h5>
+                    <i id="add" class="fas fa-plus-circle" style="align-self: center; margin-left: 5px; font-size: x-large;"></i>
+                </div>
+                <form>
+                    <div class="modal-body" style="display: block;overflow: scroll; height: 120px;">
+                       <%for (int i= 0; i<10; i++){%>
+                        <div class="custom-control custom-checkbox mr-sm-2">
+                            <input type="checkbox" class="custom-control-input" id="do<%=i%>">
+                            <label class="custom-control-label" for="do<%=i%>">이 닦기</label>
+                        </div>
+                        <%}%>
+                    </div>
+                    <div class="modal-footer" style="justify-content: center;">
+                        <button class="btn btn-secondary" id="" type="button">한 일로 변경</button>
+                    </div>
+                </form>
+            </div>
+            <!-- 할 일 추가 -->
+            <div class="modal-content back">
+                <div class="modal-header" style="justify-content: center;">
+                    <h5 class="modal-title">할 일 추가</h5>
+                </div>
+                <div class="modal-footer">
+                    <form style="text-align: center;">
+                        <label>
+                            <textarea cols="100" rows="4" class="form-control"></textarea>
+                        </label>
+                        <button class="btn btn-primary" type="button"id="add1">할일보기</button>
+                        <button class="btn btn-secondary" type="button">추가하기</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <%--떠다니는 메모장--%>
     <div class="modal-content">
         <div class="modal-header" style="justify-content: center;">
             <h5 class="modal-title">메모장</h5>
@@ -160,6 +229,11 @@
             $('#li').attr('value', '0')
         }
     })
+    /*클릭시 할일한일 뒤집기*/
+    $('#add1,#add').click(function() {
+        $(this).closest('.flip-container').toggleClass('hover');
+        $(this).css('transform, rotateY(180deg)');
+    });
 </script>
 </body>
 <script src="../assets/dist/js/bootstrap.bundle.js"></script>

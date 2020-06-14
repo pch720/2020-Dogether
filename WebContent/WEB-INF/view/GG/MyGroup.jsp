@@ -7,7 +7,9 @@
     List<GroupDTO> gList = (List<GroupDTO>)request.getAttribute("gList");
     int size = gList.size();
     int a=size/2;
-    if (size<10)
+    if (a<4)
+        a=size;
+    else if (size<10)
         a=4;
 
     String SS_name = (String)session.getAttribute("SS_USER_NAME");
