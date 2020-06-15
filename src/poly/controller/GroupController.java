@@ -6,7 +6,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import poly.dto.BoardDTO;
 import poly.dto.GroupDTO;
+import poly.service.IBoardService;
 import poly.service.IGroupService;
 import poly.util.CmmUtil;
 
@@ -23,6 +25,9 @@ public class GroupController {
 
     @Resource(name= "GroupService")
     private IGroupService groupservice;
+
+    @Resource(name = "BoardService")
+    private IBoardService boardservice;
     /*내 그룹*/
     @RequestMapping(value = "MyGroup")
     public String MyGroup(HttpSession session, Model model) throws Exception {
@@ -139,6 +144,25 @@ public class GroupController {
         GroupDTO gDTO = new GroupDTO();
         gDTO = groupservice.getGroupInfo(seq);
         log.info(gDTO.getGroupName());
+        List<BoardDTO> bList = new ArrayList<>();
+        bList=boardservice.getnotice(seq);
+        log.info(bList.get(0).getContents());
+        int a=0,b=0;
+        List<BoardDTO> bnList = new ArrayList<>();
+        List<BoardDTO> bwList = new ArrayList<>();
+        for (BoardDTO boardDTO : bList) {
+            if (boardDTO.getNotice().equals("1"))
+                bnList.add(a++, boardDTO);
+            else
+                bwList.add(b++, boardDTO);
+        }
+        if(bnList==null)
+            bnList = new ArrayList<BoardDTO>();
+
+        if(bwList==null)
+            bwList = new ArrayList<BoardDTO>();
+        model.addAttribute("bnList",bnList);
+        model.addAttribute("bwList",bwList);
         model.addAttribute("gDTO",gDTO);
         return "/GG/Group";
     }

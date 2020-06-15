@@ -66,6 +66,7 @@
 		AND GU.FUNCTION = #{function}
 		)
 	</select>
+	<!--그룹 및 목표 삭제-->
 	<delete id="Delgu" parameterType="GroupDTO">
 		DELETE
 		 FROM GROUPUSER
@@ -95,4 +96,15 @@
 		FROM GG
 		WHERE GROUP_SEQ = #{GroupSeq}
 	</select>
+	<!--그룹 및 목표와 유저의 연결 번호가져오기-->
+	<select id="gg" parameterType="GroupDTO" resultType="String">
+		SELECT
+		GU_SEQ
+		FROM GROUPUSER
+		WHERE
+			GROUP_NAME=#{GroupName}
+			AND
+			USER_NAME=#{userName}
+	</select>
+
 </mapper>

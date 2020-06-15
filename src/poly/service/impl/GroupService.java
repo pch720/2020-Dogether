@@ -48,4 +48,9 @@ public class GroupService implements IGroupService
     public GroupDTO getGroupInfo(String seq) throws Exception {
         return groupMapper.getGroupInfo(seq);
     }
+
+    @Override
+    public String gg(GroupDTO gDTO) throws Exception {
+        return groupMapper.gg(gDTO);
+    }
 }

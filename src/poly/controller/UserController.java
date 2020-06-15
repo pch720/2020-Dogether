@@ -91,6 +91,7 @@ public class UserController {
 		log.info(uDTO);
 		if (uDTO != null){
 			session.setAttribute("SS_USER_NAME",uDTO.getUserName());
+			session.setAttribute("SS_USER_SEQ",uDTO.getUserSeq());
 			msg = "로그인 되었습니다.";
 			url = "index.do";
 			log.info(" session : " + session);

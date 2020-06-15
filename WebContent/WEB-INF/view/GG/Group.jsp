@@ -1,9 +1,13 @@
 <%@ page import="poly.dto.GroupDTO" %>
+<%@ page import="java.util.List" %>
+<%@ page import="poly.dto.BoardDTO" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%
     GroupDTO gDTO = (GroupDTO) request.getAttribute("gDTO");
+    List<BoardDTO> bnList = (List<BoardDTO>) request.getAttribute("bnList");
+    List<BoardDTO> bwList = (List<BoardDTO>) request.getAttribute("bwList");
 %>
 <html lang="en">
 <head>
@@ -104,15 +108,16 @@
                 </div>
                 <form>
                     <div class="modal-body" style="display: block;overflow: scroll; height: 120px;">
-                       <%for (int i= 0; i<10; i++){%>
+                       <%for (int i= 0; i<bwList.size(); i++){%>
                         <div class="custom-control custom-checkbox mr-sm-2">
-                            <input type="checkbox" class="custom-control-input" id="do<%=i%>">
-                            <label class="custom-control-label" for="do<%=i%>">이 닦기</label>
+                            <input type="checkbox" class="custom-control-input" value="<%=bwList.get(i).getBoardSeq()%>" id="do<%=i%>">
+                            <label class="custom-control-label" for="do<%=i%>"><%=bwList.get(i).getContents()%></label>
                         </div>
                         <%}%>
                     </div>
                     <div class="modal-footer" style="justify-content: center;">
-                        <button class="btn btn-secondary" id="" type="button">한 일로 변경</button>
+                        <button class="btn btn-secondary" type="button">한 일로 변경</button>
+                        <button class="btn btn-danger" id="del" type="button">삭제</button>
                     </div>
                 </form>
             </div>
@@ -124,10 +129,11 @@
                 <div class="modal-footer">
                     <form style="text-align: center;">
                         <label>
-                            <textarea cols="100" rows="4" class="form-control"></textarea>
+                            <textarea cols="100" rows="4" class="form-control" id="contents"></textarea>
                         </label>
-                        <button class="btn btn-primary" type="button"id="add1">할일보기</button>
-                        <button class="btn btn-secondary" type="button">추가하기</button>
+                            <input type="hidden" name="notice" value="2">
+                        <button class="btn btn-primary" type="button" id="add1">할일보기</button>
+                        <button class="btn btn-secondary" type="button" id="add2">추가하기</button>
                     </form>
                 </div>
             </div>
@@ -228,14 +234,66 @@
             $('#ke').addClass('far');
             $('#li').attr('value', '0')
         }
-    })
+    });
     /*클릭시 할일한일 뒤집기*/
     $('#add1,#add').click(function() {
         $(this).closest('.flip-container').toggleClass('hover');
         $(this).css('transform, rotateY(180deg)');
     });
+    /*할일추가*/
+    $('#add2').click(function () {
+        if ($("#contents").val()===""){
+            alert("할 일을 입력해주세요.");
+            return false;
+        }
+        else {
+            $.ajax({
+                url: "/writework.do",
+                type: "POST",
+                data: {
+                    "contents": $("#contents").val(),
+                    "seq": <%=gDTO.getGroupSeq()%>,
+                    "group": '<%=gDTO.getGroupName()%>'
+                },
+                success: function (data) {
+                    if (data === 1)
+                        alert("할일이 추가되었습니다.");
+                        window.location.reload(true);
+                }
+            })
+        }
+    });
+    /*할일삭제*/
+    $('#del').click(function () {
+        let arr=[];
+        let checked=0;
+        for (let i=0;i<<%=bwList.size()%>;i++){
+            if ($('#do'+i).prop("checked")){
+                arr[checked]=$('#do'+i).val();
+                checked++;
+            }
+        }
+        console.log(arr);
+        if (arr.length<1)
+            alert("삭제할 항목을 선택해주세요.");
+        else{
+            $.ajax({
+                url: "/delwork.do",
+                type: "POST",
+                data:{
+                    "seq" : arr
+                },
+                success: function (data) {
+                    console.log(data);
+                    if (data===1)
+                        alert("할일이 삭제되었습니다.");
+                        window.location.reload(true);
+                }
+            })
+        }
+    })
 </script>
 </body>
 <script src="../assets/dist/js/bootstrap.bundle.js"></script>
-<script src="js/form-validation.js"></script></body>
+<script src="js/form-validation.js"></script>
 </html>

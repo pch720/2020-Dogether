@@ -21,4 +21,6 @@ public interface IGroupMapper {
     String already(GroupDTO gDTO) throws Exception;
 
     GroupDTO getGroupInfo(String seq) throws Exception;
+
+    String gg(GroupDTO gDTO) throws Exception;
 }
