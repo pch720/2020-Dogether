@@ -53,4 +53,15 @@ public class GroupService implements IGroupService
     public String gg(GroupDTO gDTO) throws Exception {
         return groupMapper.gg(gDTO);
     }
+
+    @Override
+    public int chcount(GroupDTO gDTO) throws Exception {
+        return groupMapper.chcount(gDTO);
+    }
+
+    @Override
+    public List<GroupDTO> users(String gname) throws Exception {
+        return groupMapper.users(gname);
+    }
+
 }

@@ -23,4 +23,9 @@ public class BoardService implements IBoardService {
     public List<BoardDTO> getnotice(String seq) throws Exception {
         return boardMapper.getnotice(seq);
     }
+
+    @Override
+    public int delwork(BoardDTO bDTO) throws Exception {
+        return boardMapper.delwork(bDTO);
+    }
 }

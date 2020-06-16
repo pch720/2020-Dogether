@@ -2,7 +2,6 @@ package poly.controller;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -53,8 +52,16 @@ public class BoardController {
         String seq = request.getParameter("seq");
         BoardDTO bDTO = new BoardDTO();
         log.info(seq);
-
-        return 0;
+        String[] seqs = seq.split(",");
+        int res=0;
+        for (String s : seqs) {
+            log.info(s);
+            bDTO.setBoardSeq(s);
+            res = boardservice.delwork(bDTO);
+            if (res == 0)
+                break;
+        }
+        return res;
     }
 
 }

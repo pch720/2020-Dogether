@@ -27,7 +27,7 @@
 			#{userName},
 		 	#{greeting},
 			#{function},
-			'1'
+			#{count}
 		)
 	</insert>
     <!--만든 사람을 관리자로 넣어주기-->
@@ -56,7 +56,8 @@
 		GG.GROUP_SEQ as GroupSeq,
 		GG.GROUP_NAME as GroupName,
 		GG.GREETING as Greeting,
-		GG.FUNCTION as function
+		GG.FUNCTION as function,
+		GG.count as `count`
 		FROM GG AS GG
 		WHERE GG.GROUP_NAME IN(
 		SELECT
@@ -106,5 +107,21 @@
 			AND
 			USER_NAME=#{userName}
 	</select>
-
+	<!--회원수 변경-->
+	<update id="chcount" parameterType="GroupDTO">
+		UPDATE
+			GG
+		SET
+			COUNT = #{count}
+		WHERE
+			GROUP_NAME = #{GroupName}
+	</update>
+	<!--회원이름 가져오기-->
+	<select id="users" parameterType="String" resultType="GroupDTO">
+		SELECT
+		USER_NAME as userName,
+		GU_SEQ as GU
+		FROM GROUPUSER
+		WHERE GROUP_NAME = #{gname}
+	</select>
 </mapper>

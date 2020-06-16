@@ -7,7 +7,11 @@
 <%
     GroupDTO gDTO = (GroupDTO) request.getAttribute("gDTO");
     List<BoardDTO> bnList = (List<BoardDTO>) request.getAttribute("bnList");
+    int Nsize = bnList.size();
     List<BoardDTO> bwList = (List<BoardDTO>) request.getAttribute("bwList");
+    int Wsize = bwList.size();
+    List<GroupDTO> user = (List<GroupDTO>)request.getAttribute("user");
+    String SS_name =(String)session.getAttribute("SS_USER_NAME");
 %>
 <html lang="en">
 <head>
@@ -29,7 +33,10 @@
              right: 5%;
              top: 10px;
          }
-
+        .Menu3 {
+            width: 220px;
+            height: 300px;
+        }
         /* front pane, placed above back */
         .front{
             transform: rotateY(0deg);
@@ -44,7 +51,7 @@
         }
         .flip-container, .front, .back {
             width: 250px;
-            height: 250px;
+            height: 260px;
         }
         /* flip speed goes here */
         .flipper {
@@ -57,6 +64,9 @@
         .front, .back{
             position: absolute;
             backface-visibility:hidden;
+        }
+        section{
+            text-align: -webkit-center;
         }
     </style>
 
@@ -80,23 +90,40 @@
     <!-- Custom CSS -->
     <link href="css/stylish-portfolio.min.css" rel="stylesheet">
 </head>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<body id="page-top" style="background-color: deepskyblue;">
+<!-- jQuery load -->
+<script
+        src="https://code.jquery.com/jquery-3.5.0.js"
+        integrity="sha256-r/AaFHrszJtwpe+tHyNi/XCfMxYpbsRg2Uqn0x3s2zc="
+        crossorigin="anonymous"
+></script>
+<!-- In header -->
+<link rel="stylesheet" href="/css/progress/jquery.lineProgressbar.css" type="text/css"/>
+<body id="page-top" style="background-color: deepskyblue;height: auto;">
 
 <!-- 네비게이션바 -->
 <%@include file="../include/nav.jsp"%>
-<%--떠다니는 메뉴1--%>
-    <div class="floatMenu Menu1">
+    <div class="floatMenu Menu1" style="z-index: 100;">
+        <%--떠다니는 이름--%>
         <div class="modal-content">
+                <div class="modal-body" style="text-align: center;">
+                    <button id="MyCal" class="btn btn-primary" type="button">나의 진행 상황 확인</button>
+                    <button class="btn btn-secondary" type="button">그룹 진행 상황 확인</button>
+                </div>
+        </div>
+            <%--떠다니는 그룹원--%>
+            <div class="modal-content Menu3">
                 <div class="modal-header" style="justify-content: center;">
                     <h5 class="modal-title"><%=gDTO.getGroupName()%>(<%=gDTO.getCount()%>명)</h5>
                 </div>
-                <div class="modal-footer" style="justify-content: center;">
-                    <button class="btn btn-secondary" type="button">현재 진행 상황 확인</button>
+                <div class="modal-body" style="text-align: center;">
+                    <%for (GroupDTO groupDTO : user) {
+                            if (!groupDTO.getUserName().equals(SS_name)) {%>
+                    <div><%=groupDTO.getUserName()%></div>
+                    <%}}%>
                 </div>
-        </div>
+            </div>
     </div>
-<div class="floatMenu Menu2">
+<div class="floatMenu Menu2" style="z-index: 100;">
     <!--떠다니는 해야될 일-->
     <div class="flip-container" ontouchstart="this.classList.toggle('hover');">
         <div class="flipper">
@@ -108,10 +135,10 @@
                 </div>
                 <form>
                     <div class="modal-body" style="display: block;overflow: scroll; height: 120px;">
-                       <%for (int i= 0; i<bwList.size(); i++){%>
+                       <%for (int i= 0; i<Wsize; i++){%>
                         <div class="custom-control custom-checkbox mr-sm-2">
                             <input type="checkbox" class="custom-control-input" value="<%=bwList.get(i).getBoardSeq()%>" id="do<%=i%>">
-                            <label class="custom-control-label" for="do<%=i%>"><%=bwList.get(i).getContents()%></label>
+                            <label style="word-break: break-all;" class="custom-control-label" for="do<%=i%>"><%=bwList.get(i).getContents()%></label>
                         </div>
                         <%}%>
                     </div>
@@ -153,12 +180,12 @@
     </div>
 </div>
 
-<!-- 그룹컨텐츠 -->
-<section style="text-align: -webkit-center">
-    <<a href="#" class="modal-content" style="margin-top: 100px; width: 56%; height: 150px; min-width: 650px;text-decoration: none;color: black;">
+<!-- 그룹 게시판 -->
+<section id="board">
+    <a href="#" class="modal-content" style="margin-top: 130px; width: 56%; height: 150px; min-width: 650px;text-decoration: none;color: black;">
     내용을 입력해 주세요.
     </a>
-    <%for(int i=0;i<10;i++){%>
+    <%for(int i=0;i<Nsize;i++){%>
     <div class="modal-content" style="margin-top: 10px; width: 56%; min-width: 650px;">
         <div>
             <div style="text-align:right;">
@@ -175,16 +202,30 @@
             </div>
             <hr>
             <div>
-                <div style="width:48%;display:inline-block;text-align:left;"><a style="color:gray;">작성자 : </a>유동현</div>
-                <div style="width:48%;display:inline-block;text-align:right;"><a style="color:gray;">작성일 : </a>2020-02-02</div>
+                <div style="width:48%;display:inline-block;text-align:left;"><a style="color:gray;">작성자 : </a><%=bnList.get(i).getUserName()%></div>
+                <div style="width:48%;display:inline-block;text-align:right;"><a style="color:gray;">작성일 : </a><%=bnList.get(i).getRegDate()%></div>
             </div>
             <hr>
-            <div id="content" style="margin:0 auto;width:40%;margin-top:3%;margin-bottom:2%;">aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</div>
+            <div id="content" style="margin:0 auto;width:40%;margin-top:3%;margin-bottom:2%;"><%=bnList.get(i).getContents()%></div>
             <hr>
             <button id="li" value="0"class="btn btn-outline-danger" style="margin-bottom: 5px;border-radius: 20px;"><i id="ke" class="far fa-heart"> 좋아요</i></button>
             <button class="btn btn-outline-info" style="margin-bottom: 5px;border-radius: 20px;">댓글 달기</button>
         </div>
     </div><%}%>
+</section>
+<!-- 그룹 달력 -->
+<section id="calendar" style="display: none;">
+    <a href="#" class="modal-content" style="margin-top: 130px; width: 56%; height: 150px; min-width: 650px;text-decoration: none;color: black;">
+        <div id="progressbar"></div>
+        <script>
+            $("#progressbar").LineProgressbar({
+                percentage: 85,
+                fillBackgroundColor: ("#" + Math.round(Math.random() * 0xffffff).toString(16)),
+                radius: '15px'
+            });
+        </script>
+        좌라란
+    </a>
 </section>
 <!-- Scroll to Top Button-->
 <a class="scroll-to-top rounded js-scroll-trigger" href="#page-top">
@@ -265,35 +306,44 @@
     });
     /*할일삭제*/
     $('#del').click(function () {
-        let arr=[];
+        let seq=[];
         let checked=0;
         for (let i=0;i<<%=bwList.size()%>;i++){
             if ($('#do'+i).prop("checked")){
-                arr[checked]=$('#do'+i).val();
+                seq[checked]=$('#do'+i).val();
                 checked++;
             }
         }
-        console.log(arr);
-        if (arr.length<1)
+        console.log(seq.join(","))
+
+        if (seq.length<1)
             alert("삭제할 항목을 선택해주세요.");
         else{
             $.ajax({
                 url: "/delwork.do",
                 type: "POST",
                 data:{
-                    "seq" : arr
+                    "seq" : seq.join(",")
                 },
                 success: function (data) {
-                    console.log(data);
-                    if (data===1)
+                    console.log(data)
+                    if (data===1) {
                         alert("할일이 삭제되었습니다.");
                         window.location.reload(true);
+                    }
                 }
             })
         }
+    });
+    /*나의 진행 상황 확인*/
+    $('#MyCal').click(function () {
+        $('#board').attr('style','display:none;');
+        $('#calendar').attr('style','display:block;');
     })
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.js"></script>
 </body>
+<script src="/js/progress/jquery.lineProgressbar.js"></script>
 <script src="../assets/dist/js/bootstrap.bundle.js"></script>
 <script src="js/form-validation.js"></script>
 </html>

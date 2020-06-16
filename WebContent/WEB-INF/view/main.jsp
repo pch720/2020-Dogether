@@ -139,6 +139,7 @@
                     </div>
                 </div>
                 <input type="hidden" name="function" value="0">
+                <input type="hidden" name="count" value="<%=grList.get(i).getCount()%>">
                 <input type="hidden" name="name" value="<%=SS_name%>">
                 <input type="hidden" name="group" value="<%=grList.get(i).getGroupName()%>">
             </form>
@@ -169,6 +170,7 @@
                     </div>
                 </div>
                 <input type="hidden" name="function" value="1">
+                <input type="hidden" name="count" value="<%=goList.get(i).getCount()%>">
                 <input type="hidden" name="name" value="<%=SS_name%>">
                 <input type="hidden" name="group" value="<%=goList.get(i).getGroupName()%>">
             </form>

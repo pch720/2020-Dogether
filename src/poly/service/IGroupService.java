@@ -20,4 +20,8 @@ public interface IGroupService {
     GroupDTO getGroupInfo(String seq) throws Exception;
 
     String gg(GroupDTO gDTO) throws Exception;
+
+    int chcount(GroupDTO gDTO) throws Exception;
+
+    List<GroupDTO> users(String gname)throws Exception;
 }

@@ -38,4 +38,10 @@
             FROM BOARD
             WHERE GG_SEQ = #{seq}
     </select>
+    <delete id="delwork" parameterType="BoardDTO">
+        DELETE
+        FROM BOARD
+        WHERE
+        BOARD_SEQ = #{BoardSeq}
+    </delete>
 </mapper>

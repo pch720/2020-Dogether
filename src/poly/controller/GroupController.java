@@ -69,6 +69,7 @@ public class GroupController {
         gDTO.setFunction(function);
         gDTO.setUserName(name);
         gDTO.setAuth("1");
+        gDTO.setCount("1");
         log.info(gDTO.getFunction()+"/"+gDTO.getGroupName()+"/"+gDTO.getGreeting()+"/"+gDTO.getUserName());
         /*그룹을만들고*/
         int res = groupservice.MakeGG(gDTO);
@@ -119,6 +120,7 @@ public class GroupController {
     public String Delgu(HttpServletRequest request,Model model) throws Exception {
         String name=CmmUtil.nvl(request.getParameter("user"));
         String Gname = CmmUtil.nvl(request.getParameter("Gname"));
+        String count = CmmUtil.nvl(request.getParameter("count"));
         String url,msg;
         String referer = CmmUtil.nvl(request.getHeader("Referer"));
         log.info(name+"/"+Gname);
@@ -126,8 +128,14 @@ public class GroupController {
         gDTO.setUserName(name);
         gDTO.setGroupName(Gname);
 
+        int c = Integer.parseInt(count) - 1;
+        log.info(count+"/"+c);
+        count = Integer.toString(c);
+        log.info(count);
+        gDTO.setCount(count);
+        int res1 = groupservice.chcount(gDTO);
         int res = groupservice.Delgu(gDTO);
-        if(res==1)
+        if(res==1 && res1==1)
            msg="탈퇴 되었습니다.";
         else
             msg="탈퇴에 실패하였습니다.";
@@ -143,10 +151,21 @@ public class GroupController {
         log.info(seq);
         GroupDTO gDTO = new GroupDTO();
         gDTO = groupservice.getGroupInfo(seq);
-        log.info(gDTO.getGroupName());
+        String gname = gDTO.getGroupName();
+        List<GroupDTO> user = groupservice.users(gname);
+        if(user==null){
+            log.info("값없음");
+            user = new ArrayList<>();
+        }else {
+            log.info("user : "+user.get(0).getUserName());
+        }
+        model.addAttribute("user",user);
+
         List<BoardDTO> bList = new ArrayList<>();
         bList=boardservice.getnotice(seq);
-        log.info(bList.get(0).getContents());
+        if (bList==null)
+            bList = new ArrayList<BoardDTO>();
+        log.info(bList.size());
         int a=0,b=0;
         List<BoardDTO> bnList = new ArrayList<>();
         List<BoardDTO> bwList = new ArrayList<>();
@@ -174,6 +193,8 @@ public class GroupController {
         String name = CmmUtil.nvl(request.getParameter("name"));
         String group = CmmUtil.nvl(request.getParameter("group"));
         String function = CmmUtil.nvl(request.getParameter("function"));
+        String count = CmmUtil.nvl(request.getParameter("count"));
+        log.info(count);
         GroupDTO gDTO = new GroupDTO() ;
         gDTO.setGroupName(group);
         gDTO.setUserName(name);
@@ -185,9 +206,15 @@ public class GroupController {
         log.info(result);
         if(result.equals("0")){
             /*함께하기*/
+            int c = Integer.parseInt(count) + 1;
+            log.info(count+"/"+c);
+            count = Integer.toString(c);
+            log.info(count);
+            gDTO.setCount(count);
+            int res1 = groupservice.chcount(gDTO);
             int res = groupservice.MkGG(gDTO);
             log.info(res);
-            if (res == 1)
+            if (res == 1 &&res1 == 1)
                 msg = group + "에서 함께하게 되었습니다.";
             else
                 msg = "가입에 실패하였습니다.";

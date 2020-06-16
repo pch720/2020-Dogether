@@ -152,6 +152,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
+                <input type="hidden" name="count" value="<%=gList.get(i).getCount()%>">
                 <input type="hidden" name="Gname" value="<%=gList.get(i).getGroupName()%>">
                 <input type="hidden" name="user" value="<%=SS_name%>">
                 <div class="modal-body">
