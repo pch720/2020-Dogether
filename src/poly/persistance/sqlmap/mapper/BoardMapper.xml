@@ -12,7 +12,9 @@
             BREG_DT,
             `LIKE`,
             NOTICE,
-            GG_SEQ
+            GG_SEQ,
+            FIN_DT,
+            ST_DT
         )
         VALUES
         (
@@ -22,7 +24,9 @@
             SYSDATE(),
             '0',
             #{Notice},
-            #{GGseq}
+            #{GGseq},
+            #{FinDt},
+            #{StDt}
         )
     </insert>
     <select id="getnotice" parameterType="String" resultType="BoardDTO">
@@ -34,7 +38,9 @@
             `LIKE` AS `Like`,
             NOTICE AS Notice,
             UP_DT AS `UpDate`,
-            UP_ID AS UpId
+            UP_ID AS UpId,
+            FIN_DT AS FinDt,
+            ST_DT AS StDt
             FROM BOARD
             WHERE GG_SEQ = #{seq}
     </select>
@@ -44,4 +50,12 @@
         WHERE
         BOARD_SEQ = #{BoardSeq}
     </delete>
+    <update id="finwork" parameterType="BoardDTO">
+        UPDATE
+            BOARD
+        SET
+            NOTICE = '3'
+        WHERE
+        BOARD_SEQ = #{BoardSeq}
+    </update>
 </mapper>

@@ -11,6 +11,24 @@ public class BoardDTO {
     private String Like;
     private String Notice;
     private String GGseq;
+    private String StDt;
+    private String FinDt;
+
+    public String getStDt() {
+        return StDt;
+    }
+
+    public void setStDt(String stDt) {
+        StDt = stDt;
+    }
+
+    public String getFinDt() {
+        return FinDt;
+    }
+
+    public void setFinDt(String finDt) {
+        FinDt = finDt;
+    }
 
     public String getGGseq() {
         return GGseq;

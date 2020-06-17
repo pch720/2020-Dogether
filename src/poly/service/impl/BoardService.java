@@ -28,4 +28,9 @@ public class BoardService implements IBoardService {
     public int delwork(BoardDTO bDTO) throws Exception {
         return boardMapper.delwork(bDTO);
     }
+
+    @Override
+    public int finwork(BoardDTO bDTO) throws Exception {
+        return boardMapper.finwork(bDTO);
+    }
 }

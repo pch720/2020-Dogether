@@ -10,4 +10,6 @@ public interface IBoardService {
     List<BoardDTO> getnotice(String seq) throws Exception;
 
     int delwork(BoardDTO bDTO) throws Exception;
+
+    int finwork(BoardDTO bDTO) throws Exception;
 }
