@@ -1,15 +1,18 @@
 <%@ page import="poly.dto.GroupDTO" %>
 <%@ page import="java.util.List" %>
 <%@ page import="poly.dto.BoardDTO" %>
+<%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="java.util.Date" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%
+    SimpleDateFormat format1 = new SimpleDateFormat ( "yyyy-MM-dd");
+    Date time = new Date();
+    //String time1 = format1.format(time);
     GroupDTO gDTO = (GroupDTO) request.getAttribute("gDTO");
     List<BoardDTO> bfList = (List<BoardDTO>) request.getAttribute("bfList");
     int Fsize = bfList.size();
-    List<BoardDTO> bnList = (List<BoardDTO>) request.getAttribute("bnList");
-    int Nsize = bnList.size();
     List<BoardDTO> bwList = (List<BoardDTO>) request.getAttribute("bwList");
     int Wsize = bwList.size();
     List<GroupDTO> user = (List<GroupDTO>)request.getAttribute("user");
@@ -18,7 +21,7 @@
     if (Wsize==0&&Fsize==0)
         pst=0;
     else
-        pst=Fsize/(Wsize+Fsize);
+        pst=Fsize*100/(Wsize+Fsize);
 %>
 <html>
 <head>
@@ -33,54 +36,86 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const calendarEl = document.getElementById('calendar');
-
+            let today = new Date();
             const calendar = new FullCalendar.Calendar(calendarEl, {
                 plugins: ['interaction', 'dayGrid', 'timeGrid'],
                 header: {
-                    left: 'prev,next today',
+                    left: 'today prev',
                     center: 'title',
-                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                    right : 'next today'
                 },
-                defaultDate: '2020-06-12',
-                navLinks: true, // can click day/week names to navigate views
+                defaultDate: today,
+                navLinks: false, // can click day/week names to navigate views
                 selectable: true,
                 selectMirror: true,
                 select: function (arg) {
                     function x(data) {
                         let res=data.getFullYear();
                         let month = data.getMonth()*1+1;
-                        return res+"-"+month+"-"+data.getDate();
+                        if(month<10){
+                            res += "-0" + month;
+                        }else{
+                            res += "-" + month;
+                        }
+                        if(data.getDate()<10){
+                            res += "-0" +data.getDate();
+                        }else{
+                            res += "-" +data.getDate();
+                        }
+                        return res;
                     }
                     const start = x(arg.start);
                     const end = x(arg.end);
+                    today = x(today);
                     const title = prompt('추가하실 일에 내용을 적어주세요.');
                     if (title) {
-                        /*calendar.addEvent({
-                            title: title,
-                            start: start,
-                            end: end,
-                            allDay: arg.allDay
-                        });*/
                         add3(title,start,end);
                     }
+                    window.location.reload(true);
                     calendar.unselect()
                 },
-                editable: true,
+                locale:'ko',
+                editable: false,
                 eventLimit: true, // allow "more" link when too many events
                 events: [
+                    <%for (int i=0;i<Fsize;i++){%>
+                    {
+                        title: '<%=bfList.get(i).getContents()%>(끝난 일입니다.)',
+                        color : "#ECB807",
+                        textColor : "#FFFFFF",
+                        <%if (bfList.get(i).getStDt().equals("")){%>
+                        start: '<%=bfList.get(i).getRegDate()%>',
+                        <%}else {%>
+                        start: '<%=bfList.get(i).getStDt()%>',
+                        <%}%>
+                        end: '<%=bfList.get(i).getFinDt()%>'
+                    },
+                    <%}%>
                     <%for (int i=0;i<Wsize;i++){%>
                     {
+                        <%if (bwList.get(i).getStDt().equals("")){%>
+                        title: '<%=bwList.get(i).getContents()%>(기한이 없습니다.)',
+                        color : "#FF69B4",
+                        textColor : "#FFFFFF",
+                        <%}else if (format1.parse(bwList.get(i).getStDt()).compareTo(time)==1){%>
+                        title: '<%=bwList.get(i).getContents()%>(할 예정입니다.)',
+                        color : "#00CCCC",
+                        textColor : "#FFFFFF",
+                        <%}else if (time.compareTo(format1.parse(bwList.get(i).getFinDt()))!=1){%>
                         title: '<%=bwList.get(i).getContents()%>(하는중입니다.)',
                         color : "#11AAFF",
                         textColor : "#FFFFFF",
-                        <%if (bwList.get(i).getStDt()==null){%>
+                        <%}else {%>
+                        title: '<%=bwList.get(i).getContents()%>(예정된 날보다 늦어지고 있습니다.)',
+                        color : "#DC3545",
+                        textColor : "#FFFFFF",
+                        <%}%>
+                        <%if (bwList.get(i).getStDt().equals("")){%>
                         start: '<%=bwList.get(i).getRegDate()%>',
                         <%}else {%>
                         start: '<%=bwList.get(i).getStDt()%>',
                         end: '<%=bwList.get(i).getFinDt()%>'
                         <%}%>
-
-
                     }<%if (i==Wsize-1)
                         break;%>
                     ,
@@ -205,7 +240,6 @@
     <div class="modal-content">
         <div class="modal-body" style="text-align: center;">
             <a href="/Group.do?seq=<%=gDTO.getGroupSeq()%>" class="btn btn-primary" type="button">그룹 게시글 보기</a>
-            <a class="btn btn-secondary" type="button">그룹 진행 상황 확인</a>
         </div>
     </div>
     <%--떠다니는 그룹원--%>
@@ -220,6 +254,18 @@
             <%}}%>
         </div>
     </div>
+        <%--떠다니는 메모장--%>
+        <div class="modal-content">
+            <div class="modal-header" style="justify-content: center;">
+                <h5 class="modal-title">메모장</h5>
+            </div>
+            <div class="modal-footer" style="justify-content: center;">
+
+                <label>
+                    <textarea cols="100" rows="7" class="form-control"></textarea>
+                </label>
+            </div>
+        </div>
 </div>
 <div class="floatMenu Menu2" style="z-index: 100;">
     <!--떠다니는 해야될 일-->
@@ -264,17 +310,24 @@
             </div>
         </div>
     </div>
-    <%--떠다니는 메모장--%>
-    <div class="modal-content">
+    <%--떠다니는 한일--%>
+    <div class="modal-content front" style="position: absolute!important;">
         <div class="modal-header" style="justify-content: center;">
-            <h5 class="modal-title">메모장</h5>
+            <h5 class="modal-title">한 일</h5>
         </div>
-        <div class="modal-footer" style="justify-content: center;">
-
-            <label>
-                <textarea cols="100" rows="7" class="form-control"></textarea>
-            </label>
-        </div>
+        <form>
+            <div class="modal-body" style="display: block;overflow: scroll; height: 120px;">
+                <%for (int i= 0; i<Fsize; i++){%>
+                <div class="custom-control custom-checkbox mr-sm-2">
+                    <input type="checkbox" class="custom-control-input" value="<%=bfList.get(i).getBoardSeq()%>" id="done<%=i%>">
+                    <label style="word-break: break-all;" class="custom-control-label" for="done<%=i%>"><%=bfList.get(i).getContents()%></label>
+                </div>
+                <%}%>
+            </div>
+            <div class="modal-footer" style="justify-content: center;">
+                <button class="btn btn-danger" id="dele" type="button">삭제</button>
+            </div>
+        </form>
     </div>
 </div>
 <%--일진행바--%>
@@ -339,7 +392,8 @@
                 data: {
                     "contents": $("#contents").val(),
                     "seq": <%=gDTO.getGroupSeq()%>,
-                    "group": '<%=gDTO.getGroupName()%>'
+                    "group": '<%=gDTO.getGroupName()%>',
+                    "n" : '2'
                 },
                 success: function (data) {
                     if (data === 1)
@@ -358,7 +412,8 @@
                 "seq": <%=gDTO.getGroupSeq()%>,
                 "group": '<%=gDTO.getGroupName()%>',
                 "end":end,
-                "start":start
+                "start":start,
+                "n" : '2'
             },
             success: function (data) {
                 if (data === 1)
@@ -423,6 +478,37 @@
                     console.log(data)
                     if (data===1) {
                         alert("할일이 삭제되었습니다.");
+                        window.location.reload(true);
+                    }
+                }
+            })
+        }
+    });
+    /*한일삭제*/
+    $('#dele').click(function () {
+        let seq=[];
+        let checked=0;
+        for (let i=0;i<<%=bfList.size()%>;i++){
+            if ($('#done'+i).prop("checked")){
+                seq[checked]=$('#done'+i).val();
+                checked++;
+            }
+        }
+        console.log(seq.join(","))
+
+        if (seq.length<1)
+            alert("삭제할 항목을 선택해주세요.");
+        else{
+            $.ajax({
+                url: "/delwork.do",
+                type: "POST",
+                data:{
+                    "seq" : seq.join(",")
+                },
+                success: function (data) {
+                    console.log(data)
+                    if (data===1) {
+                        alert("한일이 삭제되었습니다.");
                         window.location.reload(true);
                     }
                 }

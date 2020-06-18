@@ -54,7 +54,8 @@
         UPDATE
             BOARD
         SET
-            NOTICE = '3'
+            NOTICE = '3',
+            FIN_DT = SYSDATE()
         WHERE
         BOARD_SEQ = #{BoardSeq}
     </update>

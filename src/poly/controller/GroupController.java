@@ -173,13 +173,13 @@ public class GroupController {
         for (BoardDTO boardDTO : bList) {
             if (boardDTO.getNotice().equals("1"))
                 bnList.add(a++, boardDTO);
-            else
+            else if (boardDTO.getNotice().equals("2"))
                 bwList.add(b++, boardDTO);
+            else if (boardDTO.getNotice().equals("3"))
+                bfList.add(b++, boardDTO);
         }
-        log.info(bwList.get(0).getFinDt());
         if(bnList==null)
             bnList = new ArrayList<BoardDTO>();
-
         if(bwList==null)
             bwList = new ArrayList<BoardDTO>();
         if(bfList==null)
@@ -254,26 +254,19 @@ public class GroupController {
             bList = new ArrayList<BoardDTO>();
         log.info(bList.size());
         int a=0,b=0;
-        List<BoardDTO> bnList = new ArrayList<>();
         List<BoardDTO> bwList = new ArrayList<>();
         List<BoardDTO> bfList = new ArrayList<>();
         for (BoardDTO boardDTO : bList) {
-            if (boardDTO.getNotice().equals("1"))
-                bnList.add(a++, boardDTO);
-            else if (boardDTO.getNotice().equals("2"))
-                bwList.add(b++, boardDTO);
-            else
+            if (boardDTO.getNotice().equals("2"))
+                bwList.add(a++, boardDTO);
+            else if (boardDTO.getNotice().equals("3"))
                 bfList.add(b++, boardDTO);
         }
-        if(bnList==null)
-            bnList = new ArrayList<BoardDTO>();
-
         if(bwList==null)
             bwList = new ArrayList<BoardDTO>();
         if(bfList==null)
             bfList = new ArrayList<BoardDTO>();
         model.addAttribute("bfList",bfList);
-        model.addAttribute("bnList",bnList);
         model.addAttribute("bwList",bwList);
         model.addAttribute("gDTO",gDTO);
         return "/GG/Calander";

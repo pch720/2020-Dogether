@@ -6,6 +6,8 @@
 <!DOCTYPE html>
 <%
     GroupDTO gDTO = (GroupDTO) request.getAttribute("gDTO");
+    List<BoardDTO> bfList = (List<BoardDTO>) request.getAttribute("bfList");
+    int Fsize = bfList.size();
     List<BoardDTO> bnList = (List<BoardDTO>) request.getAttribute("bnList");
     int Nsize = bnList.size();
     List<BoardDTO> bwList = (List<BoardDTO>) request.getAttribute("bwList");
@@ -96,31 +98,81 @@
         integrity="sha256-r/AaFHrszJtwpe+tHyNi/XCfMxYpbsRg2Uqn0x3s2zc="
         crossorigin="anonymous"
 ></script>
-<body id="page-top" style="background-color: deepskyblue;height: auto;">
-
+<%if (gDTO.getFunction().equals("1")){%>
+<body id="page-top" class="bg-warning" style="height: auto;">
+<%}else{%>
+<body id="page-top" class="bg-primary" style="height: auto;">
+<%}%>
 <!-- 네비게이션바 -->
 <%@include file="../include/nav.jsp"%>
-    <div class="floatMenu Menu1" style="z-index: 100;">
-        <%--떠다니는 진행상황--%>
-        <div class="modal-content">
-                <div class="modal-body" style="text-align: center;">
-                    <a href="/Calander.do?seq=<%=gDTO.getGroupSeq()%>" class="btn btn-primary" type="button">나의 진행 상황 확인</a>
-                    <a class="btn btn-secondary" type="button">그룹 진행 상황 확인</a>
-                </div>
+<%if (gDTO.getFunction().equals("1")){%>
+<div class="floatMenu Menu1" style="z-index: 100;">
+    <%--떠다니는 진행상황--%>
+    <div class="modal-content">
+        <div class="modal-body" style="text-align: center;">
+            <a href="/Calander.do?seq=<%=gDTO.getGroupSeq()%>" class="btn btn-primary" type="button">내 목포 현황 확인</a>
         </div>
-            <%--떠다니는 그룹원--%>
-            <div class="modal-content Menu3">
-                <div class="modal-header" style="justify-content: center;">
-                    <h5 class="modal-title"><%=gDTO.getGroupName()%>(<%=gDTO.getCount()%>명)</h5>
-                </div>
-                <div class="modal-body" style="text-align: center;">
-                    <%for (GroupDTO groupDTO : user) {
-                            if (!groupDTO.getUserName().equals(SS_name)) {%>
-                    <div><%=groupDTO.getUserName()%></div>
-                    <%}}%>
-                </div>
-            </div>
     </div>
+    <%--떠다니는 그룹원--%>
+    <div class="modal-content Menu3">
+        <div class="modal-header" style="justify-content: center;">
+            <h5 class="modal-title"><%=gDTO.getGroupName()%>(<%=gDTO.getCount()%>명)</h5>
+        </div>
+        <div class="modal-body" style="text-align: center;">
+            <%for (GroupDTO groupDTO : user) {
+                if (!groupDTO.getUserName().equals(SS_name)) {%>
+            <div><%=groupDTO.getUserName()%></div>
+            <%}}%>
+        </div>
+    </div>
+</div>
+<div class="floatMenu Menu2" style="z-index: 100;">
+    <%--떠다니는 메모장--%>
+    <div class="modal-content">
+        <div class="modal-header" style="justify-content: center;">
+            <h5 class="modal-title">메모장</h5>
+        </div>
+        <div class="modal-footer" style="justify-content: center;">
+
+            <label>
+                <textarea cols="100" rows="7" class="form-control"></textarea>
+            </label>
+        </div>
+    </div>
+</div>
+<%}else{%>
+<div class="floatMenu Menu1" style="z-index: 100;">
+    <%--떠다니는 진행상황--%>
+    <div class="modal-content">
+        <div class="modal-body" style="text-align: center;">
+            <a href="/Calander.do?seq=<%=gDTO.getGroupSeq()%>" class="btn btn-primary" type="button">그룹 작업 현황 보기</a>
+        </div>
+    </div>
+    <%--떠다니는 그룹원--%>
+    <div class="modal-content Menu3">
+        <div class="modal-header" style="justify-content: center;">
+            <h5 class="modal-title"><%=gDTO.getGroupName()%>(<%=gDTO.getCount()%>명)</h5>
+        </div>
+        <div class="modal-body" style="text-align: center;">
+            <%for (GroupDTO groupDTO : user) {
+                if (!groupDTO.getUserName().equals(SS_name)) {%>
+            <div><%=groupDTO.getUserName()%></div>
+            <%}}%>
+        </div>
+    </div>
+    <%--떠다니는 메모장--%>
+    <div class="modal-content">
+        <div class="modal-header" style="justify-content: center;">
+            <h5 class="modal-title">메모장</h5>
+        </div>
+        <div class="modal-footer" style="justify-content: center;">
+
+            <label>
+                <textarea cols="100" rows="7" class="form-control"></textarea>
+            </label>
+        </div>
+    </div>
+</div>
 <div class="floatMenu Menu2" style="z-index: 100;">
     <!--떠다니는 해야될 일-->
     <div class="flip-container" ontouchstart="this.classList.toggle('hover');">
@@ -133,7 +185,7 @@
                 </div>
                 <form>
                     <div class="modal-body" style="display: block;overflow: scroll; height: 120px;">
-                       <%for (int i= 0; i<Wsize; i++){%>
+                        <%for (int i= 0; i<Wsize; i++){%>
                         <div class="custom-control custom-checkbox mr-sm-2">
                             <input type="checkbox" class="custom-control-input" value="<%=bwList.get(i).getBoardSeq()%>" id="do<%=i%>">
                             <label style="word-break: break-all;" class="custom-control-label" for="do<%=i%>"><%=bwList.get(i).getContents()%></label>
@@ -141,7 +193,7 @@
                         <%}%>
                     </div>
                     <div class="modal-footer" style="justify-content: center;">
-                        <button class="btn btn-secondary" type="button">한 일로 변경</button>
+                        <button class="btn btn-secondary" id="finish" type="button">한 일로 변경</button>
                         <button class="btn btn-danger" id="del" type="button">삭제</button>
                     </div>
                 </form>
@@ -156,7 +208,7 @@
                         <label>
                             <textarea cols="100" rows="4" class="form-control" id="contents"></textarea>
                         </label>
-                            <input type="hidden" name="notice" value="2">
+                        <input type="hidden" name="notice" value="2">
                         <button class="btn btn-primary" type="button" id="add1">할일보기</button>
                         <button class="btn btn-secondary" type="button" id="add2">추가하기</button>
                     </form>
@@ -164,53 +216,80 @@
             </div>
         </div>
     </div>
-    <%--떠다니는 메모장--%>
-    <div class="modal-content">
+    <%--떠다니는 한일--%>
+    <div class="modal-content front" style="position: absolute!important;">
         <div class="modal-header" style="justify-content: center;">
-            <h5 class="modal-title">메모장</h5>
+            <h5 class="modal-title">한 일</h5>
         </div>
-        <div class="modal-footer" style="justify-content: center;">
-
-                <label>
-                    <textarea cols="100" rows="7" class="form-control"></textarea>
-                </label>
-        </div>
+        <form>
+            <div class="modal-body" style="display: block;overflow: scroll; height: 120px;">
+                <%for (int i= 0; i<Fsize; i++){%>
+                <div class="custom-control custom-checkbox mr-sm-2">
+                    <input type="checkbox" class="custom-control-input" value="<%=bfList.get(i).getBoardSeq()%>" id="done<%=i%>">
+                    <label style="word-break: break-all;" class="custom-control-label" for="done<%=i%>"><%=bfList.get(i).getContents()%></label>
+                </div>
+                <%}%>
+            </div>
+            <div class="modal-footer" style="justify-content: center;">
+                <button class="btn btn-danger" id="dele" type="button">삭제</button>
+            </div>
+        </form>
     </div>
 </div>
-
+<%}%>
 <!-- 그룹 게시판 -->
 <section id="board">
-    <a href="#" class="modal-content" style="margin-top: 130px; width: 56%; height: 150px; min-width: 650px;text-decoration: none;color: black;">
+    <a href="#" class="modal-content" data-toggle="modal" data-target="#MakeModal" style="margin-top: 130px; width: 56%; height: 150px; min-width: 650px;text-decoration: none;color: black;">
     내용을 입력해 주세요.
     </a>
     <%for(int i=0;i<Nsize;i++){%>
     <div class="modal-content" style="margin-top: 10px; width: 56%; min-width: 650px;">
         <div>
+            <%if (bnList.get(i).getUserName().equals(session.getAttribute("SS_USER_NAME"))){%>
             <div style="text-align:right;">
-                <!-- Default dropright button -->
-                <div class="btn-group dropright">
-                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-top: 5px; margin-right: 5px;">
-                        더보기
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="#">수정</a>
-                        <a class="dropdown-item" href="#">삭제</a>
-                    </div>
+                <div class="btn-group dropright" style="font-size: larger;margin: 10px;margin-bottom: 0;">
+                    <%--수정--%>
+                    <i class="fas fa-pencil-alt" style="margin-right: 15px;color: green;"></i>
+                        <%--삭제--%>
+                    <i class="fas fa-times-circle" id="Ndel<%=i%>" style="color: #DC3545;"></i>
                 </div>
-            </div>
-            <hr>
-            <div>
+            </div><hr>
+            <%}%>
+            <div style="margin-top: 15px;">
                 <div style="width:48%;display:inline-block;text-align:left;"><a style="color:gray;">작성자 : </a><%=bnList.get(i).getUserName()%></div>
                 <div style="width:48%;display:inline-block;text-align:right;"><a style="color:gray;">작성일 : </a><%=bnList.get(i).getRegDate()%></div>
             </div>
             <hr>
-            <div id="content" style="margin:0 auto;width:40%;margin-top:3%;margin-bottom:2%;"><%=bnList.get(i).getContents()%></div>
+            <div id="content" style="margin:0 auto;width:40%;margin-top:3%;margin-bottom:2%;word-break: break-all;"><%=bnList.get(i).getContents()%></div>
             <hr>
             <button id="li" value="0"class="btn btn-outline-danger" style="margin-bottom: 5px;border-radius: 20px;"><i id="ke" class="far fa-heart"> 좋아요</i></button>
             <button class="btn btn-outline-info" style="margin-bottom: 5px;border-radius: 20px;">댓글 달기</button>
         </div>
     </div><%}%>
 </section>
+<!-- 게시글 만들기 창 -->
+<div class="modal fade" id="MakeModal" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <form action="/MakeGroup.do" method="POST"id="make" class="needs-validation" novalidate>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">게시글 쓰기</h5>
+                    <button type="button" id="LC" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <textarea style="height: 200px;" class="form-control" id="Ncontents" name="Ncontents" placeholder="내용을 입력해 주세요."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" id="MN" type="button">작성하기</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <!-- Scroll to Top Button-->
 <a class="scroll-to-top rounded js-scroll-trigger" href="#page-top">
     <i class="fas fa-angle-up"></i>
@@ -265,6 +344,30 @@
         $(this).closest('.flip-container').toggleClass('hover');
         $(this).css('transform, rotateY(180deg)');
     });
+    /*게시글추가*/
+    $('#MN').click(function () {
+        if ($("#Ncontents").val()===""){
+            alert("내용을 입력해주세요.");
+            return false;
+        }
+        else {
+            $.ajax({
+                url: "/writework.do",
+                type: "POST",
+                data: {
+                    "contents": $("#Ncontents").val(),
+                    "seq": <%=gDTO.getGroupSeq()%>,
+                    "group": '<%=gDTO.getGroupName()%>',
+                    "n" : '1'
+                },
+                success: function (data) {
+                    if (data === 1)
+                        alert("게시글이 추가되었습니다.");
+                    window.location.reload(true);
+                }
+            })
+        }
+    });
     /*할일추가*/
     $('#add2').click(function () {
         if ($("#contents").val()===""){
@@ -278,12 +381,44 @@
                 data: {
                     "contents": $("#contents").val(),
                     "seq": <%=gDTO.getGroupSeq()%>,
-                    "group": '<%=gDTO.getGroupName()%>'
+                    "group": '<%=gDTO.getGroupName()%>',
+                    "n" : '2'
                 },
                 success: function (data) {
                     if (data === 1)
                         alert("할일이 추가되었습니다.");
                         window.location.reload(true);
+                }
+            })
+        }
+    });
+    /*한일로 변경*/
+    $('#finish').click(function () {
+        let seq=[];
+        let checked=0;
+        for (let i=0;i<<%=bwList.size()%>;i++){
+            if ($('#do'+i).prop("checked")){
+                seq[checked]=$('#do'+i).val();
+                checked++;
+            }
+        }
+        console.log(seq.join(","))
+
+        if (seq.length<1)
+            alert("한일로 변경할 항목을 선택해주세요.");
+        else{
+            $.ajax({
+                url: "/finwork.do",
+                type: "POST",
+                data:{
+                    "seq" : seq.join(",")
+                },
+                success: function (data) {
+                    console.log(data)
+                    if (data===1) {
+                        alert("한일로 변경되었습니다.");
+                        window.location.reload(true);
+                    }
                 }
             })
         }
@@ -319,6 +454,58 @@
             })
         }
     });
+    /*한일삭제*/
+    $('#dele').click(function () {
+        let seq=[];
+        let checked=0;
+        for (let i=0;i<<%=bfList.size()%>;i++){
+            if ($('#done'+i).prop("checked")){
+                seq[checked]=$('#done'+i).val();
+                checked++;
+            }
+        }
+        console.log(seq.join(","))
+
+        if (seq.length<1)
+            alert("삭제할 항목을 선택해주세요.");
+        else{
+            $.ajax({
+                url: "/delwork.do",
+                type: "POST",
+                data:{
+                    "seq" : seq.join(",")
+                },
+                success: function (data) {
+                    console.log(data)
+                    if (data===1) {
+                        alert("한일이 삭제되었습니다.");
+                        window.location.reload(true);
+                    }
+                }
+            })
+        }
+    });
+    /*게시글 삭제*/
+    <%for(int i=0;i<Nsize;i++){%>
+    $('#Ndel<%=i%>').click(function () {
+        if(confirm("글을 지우시겠습니까?")){
+            $.ajax({
+                url: "/delwork.do",
+                type: "POST",
+                data:{
+                    "seq" : <%=bnList.get(i).getBoardSeq()%>
+                },
+                success: function (data) {
+                    console.log(data)
+                    if (data===1) {
+                        alert("게시글이 삭제되었습니다.");
+                        window.location.reload(true);
+                    }
+                }
+            })
+        }
+    });
+    <%}%>
 </script>
 </body>
 <script src="../assets/dist/js/bootstrap.bundle.js"></script>

@@ -31,6 +31,7 @@ public class BoardController {
         String contents = CmmUtil.nvl(request.getParameter("contents"));
         String start = CmmUtil.nvl(request.getParameter("start"));
         String end = CmmUtil.nvl(request.getParameter("end"));
+        String n = CmmUtil.nvl(request.getParameter("n"));
         String name = CmmUtil.nvl((String)session.getAttribute("SS_USER_NAME"));
         String GUseq = CmmUtil.nvl(request.getParameter("seq"));
         String Group = CmmUtil.nvl(request.getParameter("group"));
@@ -47,7 +48,8 @@ public class BoardController {
         bDTO.setGGseq(GUseq);
         bDTO.setContents(contents);
         bDTO.setUserName(name);
-        bDTO.setNotice("2");
+        bDTO.setNotice(n);
+        log.info(n);
         return boardservice.write(bDTO);
     }
     /*한일로 변경*/

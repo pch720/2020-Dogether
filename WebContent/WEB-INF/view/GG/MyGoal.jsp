@@ -156,7 +156,7 @@
                 <input type="hidden" name="Gname" value="<%=gList.get(i).getGroupName()%>">
                 <input type="hidden" name="user" value="<%=SS_name%>">
                 <div class="modal-body">
-                    <button type="button" class="btn btn-primary MB" onclick="location.href='Group.do'">목표로 가기</button>
+                    <button type="button" class="btn btn-primary MB" onclick="location.href='Group.do?seq=<%=gList.get(i).getGroupSeq()%>'">목표로 가기</button>
                     <button class="btn btn-danger MB" type="submit" >목표 그만두기</button>
                 </div>
             </form>
@@ -164,7 +164,7 @@
     </div>
 </div>
 <%}%>
-<!-- 그룹 만들기 창 -->
+<!-- 목표 만들기 창 -->
 <div class="modal fade" id="MakeModal" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -240,7 +240,7 @@
         });
     }
     $('#LC').click(function () {
-        const res=confirm("그룹 만들기 창을 닫으시면 입력하신 정보가 초기화됩니다.\n정말 닫으시겠습니까?")
+        const res=confirm("목표 만들기 창을 닫으시면 입력하신 정보가 초기화됩니다.\n정말 닫으시겠습니까?")
         if(res){
             document.getElementById('Gname').value = '';
             document.getElementById('Greet').value = '';
