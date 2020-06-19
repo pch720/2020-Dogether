@@ -7,9 +7,11 @@
          pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%
-    SimpleDateFormat format1 = new SimpleDateFormat ( "yyyy-MM-dd");
+    int a = 0;
+    SimpleDateFormat format1 = new SimpleDateFormat ( "dd");
     Date time = new Date();
-    //String time1 = format1.format(time);
+    String time1 = format1.format(time);
+    int time2 = Integer.parseInt(time1);
     GroupDTO gDTO = (GroupDTO) request.getAttribute("gDTO");
     List<BoardDTO> bfList = (List<BoardDTO>) request.getAttribute("bfList");
     int Fsize = bfList.size();
@@ -17,11 +19,7 @@
     int Wsize = bwList.size();
     List<GroupDTO> user = (List<GroupDTO>)request.getAttribute("user");
     String SS_name =(String)session.getAttribute("SS_USER_NAME");
-    int pst = 0;
-    if (Wsize==0&&Fsize==0)
-        pst=0;
-    else
-        pst=Fsize*100/(Wsize+Fsize);
+    int pst = Fsize*100/time2;
 %>
 <html>
 <head>
@@ -47,30 +45,37 @@
                 defaultDate: today,
                 navLinks: false, // can click day/week names to navigate views
                 selectable: true,
-                selectMirror: true,
-                select: function (arg) {
-                    function x(data) {
+                selectMirror: false,
+                select : function (arg) {
+                    function x(data,a) {
                         let res=data.getFullYear();
                         let month = data.getMonth()*1+1;
+                        let day = data.getDate();
                         if(month<10){
                             res += "-0" + month;
                         }else{
                             res += "-" + month;
                         }
-                        if(data.getDate()<10){
-                            res += "-0" +data.getDate();
+                        if (a===1)
+                            day-=1;
+                        if(day<10){
+                            res += "-0" + day;
                         }else{
-                            res += "-" +data.getDate();
+                            res += "-" + day;
                         }
                         return res;
                     }
-                    const start = x(arg.start);
-                    const end = x(arg.end);
-                    today = x(today);
-                    const title = prompt('추가하실 일에 내용을 적어주세요.');
+                    const start = x(arg.start,0);
+                    const end = x(arg.end,1);
+                    today = x(today,0);
+                    console.log(start+"/"+end+"/"+today);
+                    if (start>today) {
+                        alert("오늘 이전 항목만 선택 가능합니다.")
+                    }else if (start===end){
+                    const title = prompt('오늘 목표를 이루셨다면 간단한 내용을 적어주세요.');
                     if (title) {
                         add3(title,start,end);
-                    }
+                    }}
                     window.location.reload(true);
                     calendar.unselect()
                 },
@@ -80,46 +85,32 @@
                 events: [
                     <%for (int i=0;i<Fsize;i++){%>
                     {
-                        title: '<%=bfList.get(i).getContents()%>(끝난 일입니다.)',
-                        color : "#ECB807",
-                        textColor : "#FFFFFF",
-                        <%if (bfList.get(i).getStDt().equals("")){%>
-                        start: '<%=bfList.get(i).getRegDate()%>',
-                        <%}else {%>
-                        start: '<%=bfList.get(i).getStDt()%>',
-                        <%}%>
-                        end: '<%=bfList.get(i).getFinDt()%>'
-                    },
-                    <%}%>
-                    <%for (int i=0;i<Wsize;i++){%>
-                    {
-                        <%if (bwList.get(i).getStDt().equals("")){%>
-                        title: '<%=bwList.get(i).getContents()%>(기한이 없습니다.)',
-                        color : "#FF69B4",
-                        textColor : "#FFFFFF",
-                        <%}else if (format1.parse(bwList.get(i).getStDt()).compareTo(time)==1){%>
-                        title: '<%=bwList.get(i).getContents()%>(할 예정입니다.)',
-                        color : "#00CCCC",
-                        textColor : "#FFFFFF",
-                        <%}else if (time.compareTo(format1.parse(bwList.get(i).getFinDt()))!=1){%>
-                        title: '<%=bwList.get(i).getContents()%>(하는중입니다.)',
+                        title: '목표를 하였습니다.',
                         color : "#11AAFF",
                         textColor : "#FFFFFF",
-                        <%}else {%>
-                        title: '<%=bwList.get(i).getContents()%>(예정된 날보다 늦어지고 있습니다.)',
-                        color : "#DC3545",
-                        textColor : "#FFFFFF",
-                        <%}%>
-                        <%if (bwList.get(i).getStDt().equals("")){%>
-                        start: '<%=bwList.get(i).getRegDate()%>',
-                        <%}else {%>
-                        start: '<%=bwList.get(i).getStDt()%>',
-                        end: '<%=bwList.get(i).getFinDt()%>'
-                        <%}%>
-                    }<%if (i==Wsize-1)
-                        break;%>
-                    ,
+                        start: '<%=bfList.get(i).getStDt()%>'
+                    },
                     <%}%>
+                    <%for (int j=1; j<time2;j++){
+                        a=0;
+                        for (int i = 0 ; i<Fsize;i++){
+                        if (j==Integer.parseInt(bfList.get(i).getStDt().substring(8,10))){
+                            a+=1;
+                        }}
+                        if (a==0){%>
+                    {
+                            title: '목표를 하지않았습니다.',
+                            color : "#DC3545",
+                            textColor : "#FFFFFF",
+                            <%if (j>9){%>
+                            start: "2020-06-<%=j%>"
+                            <%}else {%>
+                            start: "2020-06-0<%=j%>"
+                            <%}%>
+                        }<%if (j==time2-1)
+                                break;%>
+                        ,
+                    <%}}%>
                 ]
             });
 
@@ -232,14 +223,14 @@
         integrity="sha256-r/AaFHrszJtwpe+tHyNi/XCfMxYpbsRg2Uqn0x3s2zc="
         crossorigin="anonymous"
 ></script>
-<body class="bg-primary" style="height: auto;">
+<body class="bg-warning" style="height: auto;">
 <!-- 네비게이션바 -->
 <%@include file="../include/nav.jsp"%>
 <div class="floatMenu Menu1" style="z-index: 100;">
     <%--떠다니는 진행상황--%>
     <div class="modal-content">
         <div class="modal-body" style="text-align: center;">
-            <a href="/Group.do?seq=<%=gDTO.getGroupSeq()%>" class="btn btn-primary" type="button">그룹 게시글 보기</a>
+            <a href="/Group.do?seq=<%=gDTO.getGroupSeq()%>" class="btn btn-primary" type="button">목표 게시글 보기</a>
         </div>
     </div>
     <%--떠다니는 그룹원--%>
@@ -254,73 +245,20 @@
             <%}}%>
         </div>
     </div>
-        <%--떠다니는 메모장--%>
-        <div class="modal-content">
-            <div class="modal-header" style="justify-content: center;">
-                <h5 class="modal-title">메모장</h5>
-            </div>
-            <div class="modal-footer" style="justify-content: center;">
-
-                <label>
-                    <textarea cols="100" rows="7" class="form-control"></textarea>
-                </label>
-            </div>
-        </div>
 </div>
 <div class="floatMenu Menu2" style="z-index: 100;">
-    <!--떠다니는 해야될 일-->
-    <div class="flip-container" ontouchstart="this.classList.toggle('hover');">
-        <div class="flipper">
-            <!-- front content -->
-            <div class="modal-content front" style="position: absolute!important;">
-                <div class="modal-header" style="justify-content: center;">
-                    <h5 class="modal-title">할 일</h5>
-                    <i id="add" class="fas fa-plus-circle" style="align-self: center; margin-left: 5px; font-size: x-large;"></i>
-                </div>
-                <form>
-                    <div class="modal-body" style="display: block;overflow: scroll; height: 120px;">
-                        <%for (int i= 0; i<Wsize; i++){%>
-                        <div class="custom-control custom-checkbox mr-sm-2">
-                            <input type="checkbox" class="custom-control-input" value="<%=bwList.get(i).getBoardSeq()%>" id="do<%=i%>">
-                            <label style="word-break: break-all;" class="custom-control-label" for="do<%=i%>"><%=bwList.get(i).getContents()%></label>
-                        </div>
-                        <%}%>
-                    </div>
-                    <div class="modal-footer" style="justify-content: center;">
-                        <button class="btn btn-secondary" id="finish" type="button">한 일로 변경</button>
-                        <button class="btn btn-danger" id="del" type="button">삭제</button>
-                    </div>
-                </form>
-            </div>
-            <!-- 할 일 추가 -->
-            <div class="modal-content back">
-                <div class="modal-header" style="justify-content: center;">
-                    <h5 class="modal-title">할 일 추가</h5>
-                </div>
-                <div class="modal-footer">
-                    <form style="text-align: center;">
-                        <label>
-                            <textarea cols="100" rows="4" class="form-control" id="contents"></textarea>
-                        </label>
-                        <input type="hidden" name="notice" value="2">
-                        <button class="btn btn-primary" type="button" id="add1">할일보기</button>
-                        <button class="btn btn-secondary" type="button" id="add2">추가하기</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
     <%--떠다니는 한일--%>
-    <div class="modal-content front" style="position: absolute!important;">
+    <div class="modal-content" style="position: absolute!important;">
         <div class="modal-header" style="justify-content: center;">
-            <h5 class="modal-title">한 일</h5>
+            <h5 class="modal-title">한 날</h5>
         </div>
         <form>
             <div class="modal-body" style="display: block;overflow: scroll; height: 120px;">
                 <%for (int i= 0; i<Fsize; i++){%>
                 <div class="custom-control custom-checkbox mr-sm-2">
                     <input type="checkbox" class="custom-control-input" value="<%=bfList.get(i).getBoardSeq()%>" id="done<%=i%>">
-                    <label style="word-break: break-all;" class="custom-control-label" for="done<%=i%>"><%=bfList.get(i).getContents()%></label>
+                    <label style="word-break: break-all;" class="custom-control-label" for="done<%=i%>"><%=bfList.get(i).getContents()%>
+                        (<%=bfList.get(i).getStDt()%>)<br/></label>
                 </div>
                 <%}%>
             </div>
@@ -329,11 +267,22 @@
             </div>
         </form>
     </div>
+        <%--떠다니는 메모장--%>
+        <div class="modal-content" style="margin-top: 260px;">
+            <div class="modal-header" style="justify-content: center;">
+                <h5 class="modal-title">메모장</h5>
+            </div>
+            <div class="modal-footer" style="justify-content: center;">
+                <label>
+                    <textarea cols="100" rows="7" class="form-control"></textarea>
+                </label>
+            </div>
+        </div>
 </div>
 <%--일진행바--%>
 <div style="margin-top: 130px;text-align: -webkit-center;">
     <div class="progress progba">
-        <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: <%=pst%>%;color: teal;" aria-valuenow="<%=pst%>" aria-valuemin="0" aria-valuemax="100"><%=pst%>%</div>
+        <div class="progress-bar progress-bar-striped bg-primary" role="progressbar" style="width: <%=pst%>%;color: teal;" aria-valuenow="<%=pst%>" aria-valuemin="0" aria-valuemax="100"><%=pst%>%</div>
     </div>
 </div>
 <%--달력--%>
@@ -362,35 +311,6 @@
         }).scroll();
 
     });
-    /*클릭시 할일한일 뒤집기*/
-    $('#add1,#add').click(function() {
-        $(this).closest('.flip-container').toggleClass('hover');
-        $(this).css('transform, rotateY(180deg)');
-    });
-    /*할일추가*/
-    $('#add2').click(function () {
-        if ($("#contents").val()===""){
-            alert("할 일을 입력해주세요.");
-            return false;
-        }
-        else {
-            $.ajax({
-                url: "/writework.do",
-                type: "POST",
-                data: {
-                    "contents": $("#contents").val(),
-                    "seq": <%=gDTO.getGroupSeq()%>,
-                    "group": '<%=gDTO.getGroupName()%>',
-                    "n" : '2'
-                },
-                success: function (data) {
-                    if (data === 1)
-                        alert("할일이 추가되었습니다.");
-                    window.location.reload(true);
-                }
-            })
-        }
-    });
     function add3(contents,start,end){
         $.ajax({
             url: "/writework.do",
@@ -401,78 +321,16 @@
                 "group": '<%=gDTO.getGroupName()%>',
                 "end":end,
                 "start":start,
-                "n" : '2'
+                "n" : '3'
             },
             success: function (data) {
                 if (data === 1)
-                    alert("할일이 추가되었습니다.");
+                    alert("한 날이 추가되었습니다.");
                 window.location.reload(true);
             }
         })
     }
-    /*한일로 변경*/
-    $('#finish').click(function () {
-        let seq=[];
-        let checked=0;
-        for (let i=0;i<<%=bwList.size()%>;i++){
-            if ($('#do'+i).prop("checked")){
-                seq[checked]=$('#do'+i).val();
-                checked++;
-            }
-        }
-        console.log(seq.join(","))
-
-        if (seq.length<1)
-            alert("한일로 변경할 항목을 선택해주세요.");
-        else{
-            $.ajax({
-                url: "/finwork.do",
-                type: "POST",
-                data:{
-                    "seq" : seq.join(",")
-                },
-                success: function (data) {
-                    console.log(data)
-                    if (data===1) {
-                        alert("한일로 변경되었습니다.");
-                        window.location.reload(true);
-                    }
-                }
-            })
-        }
-    });
-    /*할일삭제*/
-    $('#del').click(function () {
-        let seq=[];
-        let checked=0;
-        for (let i=0;i<<%=bwList.size()%>;i++){
-            if ($('#do'+i).prop("checked")){
-                seq[checked]=$('#do'+i).val();
-                checked++;
-            }
-        }
-        console.log(seq.join(","))
-
-        if (seq.length<1)
-            alert("삭제할 항목을 선택해주세요.");
-        else{
-            $.ajax({
-                url: "/delwork.do",
-                type: "POST",
-                data:{
-                    "seq" : seq.join(",")
-                },
-                success: function (data) {
-                    console.log(data)
-                    if (data===1) {
-                        alert("할일이 삭제되었습니다.");
-                        window.location.reload(true);
-                    }
-                }
-            })
-        }
-    });
-    /*한일삭제*/
+    /*한날 삭제*/
     $('#dele').click(function () {
         let seq=[];
         let checked=0;
@@ -496,7 +354,7 @@
                 success: function (data) {
                     console.log(data)
                     if (data===1) {
-                        alert("한일이 삭제되었습니다.");
+                        alert("한 날이 삭제되었습니다.");
                         window.location.reload(true);
                     }
                 }

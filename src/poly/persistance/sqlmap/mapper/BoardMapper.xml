@@ -59,4 +59,20 @@
         WHERE
         BOARD_SEQ = #{BoardSeq}
     </update>
+    <select id="getUnotice" parameterType="GroupDTO" resultType="BoardDTO">
+        SELECT
+            BOARD_SEQ AS BoardSeq,
+            CONTENTS AS Contents,
+            USER_NAME AS UserName,
+            BREG_DT AS RegDate,
+            `LIKE` AS `Like`,
+            NOTICE AS Notice,
+            UP_DT AS `UpDate`,
+            UP_ID AS UpId,
+            FIN_DT AS FinDt,
+            ST_DT AS StDt
+            FROM BOARD
+            WHERE GG_SEQ = #{GroupSeq}
+            AND USER_NAME = #{userName}
+    </select>
 </mapper>

@@ -231,44 +231,4 @@ public class GroupController {
         model.addAttribute("url",url);
         return "/redirect";
     }
-    /*그룹 캘린더 화면*/
-    @RequestMapping(value = "Calander")
-    public String Calander(HttpServletRequest request,Model model) throws Exception {
-        String seq = request.getParameter("seq");
-        log.info(seq);
-        GroupDTO gDTO = new GroupDTO();
-        gDTO = groupservice.getGroupInfo(seq);
-        String gname = gDTO.getGroupName();
-        List<GroupDTO> user = groupservice.users(gname);
-        if(user==null){
-            log.info("값없음");
-            user = new ArrayList<>();
-        }else {
-            log.info("user : "+user.get(0).getUserName());
-        }
-        model.addAttribute("user",user);
-
-        List<BoardDTO> bList = new ArrayList<>();
-        bList=boardservice.getnotice(seq);
-        if (bList==null)
-            bList = new ArrayList<BoardDTO>();
-        log.info(bList.size());
-        int a=0,b=0;
-        List<BoardDTO> bwList = new ArrayList<>();
-        List<BoardDTO> bfList = new ArrayList<>();
-        for (BoardDTO boardDTO : bList) {
-            if (boardDTO.getNotice().equals("2"))
-                bwList.add(a++, boardDTO);
-            else if (boardDTO.getNotice().equals("3"))
-                bfList.add(b++, boardDTO);
-        }
-        if(bwList==null)
-            bwList = new ArrayList<BoardDTO>();
-        if(bfList==null)
-            bfList = new ArrayList<BoardDTO>();
-        model.addAttribute("bfList",bfList);
-        model.addAttribute("bwList",bwList);
-        model.addAttribute("gDTO",gDTO);
-        return "/GG/Calander";
-    }
 }

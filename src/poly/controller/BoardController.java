@@ -2,6 +2,7 @@ package poly.controller;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -15,6 +16,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class BoardController {
@@ -87,5 +90,87 @@ public class BoardController {
         }
         return res;
     }
+    /*그룹 캘린더 화면*/
+    @RequestMapping(value = "Calander")
+    public String Calander(HttpServletRequest request, Model model) throws Exception {
+        String seq = request.getParameter("seq");
+        log.info(seq);
+        GroupDTO gDTO = new GroupDTO();
+        gDTO = groupservice.getGroupInfo(seq);
+        String gname = gDTO.getGroupName();
+        List<GroupDTO> user = groupservice.users(gname);
+        if(user==null){
+            log.info("값없음");
+            user = new ArrayList<>();
+        }else {
+            log.info("user : "+user.get(0).getUserName());
+        }
+        model.addAttribute("user",user);
 
+        List<BoardDTO> bList = new ArrayList<>();
+        bList=boardservice.getnotice(seq);
+        if (bList==null)
+            bList = new ArrayList<BoardDTO>();
+        log.info(bList.size());
+        int a=0,b=0;
+        List<BoardDTO> bwList = new ArrayList<>();
+        List<BoardDTO> bfList = new ArrayList<>();
+        for (BoardDTO boardDTO : bList) {
+            if (boardDTO.getNotice().equals("2"))
+                bwList.add(a++, boardDTO);
+            else if (boardDTO.getNotice().equals("3"))
+                bfList.add(b++, boardDTO);
+        }
+        if(bwList==null)
+            bwList = new ArrayList<BoardDTO>();
+        if(bfList==null)
+            bfList = new ArrayList<BoardDTO>();
+        model.addAttribute("bfList",bfList);
+        model.addAttribute("bwList",bwList);
+        model.addAttribute("gDTO",gDTO);
+        return "/GG/Calander";
+    }
+    /*목표 캘린더 화면*/
+    @RequestMapping(value = "GCalander")
+    public String GCalander(HttpServletRequest request,Model model, HttpSession session) throws Exception {
+        String seq = request.getParameter("seq");
+        String name = (String)session.getAttribute("SS_USER_NAME");
+        log.info(seq);
+        GroupDTO gDTO = new GroupDTO();
+        gDTO.setGroupSeq(seq);
+        gDTO.setUserName(name);
+        List<BoardDTO> bList = new ArrayList<>();
+        bList=boardservice.getUnotice(gDTO);
+        gDTO = groupservice.getGroupInfo(seq);
+        String gname = gDTO.getGroupName();
+        List<GroupDTO> user = groupservice.users(gname);
+        if(user==null){
+            log.info("값없음");
+            user = new ArrayList<>();
+        }else {
+            log.info("user : "+user.get(0).getUserName());
+        }
+        model.addAttribute("user",user);
+
+        if (bList==null)
+            bList = new ArrayList<BoardDTO>();
+        log.info(bList.size());
+        int a=0,b=0;
+        List<BoardDTO> bwList = new ArrayList<>();
+        List<BoardDTO> bfList = new ArrayList<>();
+        for (BoardDTO boardDTO : bList) {
+            if (boardDTO.getNotice().equals("3"))
+                bfList.add(b++, boardDTO);
+            else
+                bwList.add(a++, boardDTO);
+        }
+        if(bwList==null)
+            bwList = new ArrayList<BoardDTO>();
+        if(bfList==null)
+            bfList = new ArrayList<BoardDTO>();
+        model.addAttribute("bfList",bfList);
+        model.addAttribute("bwList",bwList);
+        model.addAttribute("gDTO",gDTO);
+        return "/GG/GCalander";
+    }
 }

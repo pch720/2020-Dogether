@@ -2,6 +2,7 @@ package poly.persistance.mapper;
 
 import config.Mapper;
 import poly.dto.BoardDTO;
+import poly.dto.GroupDTO;
 
 import java.util.List;
 
@@ -15,4 +16,6 @@ public interface IBoardMapper {
     int delwork(BoardDTO bDTO) throws Exception;
 
     int finwork(BoardDTO bDTO) throws Exception;
+
+    List<BoardDTO> getUnotice(GroupDTO gDTO) throws Exception;
 }

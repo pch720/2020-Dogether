@@ -110,7 +110,7 @@
     <%--떠다니는 진행상황--%>
     <div class="modal-content">
         <div class="modal-body" style="text-align: center;">
-            <a href="/Calander.do?seq=<%=gDTO.getGroupSeq()%>" class="btn btn-primary" type="button">내 목포 현황 확인</a>
+            <a href="/GCalander.do?seq=<%=gDTO.getGroupSeq()%>" class="btn btn-primary" type="button">내 목포 현황 확인</a>
         </div>
     </div>
     <%--떠다니는 그룹원--%>

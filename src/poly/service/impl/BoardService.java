@@ -2,6 +2,7 @@ package poly.service.impl;
 
 import org.springframework.stereotype.Service;
 import poly.dto.BoardDTO;
+import poly.dto.GroupDTO;
 import poly.persistance.mapper.IBoardMapper;
 import poly.service.IBoardService;
 
@@ -32,5 +33,10 @@ public class BoardService implements IBoardService {
     @Override
     public int finwork(BoardDTO bDTO) throws Exception {
         return boardMapper.finwork(bDTO);
+    }
+
+    @Override
+    public List<BoardDTO> getUnotice(GroupDTO gDTO) throws Exception {
+        return boardMapper.getUnotice(gDTO);
     }
 }
