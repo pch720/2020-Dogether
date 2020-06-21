@@ -14,6 +14,8 @@
           <element id="module-output" name="SpringPRJ" />
         </element>
         <element id="directory" name="lib">
+          <element id="library" level="project" name="Maven: org.nuiton.thirdparty:Rserve:1.8-5" />
+          <element id="library" level="project" name="Maven: org.nuiton.thirdparty:REngine:1.7-3" />
           <element id="library" level="project" name="Maven: org.mariadb.jdbc:mariadb-java-client:2.0.1" />
           <element id="library" level="project" name="Maven: org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16" />
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-devtools:1.5.2.RELEASE" />

@@ -26,6 +26,19 @@
 
 	<dependencies>
 
+		<!-- Rserve -->
+		<dependency>
+			<groupId>org.nuiton.thirdparty</groupId>
+			<artifactId>Rserve</artifactId>
+			<version>1.8-5</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.nuiton.thirdparty</groupId>
+			<artifactId>REngine</artifactId>
+			<version>1.7-3</version>
+		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/org.mariadb.jdbc/mariadb-java-client -->
 		<dependency>
 			<groupId>org.mariadb.jdbc</groupId>

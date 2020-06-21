@@ -7,5 +7,6 @@
         <typeAlias type="poly.dto.UserDTO" alias="UserDTO"/>
         <typeAlias type="poly.dto.BoardDTO" alias="BoardDTO"/>
         <typeAlias type="poly.dto.GroupDTO" alias="GroupDTO"/>
+        <typeAlias type="poly.dto.WordDTO" alias="WordDTO"/>
     </typeAliases>
 </configuration>

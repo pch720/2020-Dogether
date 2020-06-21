@@ -12,6 +12,10 @@
 <head>
 
     <style>
+        #wordcloud-wrapper{
+            width: 100%;
+            height: 500px;
+        }
         .TitlePadding{
             padding-left: 10% !important;
             padding-right: 10% !important;
@@ -52,6 +56,11 @@
     <link href="css/stylish-portfolio.min.css" rel="stylesheet">
 </head>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<!-- amchart -->
+<script src="https://www.amcharts.com/lib/4/core.js"></script>
+<script src="https://www.amcharts.com/lib/4/charts.js"></script>
+<script src="https://www.amcharts.com/lib/4/plugins/wordCloud.js"></script>
+<script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
 <body id="page-top" style="height: auto;">
 
 <!-- 네비게이션바 -->
@@ -62,7 +71,7 @@
     <a class="navbar-brand GA" >Popular Group</a>
     <div style="display: flex;"class="PG">
         <ul class="a">
-        <% if (!grList.equals(null)){
+        <% if (grList!=null){
             for(int i=0; i<grList.size();i++){%>
             <li>
             <figure class="snip1200">
@@ -77,7 +86,7 @@
             <%}%>
         </div>
     </figcaption>
-    <a href="#" data-toggle="modal" data-target="#grModal<%=i%>"></a>
+    <a href="#" id="group<%=i%>" data-toggle="modal" data-target="#grModal<%=i%>"></a>
     </figure>
             </li>
         <%}}else{%>
@@ -135,6 +144,7 @@
                         <%}else{%>
                         <h5 style="font-size: 100%;font-weight: 400;"><%=grList.get(i).getGreeting()%></h5>
                         <%}%>
+                        <div id="wordcloud-wrapper"></div>
                     <button type="submit" class="btn btn-secondary MB"><%=grList.get(i).getCount()%>명과 함께하기</button>
                     </div>
                 </div>
@@ -162,7 +172,7 @@
                 <div class="modal-body">
                     <div style="text-align: center;">
                         <%if(goList.get(i).getGreeting().equals("")){%>
-                        <h5 style="font-size: 100%;font-weight: 400;">따로 입력된 그룹의 설명이 없습니다.</h5>
+                        <h5 style="font-size: 100%;font-weight: 400;">따로 입력된 목표의 설명이 없습니다.</h5>
                         <%}else{%>
                         <h5 style="font-size: 100%;font-weight: 400;"><%=goList.get(i).getGreeting()%></h5>
                         <%}%>
@@ -194,6 +204,63 @@ function Greg() {
     if(!res)
         return false;
 }
+<%for(int i=0; i<grList.size();i++){%>
+/*워드클라우드*/
+$('#group<%=i%>').click(function () {
+    console.log("<%=grList.get(i).getGroupSeq()%>번째입니다.");
+    $.ajax({
+        url: "/rConnect.do",
+        type: "POST",
+        dataType: "JSON",
+        data:{
+            "seq" : <%=grList.get(i).getGroupSeq()%>,
+        },
+        success: function (json) {
+            if(json.length > 0) {
+                am4core.ready(function() {
+                    // Themes begin
+                    am4core.useTheme(am4themes_animated);
+                    // Themes end
+                    const chart = am4core.create("wordcloud-wrapper", am4plugins_wordCloud.WordCloud);
+                    const series = chart.series.push(new am4plugins_wordCloud.WordCloudSeries());
+                    // series.labels.template.tooltipText = "{word}: {value}";
+                    series.fontFamily = "";
+                    series.data = json;
+                    series.dataFields.word = "word";
+                    series.dataFields.value = "wordCount";
+                    series.fontWeight = "700"
+                    series.accuracy = 4;
+                    series.step = 15;
+                    series.rotationThreshold = 0.7;
+                    series.angles = [0,-90];
+                    series.colors = new am4core.ColorSet();
+                    series.colors.passOptions = {};
+                    series.maxFontSize = am4core.percent(30);
+                    series.randomness = 0;
+                    series.events.on("arrangestarted", function(ev) {
+                        ev.target.baseSprite.preloader.show(1);
+                    });
+                    series.events.on("arrangeprogress", function(ev) {
+                        ev.target.baseSprite.preloader.progress = ev.progress;
+                    });
+                    $('path').hide();
+                }); // end am4core.ready()
+            } else {
+                $("#wordcloud-wrapper").append(
+                    "<div id='non-data'>등록된 프로젝트가 없습니다.</div>"
+                )
+                $("#non-data").css('text-align', 'center');
+                $("#non-data").css('font-size', '3rem');
+                $("#non-data").css('line-height', '450px');
+                $("#non-data").css('color', 'gray');
+            }
+        },
+        error: function (error) {
+            alert("error : " + error);
+        }
+    })
+})
+<%}%>
 </script>
 </body>
 <script src="../assets/dist/js/bootstrap.bundle.js"></script>
