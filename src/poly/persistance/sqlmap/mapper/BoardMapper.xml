@@ -29,6 +29,7 @@
             #{StDt}
         )
     </insert>
+    <!--게시물,공지사항,할일 가져오기-->
     <select id="getnotice" parameterType="String" resultType="BoardDTO">
         SELECT
             BOARD_SEQ AS BoardSeq,
@@ -44,12 +45,14 @@
             FROM BOARD
             WHERE GG_SEQ = #{seq}
     </select>
+    <!--일 삭제-->
     <delete id="delwork" parameterType="BoardDTO">
         DELETE
         FROM BOARD
         WHERE
         BOARD_SEQ = #{BoardSeq}
     </delete>
+    <!--한일로 변경-->
     <update id="finwork" parameterType="BoardDTO">
         UPDATE
             BOARD
@@ -59,6 +62,7 @@
         WHERE
         BOARD_SEQ = #{BoardSeq}
     </update>
+
     <select id="getUnotice" parameterType="GroupDTO" resultType="BoardDTO">
         SELECT
             BOARD_SEQ AS BoardSeq,
@@ -75,4 +79,15 @@
             WHERE GG_SEQ = #{GroupSeq}
             AND USER_NAME = #{userName}
     </select>
+    <!--글수정-->
+    <update id="MNotice" parameterType="BoardDTO">
+        UPDATE
+            BOARD
+        SET
+            CONTENTS = #{Contents},
+            UP_DT = SYSDATE(),
+            UP_ID = #{UpId}
+        WHERE
+        BOARD_SEQ = #{BoardSeq}
+    </update>
 </mapper>

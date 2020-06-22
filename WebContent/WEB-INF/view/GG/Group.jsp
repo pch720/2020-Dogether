@@ -242,28 +242,40 @@
     <a href="#" class="modal-content" data-toggle="modal" data-target="#MakeModal" style="margin-top: 130px; width: 56%; height: 150px; min-width: 650px;text-decoration: none;color: black;">
     내용을 입력해 주세요.
     </a>
-    <%for(int i=0;i<Nsize;i++){%>
+    <%for(int i=Nsize-1;i>-1;i--){%>
     <div class="modal-content" style="margin-top: 10px; width: 56%; min-width: 650px;">
         <div>
             <%if (bnList.get(i).getUserName().equals(session.getAttribute("SS_USER_NAME"))){%>
             <div style="text-align:right;">
                 <div class="btn-group dropright" style="font-size: larger;margin: 10px;margin-bottom: 0;">
                     <%--수정--%>
-                    <i class="fas fa-pencil-alt" style="margin-right: 15px;color: green;"></i>
+                    <i data-toggle="modal" data-target="#Nmod<%=i%>" class="fas fa-pencil-alt" style="margin-right: 15px;color: green;"></i>
                         <%--삭제--%>
                     <i class="fas fa-times-circle" id="Ndel<%=i%>" style="color: #DC3545;"></i>
                 </div>
             </div><hr>
             <%}%>
             <div style="margin-top: 15px;">
+                <%if (bnList.get(i).getUpDate()==null){%>
                 <div style="width:48%;display:inline-block;text-align:left;"><a style="color:gray;">작성자 : </a><%=bnList.get(i).getUserName()%></div>
                 <div style="width:48%;display:inline-block;text-align:right;"><a style="color:gray;">작성일 : </a><%=bnList.get(i).getRegDate()%></div>
+            <%}else{%>
+                <div style="width:48%;display:inline-block;text-align:left;"><a style="color:gray;">수정자 : </a><%=bnList.get(i).getUpId()%></div>
+                <div style="width:48%;display:inline-block;text-align:right;"><a style="color:gray;">수정일 : </a><%=bnList.get(i).getUpDate()%></div>
+                <%}%>
             </div>
             <hr>
             <div id="content" style="margin:0 auto;width:40%;margin-top:3%;margin-bottom:2%;word-break: break-all;"><%=bnList.get(i).getContents()%></div>
             <hr>
-            <button id="li" value="0"class="btn btn-outline-danger" style="margin-bottom: 5px;border-radius: 20px;"><i id="ke" class="far fa-heart"> 좋아요</i></button>
-            <button class="btn btn-outline-info" style="margin-bottom: 5px;border-radius: 20px;">댓글 달기</button>
+            <div class="form-group"style="width: 90%;text-align: left;">
+                <label for="rep<%=i%>">Address 2</label>
+                <div style="border-radius: 20px;word-break: break-word;height: auto;" class="form-control" id="rep<%=i%>">dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd</div>
+            </div>
+            <label style="margin-left: 15%">
+                <input class="form-control" id="mrep<%=i%>" type="text" style="width: 600px;">
+            </label>
+            <button id="Mrep<%=i%>" class="btn btn-outline-info" style="margin-bottom: 5px;border-radius: 20px;">댓글 달기</button>
+            <button id="li<%=i%>" value="0" class="btn btn-outline-danger" style="margin-bottom: 5px;border-radius: 20px;"><i id="ke<%=i%>" class="far fa-heart"> 좋아요</i></button>
         </div>
     </div><%}%>
 </section>
@@ -271,7 +283,7 @@
 <div class="modal fade" id="MakeModal" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
-            <form action="/MakeGroup.do" method="POST"id="make" class="needs-validation" novalidate>
+            <form method="POST"id="make" class="needs-validation" novalidate>
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">게시글 쓰기</h5>
                     <button type="button" id="LC" class="close" data-dismiss="modal" aria-label="Close">
@@ -290,6 +302,31 @@
         </div>
     </div>
 </div>
+<!-- 게시글 수정 창 -->
+<%for(int i=0;i<Nsize;i++){%>
+<div class="modal fade" id="Nmod<%=i%>" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <form method="POST" id="Nmod" class="needs-validation" novalidate>
+                <div class="modal-header">
+                    <h5 class="modal-title">글 수정</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <textarea style="height: 200px;" class="form-control" name="Ncontents" id="Mcontents<%=i%>"><%=bnList.get(i).getContents()%></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary BMB" type="button">수정하기</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<%}%>
 <!-- Scroll to Top Button-->
 <a class="scroll-to-top rounded js-scroll-trigger" href="#page-top">
     <i class="fas fa-angle-up"></i>
@@ -327,18 +364,20 @@
         }).scroll();
 
     });
-    $('#li').click(function () {
-        if ($('#li').val() === "0"){
-            $('#ke').removeClass('far');
-            $('#ke').addClass('fas');
-            $('#li').attr('value', '1');
+    <%for(int i=0;i<Nsize;i++){%>
+    $('#li<%=i%>').click(function () {
+        if ($('#li<%=i%>').val() === "0"){
+            $('#ke<%=i%>').removeClass('far');
+            $('#ke<%=i%>').addClass('fas');
+            $('#li<%=i%>').attr('value', '1');
         }
         else {
-            $('#ke').removeClass('fas');
-            $('#ke').addClass('far');
-            $('#li').attr('value', '0')
+            $('#ke<%=i%>').removeClass('fas');
+            $('#ke<%=i%>').addClass('far');
+            $('#li<%=i%>').attr('value', '0')
         }
     });
+    <%}%>
     /*클릭시 할일한일 뒤집기*/
     $('#add1,#add').click(function() {
         $(this).closest('.flip-container').toggleClass('hover');
@@ -368,6 +407,31 @@
             })
         }
     });
+    /*댓글추가*/
+    <%for(int i=0;i<Nsize;i++){%>
+    $('#Mrep<%=i%>').click(function () {
+        if ($("#mrep<%=i%>").val()===""){
+            alert("댓글을 입력해주세요.");
+            return false;
+        }
+        else {
+            $.ajax({
+                url: "/writerep.do",
+                type: "POST",
+                data: {
+                    "contents": $("#mrep<%=i%>").val(),
+                    "seq": <%=bnList.get(i).getBoardSeq()%>,
+                    "group": '<%=gDTO.getGroupName()%>'
+                },
+                success: function (data) {
+                    if (data === 1)
+                        alert("게시글이 추가되었습니다.");
+                    window.location.reload(true);
+                }
+            })
+        }
+    });
+    <%}%>
     /*할일추가*/
     $('#add2').click(function () {
         if ($("#contents").val()===""){
@@ -423,6 +487,34 @@
             })
         }
     });
+    /*게시글 수정*/
+    <%for(int i=0;i<Nsize;i++){%>
+    $('.BMB').click(function () {
+        const Mcontents =$('#Mcontents<%=i%>').val();
+        if (Mcontents===""){
+            alert("수정하실 내용을 입력해 주세요.")
+        }else if (Mcontents=="<%=bnList.get(i).getContents()%>"){
+            alert("내용을 수정해 주세요.")
+        }
+        else{
+            $.ajax({
+                url: "/ModNotice.do",
+                type: "POST",
+                data:{
+                    "seq" : '<%=bnList.get(i).getBoardSeq()%>',
+                    "contents" : Mcontents
+                },
+                success: function (data) {
+                    console.log(data)
+                    if (data===1) {
+                        alert("게시글이 수정되었습니다.");
+                        window.location.reload(true);
+                    }
+                }
+            })
+        }
+    });
+    <%}%>
     /*할일삭제*/
     $('#del').click(function () {
         let seq=[];

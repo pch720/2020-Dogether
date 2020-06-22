@@ -24,7 +24,7 @@ public class RunController {
         c.eval("library(RColorBrewer)");
         c.eval("library(wordcloud)");
         c.close();
-        System.out.println("RConnect 연결 끝");
+        log.info("RConnect 연결 끝");
 
         return "/index";
     }

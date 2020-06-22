@@ -166,7 +166,7 @@ public class GroupController {
         if (bList==null)
             bList = new ArrayList<BoardDTO>();
         log.info(bList.size());
-        int a=0,b=0;
+        int a=0,b=0,c=0;
         List<BoardDTO> bnList = new ArrayList<>();
         List<BoardDTO> bwList = new ArrayList<>();
         List<BoardDTO> bfList = new ArrayList<>();
@@ -176,7 +176,7 @@ public class GroupController {
             else if (boardDTO.getNotice().equals("2"))
                 bwList.add(b++, boardDTO);
             else if (boardDTO.getNotice().equals("3"))
-                bfList.add(b++, boardDTO);
+                bfList.add(c++, boardDTO);
         }
         if(bnList==null)
             bnList = new ArrayList<BoardDTO>();

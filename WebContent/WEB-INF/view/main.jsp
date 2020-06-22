@@ -12,7 +12,7 @@
 <head>
 
     <style>
-        #wordcloud-wrapper{
+        .wordcloud{
             width: 100%;
             height: 500px;
         }
@@ -71,25 +71,25 @@
     <a class="navbar-brand GA" >Popular Group</a>
     <div style="display: flex;"class="PG">
         <ul class="a">
-        <% if (grList!=null){
-            for(int i=0; i<grList.size();i++){%>
+            <% if (grList!=null){
+                for(int i=0; i<grList.size();i++){%>
             <li>
-            <figure class="snip1200">
-    <img src="../../img/bg-masthead.jpeg" style="width: 300px;height: 300px;" alt="sq-sample27" />
-    <figcaption>
-        <p>클릭 후 자세한 내용을 확인하세요.</p>
-        <div class="heading">
-            <%if(grList.get(i).getGroupName().length()<6){%>
-            <h2>Do<span><%=grList.get(i).getGroupName()%></span></h2>
-            <%}else{%>
-            <h2>Do<span><%=grList.get(i).getGroupName().substring(0,5)%>...</span></h2>
-            <%}%>
-        </div>
-    </figcaption>
-    <a href="#" id="group<%=i%>" data-toggle="modal" data-target="#grModal<%=i%>"></a>
-    </figure>
+                <figure class="snip1200">
+                    <img src="../../img/bg-masthead.jpeg" style="width: 300px;height: 300px;" alt="sq-sample27" />
+                    <figcaption>
+                        <p>클릭 후 자세한 내용을 확인하세요.</p>
+                        <div class="heading">
+                            <%if(grList.get(i).getGroupName().length()<6){%>
+                            <h2>Do<span><%=grList.get(i).getGroupName()%></span></h2>
+                            <%}else{%>
+                            <h2>Do<span><%=grList.get(i).getGroupName().substring(0,5)%>...</span></h2>
+                            <%}%>
+                        </div>
+                    </figcaption>
+                    <a href="#" id="group<%=i%>" data-toggle="modal" data-target="#grModal<%=i%>"></a>
+                </figure>
             </li>
-        <%}}else{%>
+            <%}}else{%>
             아직 그룹이 없습니다.
             <%}%>
         </ul>
@@ -98,24 +98,24 @@
 <%--인기목표--%>
 <section class="bg-warning text-white TitlePadding GAH">
     <a class="navbar-brand GA">Popular Goal</a>
-    <div style="display: flex;"class="PG">
+    <div style="display: flex;" class="PG">
         <ul class="a">
-            <% if (!goList.equals("")){
+            <% if (goList!=null){
                 for(int i=0; i<goList.size();i++){%>
             <li>
                 <figure class="snip1200">
                     <img src="/img/black.jpg" alt="sq-sample27" />
                     <figcaption>
                         <p>클릭 후 자세한 내용을 확인하세요.</p>
-                            <div class="heading">
-                                <%if(goList.get(i).getGroupName().length()<6){%>
-                                <h2>Do<span><%=goList.get(i).getGroupName()%></span></h2>
-                                <%}else{%>
-                                <h2>Do<span><%=goList.get(i).getGroupName().substring(0,5)%>...</span></h2>
-                                <%}%>
+                        <div class="heading">
+                            <%if(goList.get(i).getGroupName().length()<6){%>
+                            <h2>Do<span><%=goList.get(i).getGroupName()%></span></h2>
+                            <%}else{%>
+                            <h2>Do<span><%=goList.get(i).getGroupName().substring(0,5)%>...</span></h2>
+                            <%}%>
                         </div>
                     </figcaption>
-                    <a href="#" data-toggle="modal" data-target="#goModal<%=i%>"></a>
+                    <a href="#" id="goal<%=i%>" data-toggle="modal" data-target="#goModal<%=i%>"></a>
                 </figure>
             </li>
             <%}}else{%>
@@ -144,8 +144,8 @@
                         <%}else{%>
                         <h5 style="font-size: 100%;font-weight: 400;"><%=grList.get(i).getGreeting()%></h5>
                         <%}%>
-                        <div id="wordcloud-wrapper"></div>
-                    <button type="submit" class="btn btn-secondary MB"><%=grList.get(i).getCount()%>명과 함께하기</button>
+                        <div class="wordcloud" id="wordcloud-wrapper<%=i%>"></div>
+                        <button type="submit" class="btn btn-secondary MB"><%=grList.get(i).getCount()%>명과 함께하기</button>
                     </div>
                 </div>
                 <input type="hidden" name="function" value="0">
@@ -176,6 +176,7 @@
                         <%}else{%>
                         <h5 style="font-size: 100%;font-weight: 400;"><%=goList.get(i).getGreeting()%></h5>
                         <%}%>
+                        <div class="wordcloud" id="Gwordcloud-wrapper<%=i%>"></div>
                         <button type="submit" class="btn btn-secondary MB"><%=goList.get(i).getCount()%>명과 함께하기</button>
                     </div>
                 </div>
@@ -199,68 +200,127 @@
 <script src="js/stylish-portfolio.min.js"></script>
 <script src="/js/scroll.js"></script>
 <script>
-function Greg() {
-    const res = confirm("그룹에 가입하시겠습니까?")
-    if(!res)
-        return false;
-}
-<%for(int i=0; i<grList.size();i++){%>
-/*워드클라우드*/
-$('#group<%=i%>').click(function () {
-    console.log("<%=grList.get(i).getGroupSeq()%>번째입니다.");
-    $.ajax({
-        url: "/rConnect.do",
-        type: "POST",
-        dataType: "JSON",
-        data:{
-            "seq" : <%=grList.get(i).getGroupSeq()%>,
-        },
-        success: function (json) {
-            if(json.length > 0) {
-                am4core.ready(function() {
-                    // Themes begin
-                    am4core.useTheme(am4themes_animated);
-                    // Themes end
-                    const chart = am4core.create("wordcloud-wrapper", am4plugins_wordCloud.WordCloud);
-                    const series = chart.series.push(new am4plugins_wordCloud.WordCloudSeries());
-                    // series.labels.template.tooltipText = "{word}: {value}";
-                    series.fontFamily = "";
-                    series.data = json;
-                    series.dataFields.word = "word";
-                    series.dataFields.value = "wordCount";
-                    series.fontWeight = "700"
-                    series.accuracy = 4;
-                    series.step = 15;
-                    series.rotationThreshold = 0.7;
-                    series.angles = [0,-90];
-                    series.colors = new am4core.ColorSet();
-                    series.colors.passOptions = {};
-                    series.maxFontSize = am4core.percent(30);
-                    series.randomness = 0;
-                    series.events.on("arrangestarted", function(ev) {
-                        ev.target.baseSprite.preloader.show(1);
-                    });
-                    series.events.on("arrangeprogress", function(ev) {
-                        ev.target.baseSprite.preloader.progress = ev.progress;
-                    });
-                    $('path').hide();
-                }); // end am4core.ready()
-            } else {
-                $("#wordcloud-wrapper").append(
-                    "<div id='non-data'>등록된 프로젝트가 없습니다.</div>"
-                )
-                $("#non-data").css('text-align', 'center');
-                $("#non-data").css('font-size', '3rem');
-                $("#non-data").css('line-height', '450px');
-                $("#non-data").css('color', 'gray');
+    function Greg() {
+        const res = confirm("그룹에 가입하시겠습니까?")
+        if(!res)
+            return false;
+    }
+    <%for(int i=0; i<grList.size();i++){%>
+    /*그룹 워드클라우드*/
+    $('#group<%=i%>').click(function () {
+        console.log("<%=grList.get(i).getGroupSeq()%>번째입니다.");
+        $.ajax({
+            url: "/rConnect.do",
+            type: "POST",
+            dataType: "JSON",
+            data:{
+                "seq" : <%=grList.get(i).getGroupSeq()%>,
+            },
+            success: function (json) {
+                if(json.length > 0) {
+                    am4core.ready(function() {
+                        // Themes begin
+                        am4core.useTheme(am4themes_animated);
+                        // Themes end
+                        const chart = am4core.create("wordcloud-wrapper<%=i%>", am4plugins_wordCloud.WordCloud);
+                        const series = chart.series.push(new am4plugins_wordCloud.WordCloudSeries());
+                        // series.labels.template.tooltipText = "{word}: {value}";
+                        series.fontFamily = "";
+                        series.data = json;
+                        series.dataFields.word = "word";
+                        series.dataFields.value = "wordCount";
+                        series.fontWeight = "700"
+                        series.accuracy = 4;
+                        series.step = 15;
+                        series.rotationThreshold = 0.7;
+                        series.angles = [0,-90];
+                        series.colors = new am4core.ColorSet();
+                        series.colors.passOptions = {};
+                        series.maxFontSize = am4core.percent(30);
+                        series.randomness = 0;
+                        series.events.on("arrangestarted", function(ev) {
+                            ev.target.baseSprite.preloader.show(1);
+                        });
+                        series.events.on("arrangeprogress", function(ev) {
+                            ev.target.baseSprite.preloader.progress = ev.progress;
+                        });
+                        $('path').hide();
+                    }); // end am4core.ready()
+                } else {
+                    $("#wordcloud-wrapper<%=i%>").append(
+                        "<div class='non-data'>등록된 게시글이 적어<br/>워드클라우드가 생성되지 않았습니다.</div>"
+                    )
+                    $(".non-data").css('text-align', 'center');
+                    $(".non-data").css('font-size', '1.5rem');
+                    $(".non-data").css('line-height', '50px');
+                    $(".non-data").css('color', 'gray');
+                    $(".non-data").css('padding-top', '30%');
+                }
+            },
+            error: function (error) {
+                alert("error : " + error);
             }
-        },
-        error: function (error) {
-            alert("error : " + error);
-        }
+        })
+    });
+    <%}%>
+    <%for(int i=0; i<goList.size();i++){%>
+    /*목표 워드클라우드*/
+    $('#goal<%=i%>').click(function () {
+        console.log("<%=goList.get(i).getGroupSeq()%>번째입니다.");
+        $.ajax({
+            url: "/rConnect.do",
+            type: "POST",
+            dataType: "JSON",
+            data:{
+                "seq" : <%=goList.get(i).getGroupSeq()%>,
+            },
+            success: function (json) {
+                if(json.length > 0) {
+                    am4core.ready(function() {
+                        // Themes begin
+                        am4core.useTheme(am4themes_animated);
+                        // Themes end
+                        const chart = am4core.create("Gwordcloud-wrapper<%=i%>", am4plugins_wordCloud.WordCloud);
+                        const series = chart.series.push(new am4plugins_wordCloud.WordCloudSeries());
+                        // series.labels.template.tooltipText = "{word}: {value}";
+                        series.fontFamily = "";
+                        series.data = json;
+                        series.dataFields.word = "word";
+                        series.dataFields.value = "wordCount";
+                        series.fontWeight = "700";
+                        series.accuracy = 4;
+                        series.step = 15;
+                        series.rotationThreshold = 0.7;
+                        series.angles = [0,-90];
+                        series.colors = new am4core.ColorSet();
+                        series.colors.passOptions = {};
+                        series.maxFontSize = am4core.percent(30);
+                        series.randomness = 0;
+                        series.events.on("arrangestarted", function(ev) {
+                            ev.target.baseSprite.preloader.show(1);
+                        });
+                        series.events.on("arrangeprogress", function(ev) {
+                            ev.target.baseSprite.preloader.progress = ev.progress;
+                        });
+                        $('path').hide();
+                    }); // end am4core.ready()
+                } else {
+                    $("#Gwordcloud-wrapper<%=i%>").append(
+                        "<div class='non-data'>등록된 게시글이 적어<br/>워드클라우드가 생성되지 않았습니다.</div>"
+                    );
+                    $(".non-data").css('text-align', 'center');
+                    $(".non-data").css('font-size', '1.5rem');
+                    $(".non-data").css('line-height', '50px');
+                    $(".non-data").css('color', 'gray');
+                    $(".non-data").css('padding-top', '30%');
+                }
+            },
+            error: function (error) {
+                alert("error : " + error);
+            }
+        })
     })
-})
-<%}%>
+    <%}%>
 </script>
 </body>
 <script src="../assets/dist/js/bootstrap.bundle.js"></script>

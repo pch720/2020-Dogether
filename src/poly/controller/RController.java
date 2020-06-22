@@ -40,7 +40,6 @@ public class RController {
         List<BoardDTO> bList = new ArrayList<>();
         bList = boardService.getnotice(seq);
         log.info("컨텐츠 가져옴");
-        log.info(bList.get(0).getContents());
         if (bList.size() == 0) {
             log.info("컨텐츠 없음");
             sList = new ArrayList<>();
@@ -52,7 +51,7 @@ public class RController {
                 log.info(sArr[i]);
             }
             c.assign("sArr", sArr);
-            c.eval("m_df <- sArr %>% SimplePos09 %>% melt %>% as_tibble %>% select(3,1)");
+            c.eval("m_df <- sArr %>% SimplePos09 %>% melt %>% as_tibble %>% select(2,1)");
             c.eval("m_df <- m_df %>% mutate(noun=str_match(value, '([A-Z|a-z|0-9|가-힣]+)/N')[,2]) %>% na.omit");
             c.eval("m_df <- m_df %>% count(noun, sort=TRUE)");
             c.eval("m_df <- filter(m_df,nchar(noun)>=2)");

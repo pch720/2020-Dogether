@@ -18,4 +18,6 @@ public interface IBoardMapper {
     int finwork(BoardDTO bDTO) throws Exception;
 
     List<BoardDTO> getUnotice(GroupDTO gDTO) throws Exception;
+
+    int MNotice(BoardDTO bDTO) throws Exception;
 }

@@ -55,6 +55,25 @@ public class BoardController {
         log.info(n);
         return boardservice.write(bDTO);
     }
+    /*댓글추가*/
+    @RequestMapping(value = "/writerep", method = RequestMethod.POST)
+    public @ResponseBody int writerep(HttpServletRequest request, HttpSession session, HttpServletResponse response) throws Exception {
+        String contents = CmmUtil.nvl(request.getParameter("contents"));
+        String start = CmmUtil.nvl(request.getParameter("start"));
+        String end = CmmUtil.nvl(request.getParameter("end"));
+        String n = CmmUtil.nvl(request.getParameter("n"));
+        String name = CmmUtil.nvl((String) session.getAttribute("SS_USER_NAME"));
+        String GUseq = CmmUtil.nvl(request.getParameter("seq"));
+        String Group = CmmUtil.nvl(request.getParameter("group"));
+        log.info(contents + "/" + name + "/" + start + "/" + end);
+        GroupDTO gDTO = new GroupDTO();
+        gDTO.setUserName(name);
+        gDTO.setGroupName(Group);
+        String GU = groupservice.gg(gDTO);
+        log.info(GU);
+
+        return ;
+    }
     /*한일로 변경*/
     @RequestMapping(value = "/finwork", method = RequestMethod.POST)
     public @ResponseBody int finwork(HttpServletRequest request, HttpSession session, HttpServletResponse response) throws Exception {
@@ -172,5 +191,20 @@ public class BoardController {
         model.addAttribute("bwList",bwList);
         model.addAttribute("gDTO",gDTO);
         return "/GG/GCalander";
+    }
+
+    /*게시글 수정*/
+    @RequestMapping(value = "/ModNotice", method = RequestMethod.POST)
+    public @ResponseBody int ModNotice(HttpServletRequest request, HttpSession session, HttpServletResponse response) throws Exception {
+        String contents = CmmUtil.nvl(request.getParameter("contents"));
+        String name = CmmUtil.nvl((String)session.getAttribute("SS_USER_NAME"));
+        String seq = CmmUtil.nvl(request.getParameter("seq"));
+        log.info(contents+"/"+name+"/"+seq);
+        BoardDTO bDTO = new BoardDTO();
+        bDTO.setUpId(name);
+        bDTO.setBoardSeq(seq);
+        bDTO.setContents(contents);
+
+        return boardservice.MNotice(bDTO);
     }
 }

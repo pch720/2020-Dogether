@@ -39,4 +39,9 @@ public class BoardService implements IBoardService {
     public List<BoardDTO> getUnotice(GroupDTO gDTO) throws Exception {
         return boardMapper.getUnotice(gDTO);
     }
+
+    @Override
+    public int MNotice(BoardDTO bDTO) throws Exception {
+        return boardMapper.MNotice(bDTO);
+    }
 }
