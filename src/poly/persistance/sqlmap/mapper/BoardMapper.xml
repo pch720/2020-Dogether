@@ -90,4 +90,41 @@
         WHERE
         BOARD_SEQ = #{BoardSeq}
     </update>
+    <!--댓글 등록-->
+    <insert id="writerep" parameterType="BoardDTO">
+        INSERT
+        INTO REPLY
+        (
+            CONTENTS,
+            BOARD_SEQ,
+            USER_NAME,
+            REG_DT,
+            UP_DT,
+            UP_ID,
+            GG_SEQ
+        )
+        VALUES
+        (
+            #{Contents},
+            #{BoardSeq},
+            #{UserName},
+            SYSDATE(),
+            SYSDATE(),
+            #{UserName},
+            #{GGseq}
+        )
+    </insert>
+    <!--댓글 가저오기-->
+    <select id="getrep" parameterType="String" resultType="BoardDTO">
+        SELECT
+            REP_SEQ AS rep,
+            BOARD_SEQ AS BoardSeq,
+            CONTENTS AS Contents,
+            USER_NAME AS UserName,
+            REG_DT AS RegDate,
+            UP_DT AS `UpDate`,
+            UP_ID AS UpId
+            FROM REPLY
+            WHERE GG_SEQ = #{seq}
+    </select>
 </mapper>

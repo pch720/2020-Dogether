@@ -14,6 +14,8 @@
     int Wsize = bwList.size();
     List<GroupDTO> user = (List<GroupDTO>)request.getAttribute("user");
     String SS_name =(String)session.getAttribute("SS_USER_NAME");
+    List<BoardDTO> reply = (List<BoardDTO>) request.getAttribute("reply");
+    int Rsize = reply.size();
 %>
 <html lang="en">
 <head>
@@ -29,11 +31,11 @@
             top: 10px;
         }
         .Menu2 {
-             width: 250px;
-             height: 200px;
-             right: 4%;
-             top: 10px;
-         }
+            width: 250px;
+            height: 200px;
+            right: 4%;
+            top: 10px;
+        }
         .Menu3 {
             width: 220px;
             height: 300px;
@@ -100,7 +102,7 @@
 ></script>
 <%if (gDTO.getFunction().equals("1")){%>
 <body id="page-top" class="bg-warning" style="height: auto;">
-<%}else{%>
+    <%}else{%>
 <body id="page-top" class="bg-primary" style="height: auto;">
 <%}%>
 <!-- 네비게이션바 -->
@@ -240,7 +242,7 @@
 <!-- 그룹 게시판 -->
 <section id="board">
     <a href="#" class="modal-content" data-toggle="modal" data-target="#MakeModal" style="margin-top: 130px; width: 56%; height: 150px; min-width: 650px;text-decoration: none;color: black;">
-    내용을 입력해 주세요.
+        내용을 입력해 주세요.
     </a>
     <%for(int i=Nsize-1;i>-1;i--){%>
     <div class="modal-content" style="margin-top: 10px; width: 56%; min-width: 650px;">
@@ -250,7 +252,7 @@
                 <div class="btn-group dropright" style="font-size: larger;margin: 10px;margin-bottom: 0;">
                     <%--수정--%>
                     <i data-toggle="modal" data-target="#Nmod<%=i%>" class="fas fa-pencil-alt" style="margin-right: 15px;color: green;"></i>
-                        <%--삭제--%>
+                    <%--삭제--%>
                     <i class="fas fa-times-circle" id="Ndel<%=i%>" style="color: #DC3545;"></i>
                 </div>
             </div><hr>
@@ -259,7 +261,7 @@
                 <%if (bnList.get(i).getUpDate()==null){%>
                 <div style="width:48%;display:inline-block;text-align:left;"><a style="color:gray;">작성자 : </a><%=bnList.get(i).getUserName()%></div>
                 <div style="width:48%;display:inline-block;text-align:right;"><a style="color:gray;">작성일 : </a><%=bnList.get(i).getRegDate()%></div>
-            <%}else{%>
+                <%}else{%>
                 <div style="width:48%;display:inline-block;text-align:left;"><a style="color:gray;">수정자 : </a><%=bnList.get(i).getUpId()%></div>
                 <div style="width:48%;display:inline-block;text-align:right;"><a style="color:gray;">수정일 : </a><%=bnList.get(i).getUpDate()%></div>
                 <%}%>
@@ -267,14 +269,45 @@
             <hr>
             <div id="content" style="margin:0 auto;width:40%;margin-top:3%;margin-bottom:2%;word-break: break-all;"><%=bnList.get(i).getContents()%></div>
             <hr>
-            <div class="form-group"style="width: 90%;text-align: left;">
-                <label for="rep<%=i%>">Address 2</label>
-                <div style="border-radius: 20px;word-break: break-word;height: auto;" class="form-control" id="rep<%=i%>">dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd</div>
+            <div id="3rep<%=i%>">
+            <%int a=0;
+                for (int j=0; j<Rsize ;j++){
+                if(reply.get(j).getBoardSeq().equals(bnList.get(i).getBoardSeq())){
+                    a++;
+                    if (a==4)
+                        break;
+                    %>
+            <div class="form-group" style="width: 90%;text-align: left;">
+                <div style="width:100%;display:inline-flex;text-align:left;"><%=reply.get(j).getUserName()%><div style="font-size: x-small;margin-left: 6px;margin-top: 4px;"><%=reply.get(j).getRegDate()%></div></div>
+                <div style="word-break: break-word;height: auto;margin-left: 1%;font-size: larger;">
+                    <%if (reply.get(j).getUserName().equals(SS_name)){%>
+                    <i class="fas fa-times-circle" id="Rdel<%=i%>" style="color: #DC3545;"></i>
+                    <%}%>
+                    <%=reply.get(j).getContents()%></div>
             </div>
-            <label style="margin-left: 15%">
-                <input class="form-control" id="mrep<%=i%>" type="text" style="width: 600px;">
+            <% }}%>
+                <%if (a>3) {%>
+                <div style="font-size: small;" id="allrep<%=i%>">댓글모두보기</div>
+                <%}%>
+            </div>
+            <div id="Arep<%=i%>" style="display: none;">
+                <%for (int j=0; j<Rsize ;j++){
+                        if(reply.get(j).getBoardSeq().equals(bnList.get(i).getBoardSeq())){%>
+                <div class="form-group" style="width: 90%;text-align: left;">
+                    <div style="width:48%;display:inline-flex;text-align:left;"><%=reply.get(j).getUserName()%><div style="font-size: x-small;margin-left: 6px;margin-top: 4px;"><%=reply.get(j).getRegDate()%></div></div>
+                    <div style="word-break: break-word;height: auto;margin-left: 1%;font-size: larger;">
+                        <%if (reply.get(j).getUserName().equals(SS_name)){%>
+                        <i class="fas fa-times-circle" id="Rdel<%=i%>" style="color: #DC3545;"></i>
+                        <%}%>
+                        <%=reply.get(j).getContents()%></div>
+                </div>
+                <%}}%>
+                <div style="font-size: small;" id="threp<%=i%>">댓글모두보기접기</div>
+            </div>
+            <label>
+                <input class="form-control" id="mrep<%=i%>" type="text" style="width: 750px;">
             </label>
-            <button id="Mrep<%=i%>" class="btn btn-outline-info" style="margin-bottom: 5px;border-radius: 20px;">댓글 달기</button>
+            <button id="Mrep<%=i%>" class="btn btn-info" style="margin-bottom: 5px;margin-left: -15px;">작성</button>
             <button id="li<%=i%>" value="0" class="btn btn-outline-danger" style="margin-bottom: 5px;border-radius: 20px;"><i id="ke<%=i%>" class="far fa-heart"> 좋아요</i></button>
         </div>
     </div><%}%>
@@ -343,26 +376,20 @@
 <script src="js/stylish-portfolio.min.js"></script>
 <script>
     $(document).ready(function() {
-
         // 기존 css에서 플로팅 배너 위치(top)값을 가져와 저장한다.
         const floatPosition = parseInt($(".floatMenu").css('top'));
         // 250px 이런식으로 가져오므로 여기서 숫자만 가져온다. parseInt( 값 );
-
         $(window).scroll(function() {
             // 현재 스크롤 위치를 가져온다.
             const scrollTop = $(window).scrollTop();
             const newPosition = scrollTop + floatPosition + "px";
-
             /* 애니메이션 없이 바로 따라감
              $("#floatMenu").css('top', newPosition);
              */
-
             $(".floatMenu").stop().animate({
                 "top" : newPosition
             }, 500);
-
         }).scroll();
-
     });
     <%for(int i=0;i<Nsize;i++){%>
     $('#li<%=i%>').click(function () {
@@ -421,16 +448,26 @@
                 data: {
                     "contents": $("#mrep<%=i%>").val(),
                     "seq": <%=bnList.get(i).getBoardSeq()%>,
-                    "group": '<%=gDTO.getGroupName()%>'
+                    "group": '<%=gDTO.getGroupSeq()%>'
                 },
                 success: function (data) {
+                    console.log(data)
                     if (data === 1)
-                        alert("게시글이 추가되었습니다.");
+                        alert("댓글이 입력되었습니다.");
                     window.location.reload(true);
                 }
             })
         }
     });
+    /*댓글모두보기*/
+    $('#allrep<%=i%>').click(function () {
+        $('#3rep<%=i%>').attr('style','display:none;')
+        $('#Arep<%=i%>').attr('style','display:block;')
+    })
+    $('#threp<%=i%>').click(function () {
+        $('#3rep<%=i%>').attr('style','display:block;')
+        $('#Arep<%=i%>').attr('style','display:none;')
+    })
     <%}%>
     /*할일추가*/
     $('#add2').click(function () {
@@ -451,7 +488,7 @@
                 success: function (data) {
                     if (data === 1)
                         alert("할일이 추가되었습니다.");
-                        window.location.reload(true);
+                    window.location.reload(true);
                 }
             })
         }
@@ -467,7 +504,6 @@
             }
         }
         console.log(seq.join(","))
-
         if (seq.length<1)
             alert("한일로 변경할 항목을 선택해주세요.");
         else{
@@ -526,7 +562,6 @@
             }
         }
         console.log(seq.join(","))
-
         if (seq.length<1)
             alert("삭제할 항목을 선택해주세요.");
         else{
@@ -557,7 +592,6 @@
             }
         }
         console.log(seq.join(","))
-
         if (seq.length<1)
             alert("삭제할 항목을 선택해주세요.");
         else{

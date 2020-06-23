@@ -70,9 +70,9 @@
 <section class="bg-primary text-white TitlePadding GAH" style="margin-top: 98px;">
     <a class="navbar-brand GA" >Popular Group</a>
     <div style="display: flex;"class="PG">
-        <ul class="a">
-            <% if (grList!=null){
+            <% if (grList.size()>0){
                 for(int i=0; i<grList.size();i++){%>
+        <ul class="a">
             <li>
                 <figure class="snip1200">
                     <img src="../../img/bg-masthead.jpeg" style="width: 300px;height: 300px;" alt="sq-sample27" />
@@ -89,19 +89,19 @@
                     <a href="#" id="group<%=i%>" data-toggle="modal" data-target="#grModal<%=i%>"></a>
                 </figure>
             </li>
+        </ul>
             <%}}else{%>
             아직 그룹이 없습니다.
             <%}%>
-        </ul>
     </div>
 </section>
 <%--인기목표--%>
 <section class="bg-warning text-white TitlePadding GAH">
     <a class="navbar-brand GA">Popular Goal</a>
     <div style="display: flex;" class="PG">
-        <ul class="a">
-            <% if (goList!=null){
+            <% if (goList.size()>0){
                 for(int i=0; i<goList.size();i++){%>
+        <ul class="a">
             <li>
                 <figure class="snip1200">
                     <img src="/img/black.jpg" alt="sq-sample27" />
@@ -118,10 +118,10 @@
                     <a href="#" id="goal<%=i%>" data-toggle="modal" data-target="#goModal<%=i%>"></a>
                 </figure>
             </li>
+        </ul>
             <%}}else{%>
             아직 목표가 없습니다.
             <%}%>
-        </ul>
     </div>
 </section>
 

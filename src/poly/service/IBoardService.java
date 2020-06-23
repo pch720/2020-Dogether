@@ -17,4 +17,8 @@ public interface IBoardService {
     List<BoardDTO> getUnotice(GroupDTO gDTO) throws Exception;
 
     int MNotice(BoardDTO bDTO) throws Exception;
+
+    int writerep(BoardDTO bDTO) throws Exception;
+
+    List<BoardDTO> getrep(String seq) throws Exception;
 }

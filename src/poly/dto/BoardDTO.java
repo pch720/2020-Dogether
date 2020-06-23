@@ -13,6 +13,15 @@ public class BoardDTO {
     private String GGseq;
     private String StDt;
     private String FinDt;
+    private String rep;
+
+    public String getRep() {
+        return rep;
+    }
+
+    public void setRep(String rep) {
+        this.rep = rep;
+    }
 
     public String getStDt() {
         return StDt;

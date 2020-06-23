@@ -44,4 +44,14 @@ public class BoardService implements IBoardService {
     public int MNotice(BoardDTO bDTO) throws Exception {
         return boardMapper.MNotice(bDTO);
     }
+
+    @Override
+    public int writerep(BoardDTO bDTO) throws Exception {
+        return boardMapper.writerep(bDTO);
+    }
+
+    @Override
+    public List<BoardDTO> getrep(String seq) throws Exception {
+        return boardMapper.getrep(seq);
+    }
 }

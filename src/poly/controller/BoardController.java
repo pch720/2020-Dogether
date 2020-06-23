@@ -59,20 +59,17 @@ public class BoardController {
     @RequestMapping(value = "/writerep", method = RequestMethod.POST)
     public @ResponseBody int writerep(HttpServletRequest request, HttpSession session, HttpServletResponse response) throws Exception {
         String contents = CmmUtil.nvl(request.getParameter("contents"));
-        String start = CmmUtil.nvl(request.getParameter("start"));
-        String end = CmmUtil.nvl(request.getParameter("end"));
-        String n = CmmUtil.nvl(request.getParameter("n"));
+        String seq = CmmUtil.nvl(request.getParameter("seq"));
+        String group = CmmUtil.nvl(request.getParameter("group"));
         String name = CmmUtil.nvl((String) session.getAttribute("SS_USER_NAME"));
-        String GUseq = CmmUtil.nvl(request.getParameter("seq"));
-        String Group = CmmUtil.nvl(request.getParameter("group"));
-        log.info(contents + "/" + name + "/" + start + "/" + end);
-        GroupDTO gDTO = new GroupDTO();
-        gDTO.setUserName(name);
-        gDTO.setGroupName(Group);
-        String GU = groupservice.gg(gDTO);
-        log.info(GU);
+        log.info(contents + "/" + name + "/" + seq);
+        BoardDTO bDTO = new BoardDTO();
+        bDTO.setUserName(name);
+        bDTO.setBoardSeq(seq);
+        bDTO.setGGseq(group);
+        bDTO.setContents(contents);
 
-        return ;
+        return boardservice.writerep(bDTO);
     }
     /*한일로 변경*/
     @RequestMapping(value = "/finwork", method = RequestMethod.POST)

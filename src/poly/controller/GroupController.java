@@ -136,7 +136,7 @@ public class GroupController {
         int res1 = groupservice.chcount(gDTO);
         int res = groupservice.Delgu(gDTO);
         if(res==1 && res1==1)
-           msg="탈퇴 되었습니다.";
+            msg="탈퇴 되었습니다.";
         else
             msg="탈퇴에 실패하였습니다.";
         url=referer;
@@ -160,7 +160,12 @@ public class GroupController {
             log.info("user : "+user.get(0).getUserName());
         }
         model.addAttribute("user",user);
-
+        List<BoardDTO> reply = boardservice.getrep(seq);
+        if(reply==null){
+            log.info("값없음");
+            reply = new ArrayList<>();
+        }
+        model.addAttribute("reply",reply);
         List<BoardDTO> bList = new ArrayList<>();
         bList=boardservice.getnotice(seq);
         if (bList==null)
@@ -171,12 +176,17 @@ public class GroupController {
         List<BoardDTO> bwList = new ArrayList<>();
         List<BoardDTO> bfList = new ArrayList<>();
         for (BoardDTO boardDTO : bList) {
-            if (boardDTO.getNotice().equals("1"))
-                bnList.add(a++, boardDTO);
-            else if (boardDTO.getNotice().equals("2"))
-                bwList.add(b++, boardDTO);
-            else if (boardDTO.getNotice().equals("3"))
-                bfList.add(c++, boardDTO);
+            switch (boardDTO.getNotice()) {
+                case "1":
+                    bnList.add(a++, boardDTO);
+                    break;
+                case "2":
+                    bwList.add(b++, boardDTO);
+                    break;
+                case "3":
+                    bfList.add(c++, boardDTO);
+                    break;
+            }
         }
         if(bnList==null)
             bnList = new ArrayList<BoardDTO>();
