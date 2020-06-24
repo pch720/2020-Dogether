@@ -91,7 +91,8 @@
             </li>
         </ul>
             <%}}else{%>
-            아직 그룹이 없습니다.
+        <div style="display: flex;font-size: x-large;color: black;justify-content: center;padding-top: 80px;width: 100%;">
+            아직 그룹이 없습니다.</div>
             <%}%>
     </div>
 </section>
@@ -120,7 +121,8 @@
             </li>
         </ul>
             <%}}else{%>
-            아직 목표가 없습니다.
+            <div style="display: flex;font-size: x-large;color: black;justify-content: center;padding-top: 80px;width: 100%;">
+                아직 목표가 없습니다.</div>
             <%}%>
     </div>
 </section>

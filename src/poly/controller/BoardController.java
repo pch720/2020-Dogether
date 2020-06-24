@@ -71,6 +71,13 @@ public class BoardController {
 
         return boardservice.writerep(bDTO);
     }
+    /*댓글삭제*/
+    @RequestMapping(value = "/delrep", method = RequestMethod.POST)
+    public @ResponseBody int delrep(HttpServletRequest request, HttpSession session, HttpServletResponse response) throws Exception {
+        String seq = request.getParameter("seq");
+        log.info(seq);
+        return boardservice.delrep(seq);
+    }
     /*한일로 변경*/
     @RequestMapping(value = "/finwork", method = RequestMethod.POST)
     public @ResponseBody int finwork(HttpServletRequest request, HttpSession session, HttpServletResponse response) throws Exception {
@@ -203,5 +210,29 @@ public class BoardController {
         bDTO.setContents(contents);
 
         return boardservice.MNotice(bDTO);
+    }
+    /*좋아요수정*/
+    @RequestMapping(value = "/like", method = RequestMethod.POST)
+    public @ResponseBody int like(HttpServletRequest request, HttpSession session, HttpServletResponse response) throws Exception {
+        String seq = request.getParameter("seq");
+        String like = request.getParameter("like");
+        String a = request.getParameter("a");
+        String useq = (String)session.getAttribute("SS_USER_SEQ");
+        int li=0;
+        BoardDTO bDTO = new BoardDTO();
+        bDTO.setBoardSeq(seq);
+        bDTO.setUserName(useq);
+        if (a.equals("1")) {
+            li = Integer.parseInt(like) + 1;
+           int b = boardservice.ML(bDTO);
+           log.info(b);
+        }else{
+            li=Integer.parseInt(like)-1;
+            int b = boardservice.DL(bDTO);
+            log.info(b);
+        }
+        like=Integer.toString(li);
+        bDTO.setLike(like);
+        return boardservice.like(bDTO);
     }
 }

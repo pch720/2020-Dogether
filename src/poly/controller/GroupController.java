@@ -146,8 +146,9 @@ public class GroupController {
     }
     /*그룹 시작 화면*/
     @RequestMapping(value = "Group")
-    public String Group(HttpServletRequest request,Model model) throws Exception {
+    public String Group(HttpServletRequest request,Model model,HttpSession session) throws Exception {
         String seq = request.getParameter("seq");
+        String useq = (String)session.getAttribute("SS_USER_SEQ");
         log.info(seq);
         GroupDTO gDTO = new GroupDTO();
         gDTO = groupservice.getGroupInfo(seq);
@@ -198,6 +199,16 @@ public class GroupController {
         model.addAttribute("bnList",bnList);
         model.addAttribute("bwList",bwList);
         model.addAttribute("gDTO",gDTO);
+        BoardDTO bDTO = new BoardDTO();
+        String[] like = new String[bnList.size()];
+        bDTO.setUserName(useq);
+        for (int i =0; i<bnList.size();i++) {
+            bDTO.setBoardSeq(bnList.get(i).getBoardSeq());
+            log.info(bDTO.getBoardSeq());
+            like[i]=boardservice.CL(bDTO);
+            log.info(like[i]);
+        }
+        model.addAttribute("like",like);
         return "/GG/Group";
     }
 

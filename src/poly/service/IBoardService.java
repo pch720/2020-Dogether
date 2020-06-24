@@ -21,4 +21,14 @@ public interface IBoardService {
     int writerep(BoardDTO bDTO) throws Exception;
 
     List<BoardDTO> getrep(String seq) throws Exception;
+
+    int delrep(String seq) throws Exception;
+
+    int like(BoardDTO bDTO)throws Exception;
+
+    int ML(BoardDTO bDTO) throws Exception;
+
+    int DL(BoardDTO bDTO) throws Exception;
+
+    String CL(BoardDTO bDTO) throws Exception;
 }

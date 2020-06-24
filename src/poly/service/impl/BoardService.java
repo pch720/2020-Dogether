@@ -54,4 +54,29 @@ public class BoardService implements IBoardService {
     public List<BoardDTO> getrep(String seq) throws Exception {
         return boardMapper.getrep(seq);
     }
+
+    @Override
+    public int delrep(String seq) throws Exception {
+        return boardMapper.delrep(seq);
+    }
+
+    @Override
+    public int like(BoardDTO bDTO) throws Exception {
+        return boardMapper.like(bDTO);
+    }
+
+    @Override
+    public int ML(BoardDTO bDTO) throws Exception {
+        return boardMapper.ML(bDTO);
+    }
+
+    @Override
+    public int DL(BoardDTO bDTO) throws Exception {
+        return boardMapper.DL(bDTO);
+    }
+
+    @Override
+    public String CL(BoardDTO bDTO) throws Exception {
+        return boardMapper.CL(bDTO);
+    }
 }

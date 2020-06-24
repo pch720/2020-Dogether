@@ -127,4 +127,48 @@
             FROM REPLY
             WHERE GG_SEQ = #{seq}
     </select>
+    <!--일 삭제-->
+    <delete id="delrep" parameterType="String">
+        DELETE
+        FROM REPLY
+        WHERE
+        REP_SEQ = #{seq}
+    </delete>
+    <!--좋아요수정-->
+    <update id="like" parameterType="BoardDTO">
+        UPDATE
+            BOARD
+        SET
+            `LIKE` = #{Like}
+        WHERE
+            BOARD_SEQ = #{BoardSeq}
+    </update>
+    <insert id="ML" parameterType="BoardDTO">
+        INSERT
+        INTO LI
+        (
+            USER_SEQ,
+            BOARD_SEQ
+        )
+        VALUES
+        (
+            #{UserName},
+            #{BoardSeq}
+        )
+    </insert>
+    <delete id="DL" parameterType="BoardDTO">
+        DELETE
+        FROM LI
+        WHERE
+        USER_SEQ = #{UserName}
+        AND BOARD_SEQ = #{BoardSeq}
+    </delete>
+    <select id="CL" parameterType="BoardDTO" resultType="String">
+        SELECT COUNT(*)
+		FROM
+			LI
+		WHERE
+			USER_SEQ = #{UserName}
+        AND BOARD_SEQ = #{BoardSeq}
+    </select>
 </mapper>

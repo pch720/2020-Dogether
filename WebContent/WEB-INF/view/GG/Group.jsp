@@ -16,6 +16,7 @@
     String SS_name =(String)session.getAttribute("SS_USER_NAME");
     List<BoardDTO> reply = (List<BoardDTO>) request.getAttribute("reply");
     int Rsize = reply.size();
+    String[] like = (String[]) request.getAttribute("like");
 %>
 <html lang="en">
 <head>
@@ -260,10 +261,12 @@
             <div style="margin-top: 15px;">
                 <%if (bnList.get(i).getUpDate()==null){%>
                 <div style="width:48%;display:inline-block;text-align:left;"><a style="color:gray;">작성자 : </a><%=bnList.get(i).getUserName()%></div>
-                <div style="width:48%;display:inline-block;text-align:right;"><a style="color:gray;">작성일 : </a><%=bnList.get(i).getRegDate()%></div>
+                <div style="width:48%;display:inline-block;text-align:right;"><a style="color:gray;"><i class="fas fa-heart" style="color:#DC3545;"> <%=bnList.get(i).getLike()%></i>
+                    작성일 : </a><%=bnList.get(i).getRegDate()%></div>
                 <%}else{%>
                 <div style="width:48%;display:inline-block;text-align:left;"><a style="color:gray;">수정자 : </a><%=bnList.get(i).getUpId()%></div>
-                <div style="width:48%;display:inline-block;text-align:right;"><a style="color:gray;">수정일 : </a><%=bnList.get(i).getUpDate()%></div>
+                <div style="width:48%;display:inline-block;text-align:right;"><a style="color:gray;"><div style="width:48%;display:inline-block;text-align:right;"><a style="color:gray;"><i class="fas fa-heart" style="color:#DC3545;"> <%=bnList.get(i).getLike()%></i>
+                    수정일 : </a><%=bnList.get(i).getUpDate()%></div>
                 <%}%>
             </div>
             <hr>
@@ -281,7 +284,7 @@
                 <div style="width:100%;display:inline-flex;text-align:left;"><%=reply.get(j).getUserName()%><div style="font-size: x-small;margin-left: 6px;margin-top: 4px;"><%=reply.get(j).getRegDate()%></div></div>
                 <div style="word-break: break-word;height: auto;margin-left: 1%;font-size: larger;">
                     <%if (reply.get(j).getUserName().equals(SS_name)){%>
-                    <i class="fas fa-times-circle" id="Rdel<%=i%>" style="color: #DC3545;"></i>
+                    <i class="fas fa-times-circle" id="Rdel<%=j%>" style="color: #DC3545;"></i>
                     <%}%>
                     <%=reply.get(j).getContents()%></div>
             </div>
@@ -291,13 +294,13 @@
                 <%}%>
             </div>
             <div id="Arep<%=i%>" style="display: none;">
-                <%for (int j=0; j<Rsize ;j++){
+                <%for (int j=3; j<Rsize ;j++){
                         if(reply.get(j).getBoardSeq().equals(bnList.get(i).getBoardSeq())){%>
                 <div class="form-group" style="width: 90%;text-align: left;">
                     <div style="width:48%;display:inline-flex;text-align:left;"><%=reply.get(j).getUserName()%><div style="font-size: x-small;margin-left: 6px;margin-top: 4px;"><%=reply.get(j).getRegDate()%></div></div>
                     <div style="word-break: break-word;height: auto;margin-left: 1%;font-size: larger;">
                         <%if (reply.get(j).getUserName().equals(SS_name)){%>
-                        <i class="fas fa-times-circle" id="Rdel<%=i%>" style="color: #DC3545;"></i>
+                        <i class="fas fa-times-circle" id="Rdel<%=j%>" style="color: #DC3545;"></i>
                         <%}%>
                         <%=reply.get(j).getContents()%></div>
                 </div>
@@ -308,7 +311,11 @@
                 <input class="form-control" id="mrep<%=i%>" type="text" style="width: 750px;">
             </label>
             <button id="Mrep<%=i%>" class="btn btn-info" style="margin-bottom: 5px;margin-left: -15px;">작성</button>
+            <%if (like[i].equals("0")){%>
             <button id="li<%=i%>" value="0" class="btn btn-outline-danger" style="margin-bottom: 5px;border-radius: 20px;"><i id="ke<%=i%>" class="far fa-heart"> 좋아요</i></button>
+            <%}else{%>
+            <button id="li<%=i%>" value="1" class="btn btn-outline-danger" style="margin-bottom: 5px;border-radius: 20px;"><i id="ke<%=i%>" class="fas fa-heart"> 좋아요</i></button>
+            <%}%>
         </div>
     </div><%}%>
 </section>
@@ -340,7 +347,7 @@
 <div class="modal fade" id="Nmod<%=i%>" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
-            <form method="POST" id="Nmod" class="needs-validation" novalidate>
+            <form method="POST" class="needs-validation" novalidate>
                 <div class="modal-header">
                     <h5 class="modal-title">글 수정</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -391,17 +398,46 @@
             }, 500);
         }).scroll();
     });
+    /*좋아요개수 수정*/
     <%for(int i=0;i<Nsize;i++){%>
     $('#li<%=i%>').click(function () {
         if ($('#li<%=i%>').val() === "0"){
             $('#ke<%=i%>').removeClass('far');
             $('#ke<%=i%>').addClass('fas');
             $('#li<%=i%>').attr('value', '1');
+            $.ajax({
+                url : "/like.do",
+                type : 'POST',
+                data :{
+                    seq : <%=bnList.get(i).getBoardSeq()%>,
+                    like : <%=bnList.get(i).getLike()%>,
+                    a:'1'
+                },success : function (data) {
+                    if (data===1)
+                        console.log("좋아요증가")
+                    window.location.reload();
+                }
+
+            })
         }
         else {
             $('#ke<%=i%>').removeClass('fas');
             $('#ke<%=i%>').addClass('far');
             $('#li<%=i%>').attr('value', '0')
+            $.ajax({
+                url : "/like.do",
+                type : 'POST',
+                data :{
+                    seq : <%=bnList.get(i).getBoardSeq()%>,
+                    like : <%=bnList.get(i).getLike()%>,
+                    a:'0'
+                },success : function (data) {
+                    if (data===1)
+                        console.log("좋아요감소")
+                    window.location.reload();
+                }
+
+            })
         }
     });
     <%}%>
@@ -461,12 +497,31 @@
     });
     /*댓글모두보기*/
     $('#allrep<%=i%>').click(function () {
-        $('#3rep<%=i%>').attr('style','display:none;')
+        $('#allrep<%=i%>').attr('style','display:none;')
         $('#Arep<%=i%>').attr('style','display:block;')
     })
     $('#threp<%=i%>').click(function () {
-        $('#3rep<%=i%>').attr('style','display:block;')
+        $('#allrep<%=i%>').attr('style','display:block;')
         $('#Arep<%=i%>').attr('style','display:none;')
+    })
+    <%}%>
+    <%for (int j = 0; j<reply.size();j++){%>
+    /*댓글삭제*/
+    $('#Rdel<%=j%>').click(function () {
+        const res = confirm("선택하신 댓글을 지우시겠습니까?")
+        if (res){
+            $.ajax({
+                url:"/delrep.do",
+                type : 'POST',
+                data: {
+                    seq: <%=reply.get(j).getRep()%>
+                },success : function (data) {
+                    if (data===1)
+                        alert('댓글이 삭제되었습니다.')
+                    window.location.reload(true);
+                }
+            })
+        }
     })
     <%}%>
     /*할일추가*/
