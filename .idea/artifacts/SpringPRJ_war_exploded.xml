@@ -1,19 +1,14 @@
 <component name="ArtifactManager">
   <artifact type="exploded-war" name="SpringPRJ:war exploded">
-    <output-path>$PROJECT_DIR$/target/SpringPRJ-0.0.1-SNAPSHOT</output-path>
-    <properties id="maven-jee-properties">
-      <options>
-        <exploded>true</exploded>
-        <module>SpringPRJ</module>
-        <packaging>war</packaging>
-      </options>
-    </properties>
+    <output-path>$PROJECT_DIR$/out/artifacts/SpringPRJ_war_exploded</output-path>
     <root id="root">
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
           <element id="module-output" name="SpringPRJ" />
         </element>
         <element id="directory" name="lib">
+          <element id="library" level="module" name="mail-1.4.7.jar" module-name="SpringPRJ" />
+          <element id="library" level="module" name="mysql-connector-java-8.0.17.jar" module-name="SpringPRJ" />
           <element id="library" level="project" name="Maven: org.springframework:spring-websocket:4.2.9.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-core:4.2.9.RELEASE" />
           <element id="library" level="project" name="Maven: commons-logging:commons-logging:1.2" />
@@ -62,9 +57,6 @@
           <element id="library" level="project" name="Maven: mysql:mysql-connector-java:8.0.11" />
           <element id="library" level="project" name="Maven: com.google.protobuf:protobuf-java:2.6.0" />
         </element>
-      </element>
-      <element id="directory" name="META-INF">
-        <element id="file-copy" path="$PROJECT_DIR$/target/SpringPRJ-0.0.1-SNAPSHOT/META-INF/MANIFEST.MF" />
       </element>
       <element id="javaee-facet-resources" facet="SpringPRJ/web/Web" />
     </root>

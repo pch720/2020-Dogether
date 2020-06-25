@@ -4,7 +4,7 @@
     <!--게시물,공지사항,할일등록-->
     <insert id="write" parameterType="BoardDTO">
         INSERT
-        INTO BOARD
+        INTO board
         (
             CONTENTS,
             USER_NAME,
@@ -42,20 +42,20 @@
             UP_ID AS UpId,
             FIN_DT AS FinDt,
             ST_DT AS StDt
-            FROM BOARD
+            FROM board
             WHERE GG_SEQ = #{seq}
     </select>
     <!--일 삭제-->
     <delete id="delwork" parameterType="BoardDTO">
         DELETE
-        FROM BOARD
+        FROM board
         WHERE
         BOARD_SEQ = #{BoardSeq}
     </delete>
     <!--한일로 변경-->
     <update id="finwork" parameterType="BoardDTO">
         UPDATE
-            BOARD
+            board
         SET
             NOTICE = '3',
             FIN_DT = SYSDATE()
@@ -75,14 +75,14 @@
             UP_ID AS UpId,
             FIN_DT AS FinDt,
             ST_DT AS StDt
-            FROM BOARD
+            FROM board
             WHERE GG_SEQ = #{GroupSeq}
             AND USER_NAME = #{userName}
     </select>
     <!--글수정-->
     <update id="MNotice" parameterType="BoardDTO">
         UPDATE
-            BOARD
+            board
         SET
             CONTENTS = #{Contents},
             UP_DT = SYSDATE(),
@@ -93,7 +93,7 @@
     <!--댓글 등록-->
     <insert id="writerep" parameterType="BoardDTO">
         INSERT
-        INTO REPLY
+        INTO reply
         (
             CONTENTS,
             BOARD_SEQ,
@@ -124,20 +124,20 @@
             REG_DT AS RegDate,
             UP_DT AS `UpDate`,
             UP_ID AS UpId
-            FROM REPLY
+            FROM reply
             WHERE GG_SEQ = #{seq}
     </select>
     <!--일 삭제-->
     <delete id="delrep" parameterType="String">
         DELETE
-        FROM REPLY
+        FROM reply
         WHERE
         REP_SEQ = #{seq}
     </delete>
     <!--좋아요수정-->
     <update id="like" parameterType="BoardDTO">
         UPDATE
-            BOARD
+            board
         SET
             `LIKE` = #{Like}
         WHERE
@@ -145,7 +145,7 @@
     </update>
     <insert id="ML" parameterType="BoardDTO">
         INSERT
-        INTO LI
+        INTO li
         (
             USER_SEQ,
             BOARD_SEQ
@@ -158,7 +158,7 @@
     </insert>
     <delete id="DL" parameterType="BoardDTO">
         DELETE
-        FROM LI
+        FROM li
         WHERE
         USER_SEQ = #{UserName}
         AND BOARD_SEQ = #{BoardSeq}
@@ -166,7 +166,7 @@
     <select id="CL" parameterType="BoardDTO" resultType="String">
         SELECT COUNT(*)
 		FROM
-			LI
+			li
 		WHERE
 			USER_SEQ = #{UserName}
         AND BOARD_SEQ = #{BoardSeq}

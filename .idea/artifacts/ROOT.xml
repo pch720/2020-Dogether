@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
-  <artifact type="war" name="SpringPRJ:war">
-    <output-path>$PROJECT_DIR$/out/artifacts/SpringPRJ_war</output-path>
+  <artifact type="war" name="ROOT">
+    <output-path>$PROJECT_DIR$/out/artifacts/ROOT</output-path>
     <root id="archive" name="SpringPRJ_war.war">
       <element id="artifact" artifact-name="SpringPRJ:war exploded" />
     </root>

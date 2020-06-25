@@ -4,14 +4,14 @@
 	<!-- 그룹명 중복확인 -->
 	<select id="GnCheck" parameterType="String" resultType="String">
 		SELECT COUNT(*)
-		FROM GG
+		FROM gg
 		WHERE
 			GROUP_NAME=#{GroupName}
 	</select>
 	<!--그룹 및 목표 만들기-->
     <insert id="MakeGG" parameterType="GroupDTO">
 		INSERT
-		INTO GG
+		INTO gg
 		(
 			GROUP_NAME,
 			MAKE_DT,
@@ -33,7 +33,7 @@
     <!--만든 사람을 관리자로 넣어주기-->
     <insert id="MkGG" parameterType="GroupDTO">
 		INSERT
-		INTO GROUPUSER
+		INTO groupuser
 		(
 			USER_NAME,
 			GREG_DT,
@@ -58,11 +58,11 @@
 		GG.GREETING as Greeting,
 		GG.FUNCTION as function,
 		GG.count as `count`
-		FROM GG AS GG
+		FROM gg AS GG
 		WHERE GG.GROUP_NAME IN(
 		SELECT
 		GU.GROUP_NAME
-		FROM GROUPUSER AS GU
+		FROM groupuser AS GU
 		WHERE GU.USER_NAME = #{userName}
 		AND GU.FUNCTION = #{function}
 		)
@@ -70,7 +70,7 @@
 	<!--그룹 및 목표 삭제-->
 	<delete id="Delgu" parameterType="GroupDTO">
 		DELETE
-		 FROM GROUPUSER
+		 FROM groupuser
 		 WHERE(
 		 USER_NAME = #{userName}
 		 AND
@@ -80,7 +80,7 @@
 	<!--이미있는지확인-->
 	<select id="already" parameterType="GroupDTO" resultType="String">
 		SELECT COUNT(*)
-		FROM GROUPUSER
+		FROM groupuser
 		WHERE
 			GROUP_NAME=#{GroupName}
 			AND
@@ -94,14 +94,14 @@
 		GREETING as Greeting,
 		FUNCTION as function,
 		count as count
-		FROM GG
+		FROM gg
 		WHERE GROUP_SEQ = #{GroupSeq}
 	</select>
 	<!--그룹 및 목표와 유저의 연결 번호가져오기-->
 	<select id="gg" parameterType="GroupDTO" resultType="String">
 		SELECT
 		GU_SEQ
-		FROM GROUPUSER
+		FROM groupuser
 		WHERE
 			GROUP_NAME=#{GroupName}
 			AND
@@ -110,7 +110,7 @@
 	<!--회원수 변경-->
 	<update id="chcount" parameterType="GroupDTO">
 		UPDATE
-			GG
+			gg
 		SET
 			COUNT = #{count}
 		WHERE
@@ -121,7 +121,7 @@
 		SELECT
 		USER_NAME as userName,
 		GU_SEQ as GU
-		FROM GROUPUSER
+		FROM groupuser
 		WHERE GROUP_NAME = #{gname}
 	</select>
 </mapper>

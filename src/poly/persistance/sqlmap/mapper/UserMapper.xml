@@ -4,7 +4,7 @@
     <!-- 회원가입 -->
     <insert id="Reg" parameterType="UserDTO">
         INSERT
-        INTO USER
+        INTO user
         (
 			 USER_NAME,
 			 USER_EMAIL,
@@ -27,7 +27,7 @@
 	<select id="nCheck" parameterType="String" resultType="String">
 		SELECT COUNT(*)
 		FROM
-			USER
+			user
 		WHERE
 			USER_NAME=#{userName}
 	</select>
@@ -35,7 +35,7 @@
 	<select id="eCheck" parameterType="String" resultType="String">
 		SELECT COUNT(*)
 		FROM
-			USER
+			user
 		WHERE
 			USER_EMAIL=#{userEmail}
 	</select>
@@ -46,7 +46,7 @@
 			USER_EMAIL AS userEmail,
 			USER_NAME AS userName,
 			USER_ASS AS userAss
-		FROM USER
+		FROM user
 		WHERE USER_EMAIL = #{userEmail} AND PASSWORD = #{passWord}
 	</select>
 	<!--그룹 및 목표의 정보 가져오기-->
@@ -57,7 +57,7 @@
 			GREETING as Greeting,
 			FUNCTION as function,
 			COUNT as count
-		FROM GG
+		FROM gg
 		WHERE FUNCTION = #{function}
 		ORDER BY COUNT DESC
 	</select>

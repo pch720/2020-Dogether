@@ -265,7 +265,7 @@
                     작성일 : </a><%=bnList.get(i).getRegDate()%></div>
                 <%}else{%>
                 <div style="width:48%;display:inline-block;text-align:left;"><a style="color:gray;">수정자 : </a><%=bnList.get(i).getUpId()%></div>
-                <div style="width:48%;display:inline-block;text-align:right;"><a style="color:gray;"><div style="width:48%;display:inline-block;text-align:right;"><a style="color:gray;"><i class="fas fa-heart" style="color:#DC3545;"> <%=bnList.get(i).getLike()%></i>
+                <div style="width:48%;display:inline-block;text-align:right;"><a style="color:gray;"><i class="fas fa-heart" style="color:#DC3545;"> <%=bnList.get(i).getLike()%></i>
                     수정일 : </a><%=bnList.get(i).getUpDate()%></div>
                 <%}%>
             </div>
@@ -356,11 +356,11 @@
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <textarea style="height: 200px;" class="form-control" name="Ncontents" id="Mcontents<%=i%>"><%=bnList.get(i).getContents()%></textarea>
+                        <textarea style="height: 200px;" class="form-control" id="Mcontents<%=i%>"><%=bnList.get(i).getContents()%></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary BMB" type="button">수정하기</button>
+                    <button class="btn btn-secondary" id="BMB<%=i%>" type="button">수정하기</button>
                 </div>
             </form>
         </div>
@@ -504,6 +504,34 @@
         $('#allrep<%=i%>').attr('style','display:block;')
         $('#Arep<%=i%>').attr('style','display:none;')
     })
+    /*게시글 수정*/
+    $('#BMB<%=i%>').click(function () {
+
+        const Mcontents =$('#Mcontents<%=i%>').val();
+        console.log(Mcontents+"/<%=bnList.get(i).getContents()%>");
+        if (Mcontents===""){
+            alert("수정하실 내용을 입력해 주세요.")
+        }else if (Mcontents=="<%=bnList.get(i).getContents()%>"){
+            alert("내용을 수정해 주세요.")
+        }
+        else{
+            $.ajax({
+                url: "/ModNotice.do",
+                type: "POST",
+                data:{
+                    "seq" : '<%=bnList.get(i).getBoardSeq()%>',
+                    "contents" : Mcontents
+                },
+                success: function (data) {
+                    console.log(data)
+                    if (data===1) {
+                        alert("게시글이 수정되었습니다.");
+                        window.location.reload(true);
+                    }
+                }
+            })
+        }
+    });
     <%}%>
     <%for (int j = 0; j<reply.size();j++){%>
     /*댓글삭제*/
@@ -578,34 +606,6 @@
             })
         }
     });
-    /*게시글 수정*/
-    <%for(int i=0;i<Nsize;i++){%>
-    $('.BMB').click(function () {
-        const Mcontents =$('#Mcontents<%=i%>').val();
-        if (Mcontents===""){
-            alert("수정하실 내용을 입력해 주세요.")
-        }else if (Mcontents=="<%=bnList.get(i).getContents()%>"){
-            alert("내용을 수정해 주세요.")
-        }
-        else{
-            $.ajax({
-                url: "/ModNotice.do",
-                type: "POST",
-                data:{
-                    "seq" : '<%=bnList.get(i).getBoardSeq()%>',
-                    "contents" : Mcontents
-                },
-                success: function (data) {
-                    console.log(data)
-                    if (data===1) {
-                        alert("게시글이 수정되었습니다.");
-                        window.location.reload(true);
-                    }
-                }
-            })
-        }
-    });
-    <%}%>
     /*할일삭제*/
     $('#del').click(function () {
         let seq=[];
