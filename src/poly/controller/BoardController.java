@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import poly.dto.BoardDTO;
 import poly.dto.GroupDTO;
+import poly.persistance.redis.impl.RedisMapper;
 import poly.service.IBoardService;
 import poly.service.IGroupService;
 import poly.util.CmmUtil;

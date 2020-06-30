@@ -2,6 +2,7 @@ package poly.service;
 
 import poly.dto.BoardDTO;
 import poly.dto.GroupDTO;
+import poly.dto.WordDTO;
 
 import java.util.List;
 

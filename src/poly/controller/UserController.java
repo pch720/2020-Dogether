@@ -13,6 +13,7 @@ package poly.controller;
 		import org.springframework.web.bind.annotation.ResponseBody;
 		import poly.dto.GroupDTO;
 		import poly.dto.UserDTO;
+		import poly.persistance.redis.impl.RedisMapper;
 		import poly.service.IUserService;
 		import poly.util.CmmUtil;
 

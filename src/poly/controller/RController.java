@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import poly.dto.BoardDTO;
 import poly.dto.WordDTO;
+import poly.persistance.redis.IRedisMapper;
+import poly.persistance.redis.impl.RedisMapper;
 import poly.service.IBoardService;
 import poly.util.CmmUtil;
 
@@ -71,6 +73,7 @@ public class RController {
         }
         c.close();
         log.info("R끝");
+        RedisMapper.DoSaveData(seq,sList);
         return sList;
     }
 }

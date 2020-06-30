@@ -27,11 +27,13 @@
           lazy-init="false">
         <property name="driverClassName" value="com.mysql.jdbc.Driver" />
         <!-- localhost -->
-        <!--<property name="url" value="jdbc:mysql://localhost:3306/park?useSSL=false&amp;allowMultiQueries=true&amp;serverTimezone=Asia/Seoul&amp;characterEncoding=UTF-8" />-->
-        <!-- AWS LINUX Server -->
-         <property name="url" value="jdbc:mysql://15.165.136.147:3306/park?useSSL=false&amp;allowMultiQueries=true&amp;serverTimezone=Asia/Seoul" />
+        <!--<property name="url" value="jdbc:mysql://localhost:3306/park?useSSL=false&amp;allowMultiQueries=true&amp;serverTimezone=Asia/Seoul&amp;characterEncoding=UTF-8" />
         <property name="username" value="root" />
-        <property name="password" value="Dk446824!" />
+        <property name="password" value="0720" />-->
+        <!-- AWS LINUX Server -->
+         <property name="url" value="jdbc:mysql://52.78.99.99:3306/park?useSSL=false&amp;characterEncoding=UTF-8&amp;serverTimezone=UTC" />
+        <property name="username" value="root" />
+        <property name="password" value="1011813aS!@" />
     </bean>
 </beans>
 
