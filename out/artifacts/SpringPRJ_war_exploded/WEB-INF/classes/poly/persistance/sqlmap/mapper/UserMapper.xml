@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="poly.persistance.mapper.IUserMapper">
+    <!-- 회원가입 -->
+    <insert id="Reg" parameterType="UserDTO">
+        INSERT
+        INTO user
+        (
+			 USER_NAME,
+			 USER_EMAIL,
+			 PASSWORD,
+			 REG_DT,
+			 REG_ID,
+			 USER_ASS
+         )
+        VALUES
+        (
+			#{userName},
+         	#{userEmail},
+         	#{passWord},
+         	SYSDATE(),
+         	#{userName},
+         	'0'
+        )
+    </insert>
+	<!-- 이름 중복확인 -->
+	<select id="nCheck" parameterType="String" resultType="String">
+		SELECT COUNT(*)
+		FROM
+			user
+		WHERE
+			USER_NAME=#{userName}
+	</select>
+	<!-- 이메일 중복확인 -->
+	<select id="eCheck" parameterType="String" resultType="String">
+		SELECT COUNT(*)
+		FROM
+			user
+		WHERE
+			USER_EMAIL=#{userEmail}
+	</select>
+	<!-- 로그인하고정보가져오기 -->
+	<select id="login" parameterType="UserDTO" resultType="UserDTO">
+		SELECT
+			USER_SEQ AS userSeq,
+			USER_EMAIL AS userEmail,
+			USER_NAME AS userName,
+			USER_ASS AS userAss
+		FROM user
+		WHERE USER_EMAIL = #{userEmail} AND PASSWORD = #{passWord}
+	</select>
+	<!--그룹 및 목표의 정보 가져오기-->
+	<select id="getGG" parameterType="String" resultType="GroupDTO">
+		SELECT
+			GROUP_SEQ as GroupSeq,
+			GROUP_NAME as GroupName,
+			GREETING as Greeting,
+			FUNCTION as function,
+			COUNT as count
+		FROM gg
+		WHERE FUNCTION = #{function}
+		ORDER BY COUNT DESC
+	</select>
+	<!--회원탈퇴-->
+	<delete id="deluser" parameterType="String">
+		DELETE
+		FROM user
+		WHERE
+			USER_NAME = #{name}
+	</delete>
+</mapper>

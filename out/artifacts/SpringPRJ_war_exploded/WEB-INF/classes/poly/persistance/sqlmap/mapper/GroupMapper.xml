@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="poly.persistance.mapper.IGroupMapper">
+	<!-- 그룹명 중복확인 -->
+	<select id="GnCheck" parameterType="String" resultType="String">
+		SELECT COUNT(*)
+		FROM gg
+		WHERE
+			GROUP_NAME=#{GroupName}
+	</select>
+	<!--그룹 및 목표 만들기-->
+    <insert id="MakeGG" parameterType="GroupDTO">
+		INSERT
+		INTO gg
+		(
+			GROUP_NAME,
+			MAKE_DT,
+			MAKE_ID,
+			GREETING,
+		 	FUNCTION,
+		    COUNT
+		)
+		VALUES
+		(
+			#{groupName},
+			SYSDATE(),
+			#{userName},
+		 	#{greeting},
+			#{function},
+			#{count}
+		)
+	</insert>
+    <!--만든 사람을 관리자로 넣어주기-->
+    <insert id="MkGG" parameterType="GroupDTO">
+		INSERT
+		INTO groupuser
+		(
+			USER_NAME,
+			GREG_DT,
+			GROUP_NAME,
+			GAUTH,
+			FUNCTION
+		)
+		VALUES
+		(
+			#{userName},
+			SYSDATE(),
+			#{groupName},
+			#{auth},
+			#{function}
+		)
+	</insert>
+	<!--그룹 정보 가져오기-->
+	<select id="getgg" parameterType="GroupDTO" resultType="GroupDTO">
+		SELECT
+		GG.GROUP_SEQ as GroupSeq,
+		GG.GROUP_NAME as GroupName,
+		GG.GREETING as Greeting,
+		GG.FUNCTION as function,
+		GG.count as `count`
+		FROM gg AS GG
+		WHERE GG.GROUP_NAME IN(
+		SELECT
+		GU.GROUP_NAME
+		FROM groupuser AS GU
+		WHERE GU.USER_NAME = #{userName}
+		AND GU.FUNCTION = #{function}
+		)
+	</select>
+	<!--그룹 및 목표 삭제-->
+	<delete id="Delgu" parameterType="GroupDTO">
+		DELETE
+		 FROM groupuser
+		 WHERE(
+		 USER_NAME = #{userName}
+		 AND
+		 GROUP_NAME = #{GroupName}
+		 )
+	</delete>
+	<!--이미있는지확인-->
+	<select id="already" parameterType="GroupDTO" resultType="String">
+		SELECT COUNT(*)
+		FROM groupuser
+		WHERE
+			GROUP_NAME=#{GroupName}
+			AND
+			USER_NAME=#{userName}
+	</select>
+	<!--그룹 및 목표의 정보 가져오기-->
+	<select id="getGroupInfo" resultType="GroupDTO">
+		SELECT
+		GROUP_SEQ as GroupSeq,
+		GROUP_NAME as GroupName,
+		GREETING as Greeting,
+		FUNCTION as function,
+		count as count
+		FROM gg
+		WHERE GROUP_SEQ = #{GroupSeq}
+	</select>
+	<!--그룹 및 목표와 유저의 연결 번호가져오기-->
+	<select id="gg" parameterType="GroupDTO" resultType="String">
+		SELECT
+		GU_SEQ
+		FROM groupuser
+		WHERE
+			GROUP_NAME=#{GroupName}
+			AND
+			USER_NAME=#{userName}
+	</select>
+	<!--회원수 변경-->
+	<update id="chcount" parameterType="GroupDTO">
+		UPDATE
+			gg
+		SET
+			COUNT = #{count}
+		WHERE
+			GROUP_NAME = #{GroupName}
+	</update>
+	<!--회원이름 가져오기-->
+	<select id="users" parameterType="String" resultType="GroupDTO">
+		SELECT
+		USER_NAME as userName,
+		GU_SEQ as GU
+		FROM groupuser
+		WHERE GROUP_NAME = #{gname}
+	</select>
+</mapper>

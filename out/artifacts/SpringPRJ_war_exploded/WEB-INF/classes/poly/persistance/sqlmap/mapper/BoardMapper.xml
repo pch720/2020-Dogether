@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="poly.persistance.mapper.IBoardMapper">
+    <!--게시물,할일등록-->
+    <insert id="write" parameterType="BoardDTO">
+        INSERT
+        INTO board
+        (
+            CONTENTS,
+            USER_NAME,
+            GU_SEQ,
+            BREG_DT,
+            `LIKE`,
+            NOTICE,
+            GG_SEQ,
+            FIN_DT,
+            ST_DT
+        )
+        VALUES
+        (
+            #{Contents},
+            #{UserName},
+            #{GuSeq},
+            SYSDATE(),
+            '0',
+            #{Notice},
+            #{GGseq},
+            #{FinDt},
+            #{StDt}
+        )
+    </insert>
+    <!--게시물,공지사항,할일 가져오기-->
+    <select id="getnotice" parameterType="String" resultType="BoardDTO">
+        SELECT
+            BOARD_SEQ AS BoardSeq,
+            CONTENTS AS Contents,
+            USER_NAME AS UserName,
+            BREG_DT AS RegDate,
+            `LIKE` AS `Like`,
+            NOTICE AS Notice,
+            UP_DT AS `UpDate`,
+            UP_ID AS UpId,
+            FIN_DT AS FinDt,
+            ST_DT AS StDt
+            FROM board
+            WHERE GG_SEQ = #{seq}
+    </select>
+    <!--일 삭제-->
+    <delete id="delwork" parameterType="BoardDTO">
+        DELETE
+        FROM board
+        WHERE
+        BOARD_SEQ = #{BoardSeq}
+    </delete>
+    <!--한일로 변경-->
+    <update id="finwork" parameterType="BoardDTO">
+        UPDATE
+            board
+        SET
+            NOTICE = '3',
+            FIN_DT = SYSDATE()
+        WHERE
+        BOARD_SEQ = #{BoardSeq}
+    </update>
+
+    <select id="getUnotice" parameterType="GroupDTO" resultType="BoardDTO">
+        SELECT
+            BOARD_SEQ AS BoardSeq,
+            CONTENTS AS Contents,
+            USER_NAME AS UserName,
+            BREG_DT AS RegDate,
+            `LIKE` AS `Like`,
+            NOTICE AS Notice,
+            UP_DT AS `UpDate`,
+            UP_ID AS UpId,
+            FIN_DT AS FinDt,
+            ST_DT AS StDt
+            FROM board
+            WHERE GG_SEQ = #{GroupSeq}
+            AND USER_NAME = #{userName}
+    </select>
+    <!--글수정-->
+    <update id="MNotice" parameterType="BoardDTO">
+        UPDATE
+            board
+        SET
+            CONTENTS = #{Contents},
+            UP_DT = SYSDATE(),
+            UP_ID = #{UpId}
+        WHERE
+        BOARD_SEQ = #{BoardSeq}
+    </update>
+    <!--댓글 등록-->
+    <insert id="writerep" parameterType="BoardDTO">
+        INSERT
+        INTO reply
+        (
+            CONTENTS,
+            BOARD_SEQ,
+            USER_NAME,
+            REG_DT,
+            UP_DT,
+            UP_ID,
+            GG_SEQ
+        )
+        VALUES
+        (
+            #{Contents},
+            #{BoardSeq},
+            #{UserName},
+            SYSDATE(),
+            SYSDATE(),
+            #{UserName},
+            #{GGseq}
+        )
+    </insert>
+    <!--댓글 가저오기-->
+    <select id="getrep" parameterType="String" resultType="BoardDTO">
+        SELECT
+            REP_SEQ AS rep,
+            BOARD_SEQ AS BoardSeq,
+            CONTENTS AS Contents,
+            USER_NAME AS UserName,
+            REG_DT AS RegDate,
+            UP_DT AS `UpDate`,
+            UP_ID AS UpId
+            FROM reply
+            WHERE GG_SEQ = #{seq}
+    </select>
+    <!--일 삭제-->
+    <delete id="delrep" parameterType="String">
+        DELETE
+        FROM reply
+        WHERE
+        REP_SEQ = #{seq}
+    </delete>
+    <!--좋아요수정-->
+    <update id="like" parameterType="BoardDTO">
+        UPDATE
+            board
+        SET
+            `LIKE` = #{Like}
+        WHERE
+            BOARD_SEQ = #{BoardSeq}
+    </update>
+    <insert id="ML" parameterType="BoardDTO">
+        INSERT
+        INTO li
+        (
+            USER_SEQ,
+            BOARD_SEQ
+        )
+        VALUES
+        (
+            #{UserName},
+            #{BoardSeq}
+        )
+    </insert>
+    <delete id="DL" parameterType="BoardDTO">
+        DELETE
+        FROM li
+        WHERE
+        USER_SEQ = #{UserName}
+        AND BOARD_SEQ = #{BoardSeq}
+    </delete>
+    <select id="CL" parameterType="BoardDTO" resultType="String">
+        SELECT COUNT(*)
+		FROM
+			li
+		WHERE
+			USER_SEQ = #{UserName}
+        AND BOARD_SEQ = #{BoardSeq}
+    </select>
+    <!--공지사항가져오기-->
+    <select id="getN" resultType="BoardDTO">
+        SELECT
+            NOTICE_SEQ AS BoardSeq,
+            CONTENTS AS Contents,
+            USER_NAME AS UserName,
+            NREG_DT AS RegDate,
+            UP_DT AS `UpDate`,
+            UP_ID AS UpId
+            FROM notice
+    </select>
+    <!--공지사항 등록-->
+    <insert id="Notice" parameterType="BoardDTO">
+        INSERT
+        INTO notice
+        (
+            CONTENTS,
+            USER_NAME,
+            NREG_DT,
+            USER_SEQ
+        )
+        VALUES
+        (
+            #{Contents},
+            #{UserName},
+            SYSDATE(),
+            #{userSeq}
+        )
+    </insert>
+    <!--공지사항 수정-->
+    <update id="MNotice1" parameterType="BoardDTO">
+        UPDATE
+            notice
+        SET
+            CONTENTS = #{Contents},
+            UP_DT = SYSDATE(),
+            UP_ID = #{UpId}
+        WHERE
+        NOTICE_SEQ = #{BoardSeq}
+    </update>
+    <!--공지사항 삭제-->
+    <delete id="delwork1" parameterType="BoardDTO">
+        DELETE
+        FROM notice
+        WHERE
+        NOTICE_SEQ = #{BoardSeq}
+    </delete>
+</mapper>
