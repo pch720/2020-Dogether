@@ -37,15 +37,17 @@ public class BoardController {
         String end = CmmUtil.nvl(request.getParameter("end"));
         String n = CmmUtil.nvl(request.getParameter("n"));
         String name = CmmUtil.nvl((String)session.getAttribute("SS_USER_NAME"));
+        String userSeq=CmmUtil.nvl((String)session.getAttribute("SS_USER_SEQ"));
         String GUseq = CmmUtil.nvl(request.getParameter("seq"));
         String Group = CmmUtil.nvl(request.getParameter("group"));
-        log.info(contents+"/"+name+"/"+start+"/"+end);
+        log.info(contents + "/" + name + "/" + start + "/" + end);
         GroupDTO gDTO = new GroupDTO();
         gDTO.setUserName(name);
         gDTO.setGroupName(Group);
-        String GU=groupservice.gg(gDTO);
+        String GU = groupservice.gg(gDTO);
         log.info(GU);
         BoardDTO bDTO = new BoardDTO();
+        bDTO.setUserSeq(userSeq);
         bDTO.setStDt(start);
         bDTO.setFinDt(end);
         bDTO.setGuSeq(GU);
@@ -54,7 +56,11 @@ public class BoardController {
         bDTO.setUserName(name);
         bDTO.setNotice(n);
         log.info(n);
-        return boardservice.write(bDTO);
+        if (n.equals("0")){
+            return boardservice.Notice(bDTO);
+        }else {
+            return boardservice.write(bDTO);
+        }
     }
     /*댓글추가*/
     @RequestMapping(value = "/writerep", method = RequestMethod.POST)
@@ -101,18 +107,24 @@ public class BoardController {
     @RequestMapping(value = "/delwork", method = RequestMethod.POST)
     public @ResponseBody int delwork(HttpServletRequest request, HttpSession session, HttpServletResponse response) throws Exception {
         String seq = request.getParameter("seq");
+        String n = request.getParameter("n");
         BoardDTO bDTO = new BoardDTO();
         log.info(seq);
-        String[] seqs = seq.split(",");
-        int res=0;
-        for (String s : seqs) {
-            log.info(s);
-            bDTO.setBoardSeq(s);
-            res = boardservice.delwork(bDTO);
-            if (res == 0)
-                break;
+        if (n!=null) {
+            bDTO.setBoardSeq(seq);
+            return boardservice.delwork1(bDTO);
+        }else {
+            String[] seqs = seq.split(",");
+            int res = 0;
+            for (String s : seqs) {
+                log.info(s);
+                bDTO.setBoardSeq(s);
+                res = boardservice.delwork(bDTO);
+                if (res == 0)
+                    break;
+            }
+            return res;
         }
-        return res;
     }
     /*그룹 캘린더 화면*/
     @RequestMapping(value = "Calander")
@@ -204,13 +216,16 @@ public class BoardController {
         String contents = CmmUtil.nvl(request.getParameter("contents"));
         String name = CmmUtil.nvl((String)session.getAttribute("SS_USER_NAME"));
         String seq = CmmUtil.nvl(request.getParameter("seq"));
+        String n = CmmUtil.nvl(request.getParameter("n"));
         log.info(contents+"/"+name+"/"+seq);
         BoardDTO bDTO = new BoardDTO();
         bDTO.setUpId(name);
         bDTO.setBoardSeq(seq);
         bDTO.setContents(contents);
-
-        return boardservice.MNotice(bDTO);
+        if (n.equals("1"))
+            return boardservice.MNotice1(bDTO);
+        else
+            return boardservice.MNotice(bDTO);
     }
     /*좋아요수정*/
     @RequestMapping(value = "/like", method = RequestMethod.POST)
@@ -235,5 +250,18 @@ public class BoardController {
         like=Integer.toString(li);
         bDTO.setLike(like);
         return boardservice.like(bDTO);
+    }
+    /*공지사항*/
+    @RequestMapping(value = "Notice")
+    public String Group(HttpServletRequest request,Model model,HttpSession session) throws Exception {
+
+        List<BoardDTO> Notice = new ArrayList<>();
+        Notice=boardservice.getN();
+        if (Notice==null)
+            Notice = new ArrayList<BoardDTO>();
+        log.info(Notice.size());
+
+        model.addAttribute("Notice",Notice);
+        return "/Notice";
     }
 }

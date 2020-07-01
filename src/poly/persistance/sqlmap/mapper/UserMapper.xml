@@ -61,4 +61,11 @@
 		WHERE FUNCTION = #{function}
 		ORDER BY COUNT DESC
 	</select>
+	<!--회원탈퇴-->
+	<delete id="deluser" parameterType="String">
+		DELETE
+		FROM user
+		WHERE
+			USER_NAME = #{name}
+	</delete>
 </mapper>

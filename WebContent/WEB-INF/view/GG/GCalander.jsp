@@ -119,7 +119,10 @@
 
     </script>
     <style>
-
+        .TitlePadding{
+            padding-left: 10% !important;
+            padding-right: 10% !important;
+        }
         body {
             margin: 40px 10px;
             padding: 0;

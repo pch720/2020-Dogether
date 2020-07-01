@@ -17,4 +17,6 @@ public interface IUserMapper {
     String nCheck(String name) throws  Exception;
 
     List<GroupDTO> getGG(String function) throws Exception;
+
+    int deluser(String name) throws Exception;
 }

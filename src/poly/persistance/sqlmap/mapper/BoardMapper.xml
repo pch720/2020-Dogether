@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="poly.persistance.mapper.IBoardMapper">
-    <!--게시물,공지사항,할일등록-->
+    <!--게시물,할일등록-->
     <insert id="write" parameterType="BoardDTO">
         INSERT
         INTO board
@@ -171,4 +171,51 @@
 			USER_SEQ = #{UserName}
         AND BOARD_SEQ = #{BoardSeq}
     </select>
+    <!--공지사항가져오기-->
+    <select id="getN" resultType="BoardDTO">
+        SELECT
+            NOTICE_SEQ AS BoardSeq,
+            CONTENTS AS Contents,
+            USER_NAME AS UserName,
+            NREG_DT AS RegDate,
+            UP_DT AS `UpDate`,
+            UP_ID AS UpId
+            FROM notice
+    </select>
+    <!--공지사항 등록-->
+    <insert id="Notice" parameterType="BoardDTO">
+        INSERT
+        INTO notice
+        (
+            CONTENTS,
+            USER_NAME,
+            NREG_DT,
+            USER_SEQ
+        )
+        VALUES
+        (
+            #{Contents},
+            #{UserName},
+            SYSDATE(),
+            #{userSeq}
+        )
+    </insert>
+    <!--공지사항 수정-->
+    <update id="MNotice1" parameterType="BoardDTO">
+        UPDATE
+            notice
+        SET
+            CONTENTS = #{Contents},
+            UP_DT = SYSDATE(),
+            UP_ID = #{UpId}
+        WHERE
+        NOTICE_SEQ = #{BoardSeq}
+    </update>
+    <!--공지사항 삭제-->
+    <delete id="delwork1" parameterType="BoardDTO">
+        DELETE
+        FROM notice
+        WHERE
+        NOTICE_SEQ = #{BoardSeq}
+    </delete>
 </mapper>

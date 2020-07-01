@@ -14,6 +14,15 @@ public class BoardDTO {
     private String StDt;
     private String FinDt;
     private String rep;
+    private String userSeq;
+
+    public String getUserSeq() {
+        return userSeq;
+    }
+
+    public void setUserSeq(String userSeq) {
+        this.userSeq = userSeq;
+    }
 
     public String getRep() {
         return rep;
@@ -118,4 +127,5 @@ public class BoardDTO {
     public void setNotice(String notice) {
         Notice = notice;
     }
+
 }

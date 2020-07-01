@@ -34,4 +34,12 @@ public interface IBoardMapper {
     int DL(BoardDTO bDTO) throws Exception;
 
     String CL(BoardDTO bDTO) throws Exception;
+
+    List<BoardDTO> getN() throws Exception;
+
+    int Notice(BoardDTO bDTO) throws Exception;
+
+    int MNotice1(BoardDTO bDTO) throws Exception;
+
+    int delwork1(BoardDTO bDTO) throws Exception;
 }

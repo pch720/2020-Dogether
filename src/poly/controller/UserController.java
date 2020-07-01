@@ -93,6 +93,7 @@ public class UserController {
 		if (uDTO != null){
 			session.setAttribute("SS_USER_NAME",uDTO.getUserName());
 			session.setAttribute("SS_USER_SEQ",uDTO.getUserSeq());
+			session.setAttribute("SS_USER_AUTH",uDTO.getUserAss());
 			msg = "로그인 되었습니다.";
 			url = "index.do";
 			log.info(" session : " + session);
@@ -116,6 +117,22 @@ public class UserController {
 		session.invalidate();
 		model.addAttribute("msg",msg);
 		model.addAttribute("url",url);
+		return "/redirect";
+	}
+
+	/*회원탈퇴*/
+	@RequestMapping(value = "/deluser")
+	public String deluser(HttpSession session,Model model) throws Exception {
+		String name = (String)session.getAttribute("SS_USER_NAME");
+		log.info(name);
+		int res = userservice.deluser(name);
+		log.info(res);
+		session.invalidate();
+		if (res==1)
+			model.addAttribute("msg","탈퇴 되었습니다.");
+		else
+			model.addAttribute("msg","탈퇴가 실패되었습니다.");
+		model.addAttribute("url","index.do");
 		return "/redirect";
 	}
 

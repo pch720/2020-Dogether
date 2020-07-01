@@ -3,10 +3,7 @@ package poly.service.impl;
 import org.springframework.stereotype.Service;
 import poly.dto.BoardDTO;
 import poly.dto.GroupDTO;
-import poly.dto.WordDTO;
 import poly.persistance.mapper.IBoardMapper;
-import poly.persistance.redis.IRedisMapper;
-import poly.persistance.redis.impl.RedisMapper;
 import poly.service.IBoardService;
 
 import javax.annotation.Resource;
@@ -81,5 +78,25 @@ public class BoardService implements IBoardService {
     @Override
     public String CL(BoardDTO bDTO) throws Exception {
         return boardMapper.CL(bDTO);
+    }
+
+    @Override
+    public List<BoardDTO> getN() throws Exception {
+        return boardMapper.getN();
+    }
+
+    @Override
+    public int Notice(BoardDTO bDTO) throws Exception {
+        return boardMapper.Notice(bDTO);
+    }
+
+    @Override
+    public int MNotice1(BoardDTO bDTO) throws Exception {
+        return boardMapper.MNotice1(bDTO);
+    }
+
+    @Override
+    public int delwork1(BoardDTO bDTO) throws Exception {
+        return boardMapper.delwork1(bDTO);
     }
 }

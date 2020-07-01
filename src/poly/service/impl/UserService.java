@@ -40,4 +40,9 @@ public class UserService implements IUserService {
         return userMapper.getGG(function);
     }
 
+    @Override
+    public int deluser(String name) throws Exception {
+        return userMapper.deluser(name);
+    }
+
 }

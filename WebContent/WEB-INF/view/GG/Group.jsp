@@ -21,6 +21,10 @@
 <html lang="en">
 <head>
     <style>
+        .TitlePadding{
+            padding-left: 10% !important;
+            padding-right: 10% !important;
+        }
         .floatMenu{
             position: absolute;
             margin-top: 120px;
@@ -507,11 +511,11 @@
     /*게시글 수정*/
     $('#BMB<%=i%>').click(function () {
 
-        const Mcontents =$('#Mcontents<%=i%>').val();
-        console.log(Mcontents+"/<%=bnList.get(i).getContents()%>");
+        const Mcontents =$(`#Mcontents<%=i%>`).val();
+        console.log(Mcontents+`/<%=bnList.get(i).getContents()%>`);
         if (Mcontents===""){
             alert("수정하실 내용을 입력해 주세요.")
-        }else if (Mcontents=="<%=bnList.get(i).getContents()%>"){
+        }else if (Mcontents==`<%=bnList.get(i).getContents()%>`){
             alert("내용을 수정해 주세요.")
         }
         else{
