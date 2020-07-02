@@ -17,6 +17,8 @@
     List<BoardDTO> reply = (List<BoardDTO>) request.getAttribute("reply");
     int Rsize = reply.size();
     String[] like = (String[]) request.getAttribute("like");
+    List<BoardDTO> Chat = (List<BoardDTO>) request.getAttribute("Chat");
+    int Csize = Chat.size();
 %>
 <html lang="en">
 <head>
@@ -98,6 +100,7 @@
 
     <!-- Custom CSS -->
     <link href="css/stylish-portfolio.min.css" rel="stylesheet">
+
 </head>
 <!-- jQuery load -->
 <script
@@ -123,7 +126,8 @@
     <%--떠다니는 그룹원--%>
     <div class="modal-content Menu3">
         <div class="modal-header" style="justify-content: center;">
-            <h5 class="modal-title"><%=gDTO.getGroupName()%>(<%=gDTO.getCount()%>명)</h5>
+            <h5 class="modal-title"><%=gDTO.getGroupName()%>(<%=gDTO.getCount()%>명)<a href="#" id="chat"><i class="fas fa-comments"></i></a>
+                <a href="#" style="display: none;" id="goboard"><i class="fas fa-clipboard"></i></a></h5>
         </div>
         <div class="modal-body" style="text-align: center;">
             <%for (GroupDTO groupDTO : user) {
@@ -158,7 +162,8 @@
     <%--떠다니는 그룹원--%>
     <div class="modal-content Menu3">
         <div class="modal-header" style="justify-content: center;">
-            <h5 class="modal-title"><%=gDTO.getGroupName()%>(<%=gDTO.getCount()%>명)</h5>
+            <h5 class="modal-title"><%=gDTO.getGroupName()%>(<%=gDTO.getCount()%>명) <a href="#" id="chat"><i class="fas fa-comments"></i></a>
+                <a href="#" style="display: none;" id="goboard"><i class="fas fa-clipboard"></i></a></h5>
         </div>
         <div class="modal-body" style="text-align: center;">
             <%for (GroupDTO groupDTO : user) {
@@ -323,6 +328,35 @@
         </div>
     </div><%}%>
 </section>
+<!-- 채팅 -->
+<section id="chating" style="display: none;">
+    <div class="modal-content" style="margin-top: 10px; width: 56%; min-width: 650px;height: 80vh">
+        <div>
+            <div id="ccon" style="padding-top: 5px;overflow-y: scroll;height: 70vh;">
+                <%for (int i=0;i<Csize;i++){
+                    if (SS_name.equals(Chat.get(i).getUserName())){%>
+                <div class="form-group" style="width: 90%;text-align: right;">
+                    <div style="width:100%;text-align:right;">
+                        <%=Chat.get(i).getUserName()%></div>
+                    <div style="word-break: break-word;height: auto;font-size: larger;"><%=Chat.get(i).getContents()%></div>
+                </div>
+                <%}else{%>
+                <div class="form-group" style="width: 90%;text-align: left;">
+                    <div style="width:100%;"><%=Chat.get(i).getUserName()%></div>
+                    <div style="word-break: break-word;height: auto;font-size: larger;"><%=Chat.get(i).getContents()%></div>
+                </div>
+                <%}}%>
+
+            </div>
+        </div>
+        <div style="margin-top: 3%;">
+            <label>
+                <input class="form-control" id="Chatcon" type="text" style="width: 750px;">
+            </label>
+            <button id="MChat" class="btn btn-info" style="margin-bottom: 5px;margin-left: -15px;">전송</button>
+        </div>
+    </div>
+</section>
 <!-- 게시글 만들기 창 -->
 <div class="modal fade" id="MakeModal" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-xl">
@@ -386,6 +420,39 @@
 <!-- Custom scripts for this template -->
 <script src="js/stylish-portfolio.min.js"></script>
 <script>
+    /*채팅*/
+    $('#MChat').click(function () {
+        if ($("#Chatcon").val()=="")
+            alert("내용을 입력해주세요.");
+        else {
+            $.ajax({
+                url: "/writechat.do",
+                type: "POST",
+                data: {
+                    "contents": $("#Chatcon").val(),
+                    "group": '<%=gDTO.getGroupSeq()%>'
+                },
+                success: function (data) {
+                    console.log(data)
+                    window.location.reload();
+                }
+            })
+        }
+    });
+    /*채팅이동*/
+    $('#chat').click(function () {
+        $('#board').attr('style','display:none');
+        $('#chat').attr('style','display:none');
+        $('#goboard').attr('style','display:inline-block');
+        $('#chating').attr('style','display:block');
+        $('#ccon').scrollTop($('#ccon')[0].scrollHeight);
+    });
+    $('#goboard').click(function () {
+        $('#board').attr('style','display:block');
+        $('#chat').attr('style','display:inline-block');
+        $('#goboard').attr('style','display:none');
+        $('#chating').attr('style','display:none');
+    });
     $(document).ready(function() {
         // 기존 css에서 플로팅 배너 위치(top)값을 가져와 저장한다.
         const floatPosition = parseInt($(".floatMenu").css('top'));
@@ -495,6 +562,7 @@
                     if (data === 1)
                         alert("댓글이 입력되었습니다.");
                     window.location.reload(true);
+
                 }
             })
         }

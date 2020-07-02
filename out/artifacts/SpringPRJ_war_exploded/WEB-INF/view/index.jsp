@@ -7,7 +7,7 @@
 <html lang="en">
 <script>
     window.onload=function(){
-        if ((document.referrer=="http://localhost:8080/login.do"||document.referrer=="http://localhost:8080/logout.do")&&<%=USER_NAME%>==null){
+        if ((document.referrer=="http://localhost:8080/login.do"||document.referrer=="http://localhost:8080/logout.do")&&"<%=USER_NAME%>"=="null"){
             $('#loginModal').modal("show");
         }};
 </script>

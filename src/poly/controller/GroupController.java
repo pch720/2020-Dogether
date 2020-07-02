@@ -176,6 +176,11 @@ public class GroupController {
         List<BoardDTO> bnList = new ArrayList<>();
         List<BoardDTO> bwList = new ArrayList<>();
         List<BoardDTO> bfList = new ArrayList<>();
+        List<BoardDTO> Chat = new ArrayList<>();
+        Chat = boardservice.getChat(seq);
+        if (Chat==null)
+            Chat = new ArrayList<>();
+        model.addAttribute("Chat",Chat);
         for (BoardDTO boardDTO : bList) {
             switch (boardDTO.getNotice()) {
                 case "1":
@@ -251,5 +256,11 @@ public class GroupController {
         model.addAttribute("msg",msg);
         model.addAttribute("url",url);
         return "/redirect";
+    }
+    /*할일삭제*/
+    @RequestMapping(value = "/delGG", method = RequestMethod.POST)
+    public @ResponseBody int delGG(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String seq = request.getParameter("seq");
+            return groupservice.DelGG(seq);
     }
 }

@@ -208,6 +208,26 @@
             return false;
     }
     <%for(int i=0; i<grList.size();i++){%>
+    /*관리자일때 그룹삭제*/
+    if ("<%=auth%>"==="1"||"<%=SS_name%>"=="<%=grList.get(i).getMkId()%>"){
+    $('#group<%=i%>').on('mousedown', function(){
+        if ((event.button == 2) || (event.which == 3)) {
+            if (confirm(`<%=grList.get(i).getGroupName()%>그룹을 삭제하시겠습니까?`)){
+                $.ajax({
+                    url : "/delGG.do",
+                    type : "POST",
+                    data : {
+                        "seq" : "<%=grList.get(i).getGroupSeq()%>"
+                    },success : function (data) {
+                        if (data===1) {
+                            alert("삭제되었습니다.");
+                            location.reload(true);
+                        }
+                    }
+                })
+            }
+        }
+    });}
     /*그룹 워드클라우드*/
     $('#group<%=i%>').click(function () {
         console.log("<%=grList.get(i).getGroupSeq()%>번째입니다.");
@@ -266,6 +286,25 @@
     });
     <%}%>
     <%for(int i=0; i<goList.size();i++){%>
+    /*관리자일때 목표삭제*/
+    if ("<%=auth%>"==="1"||"<%=SS_name%>"=="<%=goList.get(i).getMkId()%>"){
+    $('#goal<%=i%>').on('mousedown', function(){
+        if ((event.button == 2) || (event.which == 3)) {
+            if (confirm(`<%=goList.get(i).getGroupName()%>목표를 삭제하시겠습니까?`))
+                $.ajax({
+                    url : "/delGG.do",
+                    type : "POST",
+                    data : {
+                        "seq" : "<%=goList.get(i).getGroupSeq()%>"
+                    },success : function (data) {
+                        if (data===1) {
+                            alert("삭제되었습니다.");
+                            location.reload(true);
+                        }
+                    }
+                })
+        }
+    });}
     /*목표 워드클라우드*/
     $('#goal<%=i%>').click(function () {
         console.log("<%=goList.get(i).getGroupSeq()%>번째입니다.");

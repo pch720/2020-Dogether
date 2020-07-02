@@ -99,4 +99,14 @@ public class BoardService implements IBoardService {
     public int delwork1(BoardDTO bDTO) throws Exception {
         return boardMapper.delwork1(bDTO);
     }
+
+    @Override
+    public int writechat(BoardDTO bDTO) throws Exception {
+        return boardMapper.writechat(bDTO);
+    }
+
+    @Override
+    public List<BoardDTO> getChat(String seq) throws Exception {
+        return boardMapper.getChat(seq);
+    }
 }

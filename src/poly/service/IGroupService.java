@@ -24,4 +24,6 @@ public interface IGroupService {
     int chcount(GroupDTO gDTO) throws Exception;
 
     List<GroupDTO> users(String gname)throws Exception;
+
+    int DelGG(String seq) throws Exception;
 }

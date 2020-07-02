@@ -40,4 +40,8 @@ public interface IBoardService {
     int MNotice1(BoardDTO bDTO) throws Exception;
 
     int delwork1(BoardDTO bDTO) throws Exception;
+
+    int writechat(BoardDTO bDTO) throws Exception;
+
+    List<BoardDTO> getChat(String seq) throws Exception;
 }

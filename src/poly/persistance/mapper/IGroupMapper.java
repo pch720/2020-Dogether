@@ -28,4 +28,6 @@ public interface IGroupMapper {
 
 
     List<GroupDTO> users(String gname) throws Exception;
+
+    int DelGG(String seq) throws Exception;
 }

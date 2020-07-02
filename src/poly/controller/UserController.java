@@ -13,6 +13,7 @@ package poly.controller;
 		import org.springframework.web.bind.annotation.ResponseBody;
 		import poly.dto.GroupDTO;
 		import poly.dto.UserDTO;
+		import poly.persistance.redis.IRedisMapper;
 		import poly.persistance.redis.impl.RedisMapper;
 		import poly.service.IUserService;
 		import poly.util.CmmUtil;
@@ -32,6 +33,9 @@ public class UserController {
 	public String index() throws Exception {
 		return "/index";
 	}
+
+	@Resource(name = "RedisMapper")
+	IRedisMapper redisMapper;
 
 	/*닉네임 중복확인*/
 	@RequestMapping(value = "/nCheck.do", method = RequestMethod.POST)
@@ -154,5 +158,15 @@ public class UserController {
 		model.addAttribute("grList",grList);
 		model.addAttribute("goList",goList);
 		return "/main";
+	}
+
+	@RequestMapping(value = "test")
+	@ResponseBody
+	public boolean test(Model model) throws Exception {
+		String a = "asdf";
+		boolean res = redisMapper.getExists("asdf");
+
+
+		return res;
 	}
 }

@@ -15,6 +15,15 @@ public class BoardDTO {
     private String FinDt;
     private String rep;
     private String userSeq;
+    private String chat;
+
+    public String getChat() {
+        return chat;
+    }
+
+    public void setChat(String chat) {
+        this.chat = chat;
+    }
 
     public String getUserSeq() {
         return userSeq;

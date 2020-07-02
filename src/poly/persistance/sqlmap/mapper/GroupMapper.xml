@@ -55,6 +55,7 @@
 		SELECT
 		GG.GROUP_SEQ as GroupSeq,
 		GG.GROUP_NAME as GroupName,
+		GG.MAKE_ID as MkId,
 		GG.GREETING as Greeting,
 		GG.FUNCTION as function,
 		GG.count as `count`
@@ -124,4 +125,10 @@
 		FROM groupuser
 		WHERE GROUP_NAME = #{gname}
 	</select>
+	<!--그룹삭제-->
+	<delete id="DelGG" parameterType="String">
+		DELETE
+		FROM gg
+		WHERE GROUP_SEQ = #{seq}
+	</delete>
 </mapper>

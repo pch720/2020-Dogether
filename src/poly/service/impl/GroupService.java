@@ -64,4 +64,9 @@ public class GroupService implements IGroupService
         return groupMapper.users(gname);
     }
 
+    @Override
+    public int DelGG(String seq) throws Exception {
+        return groupMapper.DelGG(seq);
+    }
+
 }

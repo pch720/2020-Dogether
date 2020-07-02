@@ -69,13 +69,12 @@ public class BoardController {
         String seq = CmmUtil.nvl(request.getParameter("seq"));
         String group = CmmUtil.nvl(request.getParameter("group"));
         String name = CmmUtil.nvl((String) session.getAttribute("SS_USER_NAME"));
-        log.info(contents + "/" + name + "/" + seq);
+        log.info(contents + "/" + name + "/" + seq+"/"+group);
         BoardDTO bDTO = new BoardDTO();
         bDTO.setUserName(name);
-        bDTO.setBoardSeq(seq);
         bDTO.setGGseq(group);
         bDTO.setContents(contents);
-
+        bDTO.setBoardSeq(seq);
         return boardservice.writerep(bDTO);
     }
     /*댓글삭제*/
@@ -263,5 +262,22 @@ public class BoardController {
 
         model.addAttribute("Notice",Notice);
         return "/Notice";
+    }
+    /*채팅추가*/
+    @RequestMapping(value = "/writechat", method = RequestMethod.POST)
+    public @ResponseBody int writechat(HttpServletRequest request, HttpSession session, HttpServletResponse response) throws Exception {
+        String contents = CmmUtil.nvl(request.getParameter("contents"));
+        String group = CmmUtil.nvl(request.getParameter("group"));
+        String name = CmmUtil.nvl((String) session.getAttribute("SS_USER_NAME"));
+        String useq = CmmUtil.nvl((String) session.getAttribute("SS_USER_SEQ"));
+        log.info(contents + "/" + name + "/"+useq+"/"+group);
+        BoardDTO bDTO = new BoardDTO();
+        bDTO.setUserName(name);
+        bDTO.setGGseq(group);
+        bDTO.setContents(contents);
+
+        log.info("asdf");
+        bDTO.setUserSeq(useq);
+        return boardservice.writechat(bDTO);
     }
 }

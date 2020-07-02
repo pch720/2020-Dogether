@@ -33,9 +33,8 @@ public class RController {
     @ResponseBody
     public List<WordDTO> rConnect(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String seq = CmmUtil.nvl((String) request.getParameter("seq"));
-        String key = seq;
         log.info("seq : " + seq);
-        if(redisMapper.getExists(seq)) {
+        if(!redisMapper.getExists(seq)) {
             log.info("rConnect 호출");
             RConnection c = new RConnection();
             log.info("R연결 완료");
@@ -73,8 +72,8 @@ public class RController {
                 c.eval("n_df <- count(n_df,noun, sort=TRUE)");
                 c.eval("n_df <- filter(n_df,nchar(noun)>=2)");
 //            c.eval("m_df <- filter(m_df,n>=2");
-                REXP x = c.eval("m_df$noun");
-                REXP y = c.eval("m_df$n");
+                REXP x = c.eval("n_df$noun");
+                REXP y = c.eval("n_df$n");
                 String[] noun = x.asStrings();
                 String[] count = y.asStrings();
                 for (int i = 0; i < noun.length; i++) {
@@ -88,9 +87,9 @@ public class RController {
             }
             c.close();
             log.info("R끝");
-            redisMapper.setWordCount(key,sList);
+            redisMapper.setWordCount(seq,sList);
             return sList;
         }
-        return redisMapper.getWordCount(key);
+        return redisMapper.getWordCount(seq);
     }
 }

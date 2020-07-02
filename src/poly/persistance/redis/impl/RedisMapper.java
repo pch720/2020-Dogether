@@ -1,7 +1,7 @@
 package poly.persistance.redis.impl;
 
 import org.apache.log4j.Logger;
-//import org.apache.tools.ant.Project;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
@@ -16,14 +16,16 @@ import java.util.concurrent.TimeUnit;
 @Component("RedisMapper")
 public class RedisMapper implements IRedisMapper {
 
-    private static RedisTemplate<Object, Object> redisDB;
+    @Autowired
+    public RedisTemplate<String, Object> redisDB;
 
     private Logger log = Logger.getLogger(this.getClass());
     /*데이터유무 확인*/
     @Override
     public boolean getExists(String key) throws Exception {
-
+        log.info(key);
         log.info(this.getClass().getName() + " : getExists 호출");
+        redisDB.setKeySerializer(new StringRedisSerializer());
 
         return redisDB.hasKey(key);
     }

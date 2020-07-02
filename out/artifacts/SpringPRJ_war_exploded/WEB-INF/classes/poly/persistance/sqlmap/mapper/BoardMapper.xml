@@ -127,7 +127,7 @@
             FROM reply
             WHERE GG_SEQ = #{seq}
     </select>
-    <!--일 삭제-->
+    <!--댓글 삭제-->
     <delete id="delrep" parameterType="String">
         DELETE
         FROM reply
@@ -218,4 +218,34 @@
         WHERE
         NOTICE_SEQ = #{BoardSeq}
     </delete>
+    <!--채팅 등록-->
+    <insert id="writechat" parameterType="BoardDTO">
+        INSERT
+        INTO chat
+        (
+            CONTENTS,
+            USER_NAME,
+            MK_DT,
+            GG_SEQ,
+            USER_SEQ
+        )
+        VALUES
+        (
+            #{Contents},
+            #{UserName},
+            SYSDATE(),
+            #{GGseq},
+            #{userSeq}
+        )
+    </insert>
+    <!--채팅 가저오기-->
+    <select id="getChat" parameterType="String" resultType="BoardDTO">
+        SELECT
+            CHAT_SEQ AS chat,
+            CONTENTS AS Contents,
+            USER_NAME AS UserName,
+            MK_DT AS RegDate
+            FROM chat
+            WHERE GG_SEQ = #{seq}
+    </select>
 </mapper>

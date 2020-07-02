@@ -9,6 +9,15 @@ public class GroupDTO {
     private String userName;
     private String count;
     private String auth;
+    private String MkId;
+
+    public String getMkId() {
+        return MkId;
+    }
+
+    public void setMkId(String mkId) {
+        MkId = mkId;
+    }
 
     public String getGU() {
         return GU;

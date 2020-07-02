@@ -56,6 +56,7 @@
 			GROUP_NAME as GroupName,
 			GREETING as Greeting,
 			FUNCTION as function,
+			MAKE_ID as MkId,
 			COUNT as count
 		FROM gg
 		WHERE FUNCTION = #{function}

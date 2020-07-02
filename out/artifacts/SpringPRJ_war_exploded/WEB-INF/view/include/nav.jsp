@@ -2,10 +2,12 @@
          pageEncoding="UTF-8"%>
 <%
     String auth = (String)session.getAttribute("SS_USER_AUTH");
+    if (auth==null)
+        auth="0";
 %>
 <script>
     window.onload=function () {
-        if ("<%=SS_name%>"===null){
+        if ("<%=SS_name%>"==="null"){
             alert("로그인이 필요합니다.");
             location.href='/index.do';
         }
