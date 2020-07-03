@@ -88,7 +88,6 @@ function name1() {
         }
     });
 }
-
 function email1() {
     $.ajax({
         url: "/eCheck.do",
